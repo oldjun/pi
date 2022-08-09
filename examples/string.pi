@@ -1,0 +1,14 @@
+str = "hello world!"
+print(str)
+
+str = "thank" + " you"
+print(str)
+
+substr = "x"
+if substr in str {
+    printf("%s is in '%s'", substr, str)
+} else {
+    printf("%s is not in '%s'", substr, str)
+}
+
+print(str.upper())
