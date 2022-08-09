@@ -120,19 +120,19 @@ func applyFunction(node object.Object, args []object.Object) object.Object {
 	case *object.Builtin:
 		return node.Fn(args...)
 	case *object.Class:
-		//if node.Super != nil {
-		//	super := applyFunction(node.Super, args)
-		//	node.Scope.Env.Set("super", super)
-		//}
-		obj := &object.Instance{Class: node, Env: node.Scope.Env}
-		//obj := &object.Instance{Class: node, Env: object.NewEnvironment()}
+		obj := &object.Instance{Class: node, Env: object.NewEnvironment()}
 		obj.Env.Set("this", obj)
-		fn, ok := node.Scope.Env.Get("__init__")
+		if node.Super != nil {
+			super := &object.Instance{Class: node.Super, Env: object.NewEnvironment()}
+			obj.Env.Set("super", super)
+		}
+		fn, ok := node.Scope.Get("__init__")
 		if !ok {
 			return newError("%s missing __init__ function", node.String())
 		}
-		// call class's __init__
+		fn.(*object.Function).Env.Set("this", obj)
 		applyFunction(fn, args)
+		fn.(*object.Function).Env.Del("this")
 		return obj
 	default:
 		return newError("not a function: %s", node.Type())

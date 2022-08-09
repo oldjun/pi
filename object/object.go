@@ -20,7 +20,6 @@ const (
 	BREAK    = "BREAK"
 	CONTINUE = "CONTINUE"
 	CLASS    = "CLASS"
-	SCOPE    = "SCOPE"
 	INSTANCE = "INSTANCE"
 	THIS     = "THIS"
 )

@@ -1,0 +1,32 @@
+
+class Base {
+    func __init__(name) {
+        this.name = name
+    }
+
+    func name() {
+        return this.name
+    }
+}
+
+class Foo : Base {
+    func __init__(name, age) {
+        super.__init__(name)
+        this.age = age
+    }
+
+    func age() {
+        return this.age
+    }
+
+    func show() {
+        printf("name = %s, age= %d", this.name, this.age)
+    }
+}
+
+a = Foo("a", 18)
+b = Foo("b", 20)
+
+a.show()
+b.show()
+

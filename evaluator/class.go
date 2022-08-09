@@ -10,7 +10,7 @@ func evalClass(node *ast.Class, env *object.Environment) object.Object {
 		Name:  node.Name,
 		Super: nil,
 		Env:   env,
-		Scope: nil,
+		Scope: object.NewEnvironment(),
 	}
 
 	// super
@@ -27,8 +27,7 @@ func evalClass(node *ast.Class, env *object.Environment) object.Object {
 	}
 
 	// Create a new scope for this class
-	class.Scope = &object.Scope{Env: object.NewEnvironment(), Self: class}
-	Eval(node.Body, class.Scope.Env)
+	Eval(node.Body, class.Scope)
 	env.Set(node.Name.Value, class)
 	return class
 }

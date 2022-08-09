@@ -9,7 +9,7 @@ type Class struct {
 	Name  *ast.Identifier
 	Super *Class
 	Env   *Environment
-	Scope *Scope
+	Scope *Environment
 }
 
 func (c *Class) Type() Type { return CLASS }

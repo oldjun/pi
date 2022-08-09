@@ -6,8 +6,11 @@ import (
 )
 
 func evalSuper(node *ast.Super, env *object.Environment) object.Object {
-	if super, ok := env.Get("super"); ok {
-		return super
+	this, ok := env.Get("this")
+	if ok {
+		if super, ok := this.(*object.Instance).Env.Get("super"); ok {
+			return super
+		}
 	}
 	return newError("runtime error: cannot call 'super' outside of scope")
 }

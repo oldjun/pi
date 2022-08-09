@@ -5,16 +5,15 @@ class A {
     }
 
     function name() {
-        printf("name = %s", this.name)
+        return this.name
     }
 
     function age() {
-        printf("age = %d", this.age)
+        return this.age
     }
 
     function show() {
-        this.name()
-        this.age()
+        printf("name = %s, age = %d", this.name, this.age)
     }
 }
 

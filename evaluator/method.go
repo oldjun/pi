@@ -52,25 +52,25 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 		}
 	case *object.Instance:
 		obj := obj.(*object.Instance)
-		if function, ok := obj.Env.Get(method.String()); ok {
-			return applyFunction(function, args)
+		if fn, ok := obj.Class.Scope.Get(method.String()); ok {
+			fn.(*object.Function).Env.Set("this", obj)
+			ret := applyFunction(fn, args)
+			fn.(*object.Function).Env.Del("this")
+			return ret
 		}
 		// walk up the chain of super instance looking for it
-		super, ok := obj.Env.Get("super")
-		if !ok {
-			return NULL
-		}
-		for {
-			if fn, ok := super.(*object.Instance).Env.Get(method.String()); ok {
-				return applyFunction(fn, args)
+		super := obj.Class.Super
+		for super != nil {
+			if fn, ok := super.Scope.Get(method.String()); ok {
+				fn.(*object.Function).Env.Set("this", obj)
+				ret := applyFunction(fn, args)
+				fn.(*object.Function).Env.Del("this")
+				return ret
 			}
-			super, ok = super.(*object.Instance).Env.Get("super")
-			if !ok {
-				break
-			}
+			super = super.Super
 		}
 	default:
 		break
 	}
-	return newError("%s does not have method '%s()'", obj.Type(), method.String())
+	return newError("%s does not have method '%s()'", obj.String(), method.String())
 }
