@@ -1,0 +1,14 @@
+f test(fn) {
+    return f() {
+        print("before call")
+        fn()
+        print("after call")
+    }
+}
+
+@test
+f hello() {
+    print("hi")
+}
+
+hello()

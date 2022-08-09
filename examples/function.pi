@@ -1,0 +1,17 @@
+sum = fn(x, y) {
+    return x + y
+}
+
+num = sum(1, 2)
+print(num)
+
+fab = fn(n) {
+    if (n < 3) {
+        return 1
+    } else {
+        return fab(n-1) + fab(n-2)
+    }
+}
+
+a = fab(6)
+print(a)

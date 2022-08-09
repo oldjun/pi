@@ -1,0 +1,23 @@
+
+class A {
+    function __init__() {
+        this.name = "a"
+    }
+
+    function name() {
+        printf("name = %s", this.name)
+    }
+
+    function age() {
+        printf("age = %d", this.age)
+    }
+
+    function show() {
+        this.name()
+        this.age()
+    }
+}
+
+a = A()
+a.age = 18
+a.show()

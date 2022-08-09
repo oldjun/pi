@@ -1,0 +1,19 @@
+file = open("123.txt", "r")
+# text = file.read()
+# print(text)
+
+lines = file.readlines()
+for line in lines {
+    print(line)
+}
+
+file.rewind()
+
+while true {
+    line = file.readline()
+    if !line {
+        break
+    }
+    print(line)
+    sleep(1000)
+}
