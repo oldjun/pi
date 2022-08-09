@@ -2,3 +2,8 @@ hash = {"a": 1, "b": 2, "c": 3}
 for k,v in hash {
     print(k, v)
 }
+
+hash["f"] = func(x, y) {
+    print(x + y)
+}
+hash["f"](1, 2)
