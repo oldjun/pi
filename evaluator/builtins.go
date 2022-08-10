@@ -13,7 +13,7 @@ import (
 
 var builtins = map[string]*object.Builtin{
 	"len": {
-		Fn: func(args ...object.Object) object.Object {
+		Fn: func(args []object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d", len(args))
 			}
@@ -28,7 +28,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"type": {
-		Fn: func(args ...object.Object) object.Object {
+		Fn: func(args []object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d", len(args))
 			}
@@ -36,7 +36,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"sleep": {
-		Fn: func(args ...object.Object) object.Object {
+		Fn: func(args []object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d", len(args))
 			}
@@ -50,7 +50,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"time": {
-		Fn: func(args ...object.Object) object.Object {
+		Fn: func(args []object.Object) object.Object {
 			if len(args) != 0 {
 				return newError("wrong number of arguments. got=%d", len(args))
 			}
@@ -58,7 +58,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"random": {
-		Fn: func(args ...object.Object) object.Object {
+		Fn: func(args []object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=2", len(args))
 			}
@@ -70,8 +70,60 @@ var builtins = map[string]*object.Builtin{
 			return &object.Integer{Value: r.Int64()}
 		},
 	},
+	"print": {
+		Fn: func(args []object.Object) object.Object {
+			var arr []string
+			for _, arg := range args {
+				arr = append(arr, arg.String())
+			}
+			str := strings.Join(arr, " ")
+			print(str + "\n")
+			return NULL
+		},
+	},
+	"printf": {
+		Fn: func(args []object.Object) object.Object {
+			format := args[0].(*object.String).Value
+			var a []interface{}
+			for _, arg := range args[1:] {
+				switch arg.(type) {
+				case *object.String:
+					a = append(a, arg.(*object.String).Value)
+				case *object.Integer:
+					a = append(a, arg.(*object.Integer).Value)
+				case *object.Float:
+					a = append(a, arg.(*object.Float).Value)
+				default:
+					return newError("error occurred while calling 'printf', parameter type not support: %s", arg.String())
+				}
+			}
+			str := fmt.Sprintf(format, a...)
+			print(str + "\n")
+			return NULL
+		},
+	},
+	"sprintf": {
+		Fn: func(args []object.Object) object.Object {
+			format := args[0].(*object.String).Value
+			var a []interface{}
+			for _, arg := range args[1:] {
+				switch arg.(type) {
+				case *object.String:
+					a = append(a, arg.(*object.String).Value)
+				case *object.Integer:
+					a = append(a, arg.(*object.Integer).Value)
+				case *object.Float:
+					a = append(a, arg.(*object.Float).Value)
+				default:
+					return newError("error occurred while calling 'printf', parameter type not support: %s", arg.String())
+				}
+			}
+			str := fmt.Sprintf(format, a...)
+			return &object.String{Value: str}
+		},
+	},
 	"open": {
-		Fn: func(args ...object.Object) object.Object {
+		Fn: func(args []object.Object) object.Object {
 			if len(args) > 2 {
 				return newError("wrong number of arguments. got=%d", len(args))
 			}
@@ -106,58 +158,6 @@ var builtins = map[string]*object.Builtin{
 				writer = bufio.NewWriter(file)
 			}
 			return &object.File{Filename: filename, Reader: reader, Writer: writer, Handle: file}
-		},
-	},
-	"print": {
-		Fn: func(args ...object.Object) object.Object {
-			var arr []string
-			for _, arg := range args {
-				arr = append(arr, arg.String())
-			}
-			str := strings.Join(arr, " ")
-			print(str + "\n")
-			return NULL
-		},
-	},
-	"printf": {
-		Fn: func(args ...object.Object) object.Object {
-			format := args[0].(*object.String).Value
-			var a []interface{}
-			for _, arg := range args[1:] {
-				switch arg.(type) {
-				case *object.String:
-					a = append(a, arg.(*object.String).Value)
-				case *object.Integer:
-					a = append(a, arg.(*object.Integer).Value)
-				case *object.Float:
-					a = append(a, arg.(*object.Float).Value)
-				default:
-					return newError("error occurred while calling 'printf', parameter type not support: %s", arg.String())
-				}
-			}
-			str := fmt.Sprintf(format, a...)
-			print(str + "\n")
-			return NULL
-		},
-	},
-	"sprintf": {
-		Fn: func(args ...object.Object) object.Object {
-			format := args[0].(*object.String).Value
-			var a []interface{}
-			for _, arg := range args[1:] {
-				switch arg.(type) {
-				case *object.String:
-					a = append(a, arg.(*object.String).Value)
-				case *object.Integer:
-					a = append(a, arg.(*object.Integer).Value)
-				case *object.Float:
-					a = append(a, arg.(*object.Float).Value)
-				default:
-					return newError("error occurred while calling 'printf', parameter type not support: %s", arg.String())
-				}
-			}
-			str := fmt.Sprintf(format, a...)
-			return &object.String{Value: str}
 		},
 	},
 }

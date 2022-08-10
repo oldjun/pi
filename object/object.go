@@ -4,7 +4,7 @@ import "fmt"
 
 type Type string
 
-type BuiltinFunction func(args ...Object) Object
+type BuiltinFunction func(args []Object) Object
 
 const (
 	INTEGER  = "INTEGER"
