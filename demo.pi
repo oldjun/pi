@@ -1,8 +1,4 @@
-
-from examples.module import num as a, str, Foo
-
-print(a)
-print(str)
-
-f = Foo("foo")
-print(f.name())
+a = 10
+b = 2
+c = ((a / b + 1) / 3 ) * 2
+print(c)
