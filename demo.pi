@@ -1,11 +1,24 @@
-hash = {"a": 1, "b": 2, "c": 3}
+str = "hello world!"
+print(str)
 
-print(hash.get("x", "x"))
+str = "thank" + " you"
+print(str)
 
-key = "a"
-if hash.has(key) {
-    printf("key:%s in hash", key)
-    print(hash.get(key))
+substr = "t"
+if substr in str {
+    printf("%s is in '%s'", substr, str)
 } else {
-    printf("key:%s not in hash", key)
+    printf("%s is not in '%s'", substr, str)
 }
+
+if str.index(substr) >= 0 {
+    printf("%s is in '%s'", substr, str)
+} else {
+    printf("%s is not in '%s'", substr, str)
+}
+
+print(str.upper())
+
+str = "name = %s, age = %d"
+str_format = str.format("jack", 18)
+print(str_format)

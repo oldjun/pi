@@ -21,23 +21,13 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 	switch obj.(type) {
 	case *object.Hash:
 		hash := obj.(*object.Hash)
-		// it might have user-defined functions
-		// If so, run the user-defined function
-		key := &object.String{Value: method.String()}
-		pair, ok := hash.Pairs[key.HashKey()]
-		if ok && pair.Value.Type() == object.FUNCTION {
-			return pair.Value
-		}
 		return hash.Method(method.String(), args)
 	case *object.List:
 		list := obj.(*object.List)
 		return list.Method(method.String(), args)
 	case *object.String:
 		str := obj.(*object.String)
-		if builtin, ok := stringBuiltins[method.String()]; ok {
-			args = append([]object.Object{str}, args...)
-			return builtin.Fn(args...)
-		}
+		return str.Method(method.String(), args)
 	case *object.File:
 		file := obj.(*object.File)
 		if builtin, ok := fileBuiltins[method.String()]; ok {

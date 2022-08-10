@@ -19,9 +19,7 @@ for val in hash.values() {
 print(hash.get("x", "x"))
 
 key = "t"
-e = hash.has(key)
-print(e)
-if e {
+if hash.has(key) {
     printf("key:%s in hash", key)
     print(hash.get(key))
 } else {

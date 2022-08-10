@@ -4,8 +4,14 @@ print(str)
 str = "thank" + " you"
 print(str)
 
-substr = "x"
+substr = "t"
 if substr in str {
+    printf("%s is in '%s'", substr, str)
+} else {
+    printf("%s is not in '%s'", substr, str)
+}
+
+if str.index(substr) >= 0 {
     printf("%s is in '%s'", substr, str)
 } else {
     printf("%s is not in '%s'", substr, str)
