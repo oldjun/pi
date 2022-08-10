@@ -15,7 +15,7 @@ var arrayBuiltins = map[string]*object.Builtin{
 				return newError("argument to `push` must be ARRAY, got %s", args[0].Type())
 			}
 			switch arg := args[0].(type) {
-			case *object.Array:
+			case *object.List:
 				return &object.Integer{Value: int64(len(arg.Elements))}
 			default:
 				return newError("argument to `len` not supported, got %s", args[0].Type())
@@ -30,7 +30,7 @@ var arrayBuiltins = map[string]*object.Builtin{
 			if args[0].Type() != object.ARRAY {
 				return newError("argument to `push` must be ARRAY, got %s", args[0].Type())
 			}
-			array := args[0].(*object.Array)
+			array := args[0].(*object.List)
 			array.Elements = append(array.Elements, args[1])
 			return NULL
 		},
@@ -43,7 +43,7 @@ var arrayBuiltins = map[string]*object.Builtin{
 			if args[0].Type() != object.ARRAY {
 				return newError("argument to `push` must be ARRAY, got %s", args[0].Type())
 			}
-			array := args[0].(*object.Array)
+			array := args[0].(*object.List)
 			if len(array.Elements) == 0 {
 				return NULL
 			}
@@ -60,7 +60,7 @@ var arrayBuiltins = map[string]*object.Builtin{
 			if args[0].Type() != object.ARRAY {
 				return newError("argument to `push` must be ARRAY, got %s", args[0].Type())
 			}
-			array := args[0].(*object.Array)
+			array := args[0].(*object.List)
 			if len(array.Elements) == 0 {
 				return NULL
 			}
@@ -77,7 +77,7 @@ var arrayBuiltins = map[string]*object.Builtin{
 			if args[0].Type() != object.ARRAY {
 				return newError("argument to `push` must be ARRAY, got %s", args[0].Type())
 			}
-			array := args[0].(*object.Array)
+			array := args[0].(*object.List)
 			if len(array.Elements) > 0 {
 				glue := ""
 				if len(args) == 2 {

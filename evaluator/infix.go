@@ -102,7 +102,7 @@ func evalInExpression(left, right object.Object) object.Object {
 	switch right.(type) {
 	case *object.String:
 		return evalInStringExpression(left, right)
-	case *object.Array:
+	case *object.List:
 		return evalInArrayExpression(left, right)
 	case *object.Hash:
 		return evalInHashExpression(left, right)
@@ -133,7 +133,7 @@ func evalInHashExpression(left, right object.Object) object.Object {
 }
 
 func evalInArrayExpression(left, right object.Object) object.Object {
-	rightVal := right.(*object.Array)
+	rightVal := right.(*object.List)
 	switch leftVal := left.(type) {
 	case *object.String:
 		for _, v := range rightVal.Elements {

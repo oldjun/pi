@@ -73,7 +73,7 @@ var stringBuiltins = map[string]*object.Builtin{
 				for k, v := range parts {
 					elements[k] = &object.String{Value: v}
 				}
-				return &object.Array{Elements: elements}
+				return &object.List{Elements: elements}
 			default:
 				return newError("argument to `split` not supported, got %s", args[0].Type())
 			}

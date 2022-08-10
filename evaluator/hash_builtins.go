@@ -20,7 +20,7 @@ var hashBuiltins = map[string]*object.Builtin{
 				key := pair.Key
 				keys = append(keys, key)
 			}
-			return &object.Array{Elements: keys}
+			return &object.List{Elements: keys}
 		},
 	},
 	"values": {
@@ -38,7 +38,7 @@ var hashBuiltins = map[string]*object.Builtin{
 				value := pair.Value
 				values = append(values, value)
 			}
-			return &object.Array{Elements: values}
+			return &object.List{Elements: values}
 		},
 	},
 	"get": {

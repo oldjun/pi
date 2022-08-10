@@ -78,7 +78,7 @@ var fileBuiltins = map[string]*object.Builtin{
 			for i, line := range lines {
 				result[i] = &object.String{Value: line}
 			}
-			return &object.Array{Elements: result}
+			return &object.List{Elements: result}
 		},
 	},
 	"rewind": {

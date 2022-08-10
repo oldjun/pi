@@ -32,8 +32,8 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 			args = append([]object.Object{hash}, args...)
 			return builtin.Fn(args...)
 		}
-	case *object.Array:
-		array := obj.(*object.Array)
+	case *object.List:
+		array := obj.(*object.List)
 		if builtin, ok := arrayBuiltins[method.String()]; ok {
 			args = append([]object.Object{array}, args...)
 			return builtin.Fn(args...)

@@ -31,7 +31,7 @@ func evalIndexExpression(node *ast.IndexExpression, env *object.Environment) obj
 }
 
 func evalArrayIndexExpression(left, index, end object.Object, isRange bool) object.Object {
-	leftObject := left.(*object.Array)
+	leftObject := left.(*object.List)
 	idx := index.(*object.Integer).Value
 	max := int64(len(leftObject.Elements) - 1)
 	if idx < -(max+1) || idx > max {
@@ -44,9 +44,9 @@ func evalArrayIndexExpression(left, index, end object.Object, isRange bool) obje
 		if end == NULL {
 			endIdx := max + 1
 			if idx >= endIdx {
-				return &object.Array{Elements: []object.Object{}}
+				return &object.List{Elements: []object.Object{}}
 			}
-			return &object.Array{Elements: leftObject.Elements[idx:endIdx]}
+			return &object.List{Elements: leftObject.Elements[idx:endIdx]}
 		} else {
 			endObj, ok := end.(*object.Integer)
 			if ok {
@@ -58,9 +58,9 @@ func evalArrayIndexExpression(left, index, end object.Object, isRange bool) obje
 					endIdx += max + 1
 				}
 				if idx >= endIdx {
-					return &object.Array{Elements: []object.Object{}}
+					return &object.List{Elements: []object.Object{}}
 				}
-				return &object.Array{Elements: leftObject.Elements[idx:endIdx]}
+				return &object.List{Elements: leftObject.Elements[idx:endIdx]}
 			} else {
 				return newError(`index range can only be numerical: got "%s" (type %s)`, end.String(), end.Type())
 			}
@@ -139,8 +139,8 @@ func evalIndexAssignment(name *ast.IndexExpression, val object.Object, env *obje
 		return index
 	}
 	switch left.(type) {
-	case *object.Array:
-		array := left.(*object.Array)
+	case *object.List:
+		array := left.(*object.List)
 		idx := int(index.(*object.Integer).Value)
 		if idx < 0 {
 			return newError("index out of range: %d", idx)

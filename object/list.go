@@ -5,13 +5,13 @@ import (
 	"strings"
 )
 
-type Array struct {
+type List struct {
 	Elements []Object
 	offset   int
 }
 
-func (a *Array) Type() Type { return ARRAY }
-func (a *Array) String() string {
+func (a *List) Type() Type { return ARRAY }
+func (a *List) String() string {
 	var out bytes.Buffer
 	var elements []string
 	for _, e := range a.Elements {
@@ -22,7 +22,7 @@ func (a *Array) String() string {
 	out.WriteString("]")
 	return out.String()
 }
-func (a *Array) Next() (Object, Object) {
+func (a *List) Next() (Object, Object) {
 	offset := a.offset
 	if len(a.Elements) > offset {
 		a.offset = offset + 1
@@ -30,6 +30,6 @@ func (a *Array) Next() (Object, Object) {
 	}
 	return nil, nil
 }
-func (a *Array) Reset() {
+func (a *List) Reset() {
 	a.offset = 0
 }

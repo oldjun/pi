@@ -6,17 +6,17 @@ import (
 	"strings"
 )
 
-type Array struct {
+type List struct {
 	token.Token // the '[' token
 	Elements    []Expression
 }
 
-func (a *Array) expressionNode()      {}
-func (a *Array) TokenLiteral() string { return a.Token.Literal }
-func (a *Array) String() string {
+func (l *List) expressionNode()      {}
+func (l *List) TokenLiteral() string { return l.Token.Literal }
+func (l *List) String() string {
 	var out bytes.Buffer
 	var elements []string
-	for _, el := range a.Elements {
+	for _, el := range l.Elements {
 		elements = append(elements, el.String())
 	}
 	out.WriteString("[")

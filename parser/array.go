@@ -5,8 +5,8 @@ import (
 	"pilang/token"
 )
 
-func (p *Parser) parseArray() ast.Expression {
-	array := &ast.Array{Token: p.currToken}
+func (p *Parser) parseList() ast.Expression {
+	array := &ast.List{Token: p.currToken}
 	array.Elements = p.parseExpressionList(token.RBRACKET)
 	return array
 }
