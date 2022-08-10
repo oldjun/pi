@@ -1,8 +1,17 @@
 
-from examples.module import a as num, str, Foo
+list = ["a", "b", "c"]
+print(list)
 
-print(num)
+print(list.len())
+
+list.push("d")
+print(list)
+
+list.pop()
+print(list)
+
+list.shift()
+print(list)
+
+str = list.join(",")
 print(str)
-
-f = Foo("foo")
-print(f.name())

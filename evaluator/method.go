@@ -33,11 +33,8 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 			return builtin.Fn(args...)
 		}
 	case *object.List:
-		array := obj.(*object.List)
-		if builtin, ok := arrayBuiltins[method.String()]; ok {
-			args = append([]object.Object{array}, args...)
-			return builtin.Fn(args...)
-		}
+		list := obj.(*object.List)
+		return list.Method(method.String(), args)
 	case *object.String:
 		str := obj.(*object.String)
 		if builtin, ok := stringBuiltins[method.String()]; ok {

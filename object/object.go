@@ -1,5 +1,7 @@
 package object
 
+import "fmt"
+
 type Type string
 
 type BuiltinFunction func(args ...Object) Object
@@ -36,4 +38,8 @@ type Hashable interface {
 type Iterable interface {
 	Next() (Object, Object)
 	Reset()
+}
+
+func newError(format string, a ...interface{}) *Error {
+	return &Error{Message: fmt.Sprintf(format, a...)}
 }
