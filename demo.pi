@@ -1,11 +1,8 @@
 
-a = 123
-
-// a = 456
-
-/*
-print("hello world")
-*/
+from examples.module import num as a, str, Foo
 
 print(a)
+print(str)
 
+f = Foo("foo")
+print(f.name())

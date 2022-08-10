@@ -1,6 +1,5 @@
 
-a = 123
-b = 456
+num = 123
 str = "hello world"
 
 class Foo {
