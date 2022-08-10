@@ -1,17 +1,11 @@
+hash = {"a": 1, "b": 2, "c": 3}
 
-list = ["a", "b", "c"]
-print(list)
+print(hash.get("x", "x"))
 
-print(list.len())
-
-list.push("d")
-print(list)
-
-list.pop()
-print(list)
-
-list.shift()
-print(list)
-
-str = list.join(",")
-print(str)
+key = "a"
+if hash.has(key) {
+    printf("key:%s in hash", key)
+    print(hash.get(key))
+} else {
+    printf("key:%s not in hash", key)
+}

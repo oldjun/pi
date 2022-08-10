@@ -162,16 +162,19 @@ func castFromIntegerToFloat(obj object.Object) object.Object {
 }
 
 func isTruthy(obj object.Object) bool {
-	switch obj {
-	case NULL:
+	switch obj := obj.(type) {
+	case *object.Null:
 		return false
-	case TRUE:
-		return true
-	case FALSE:
-		return false
-	default:
-		return true
+	case *object.Boolean:
+		return obj.Value
+	case *object.String:
+		return obj.Value != ""
+	case *object.Integer:
+		return obj.Value != 0
+	case *object.Float:
+		return obj.Value != 0
 	}
+	return true
 }
 
 func newError(format string, a ...interface{}) *object.Error {

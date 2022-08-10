@@ -1,2 +1,17 @@
+
 list = ["a", "b", "c"]
 print(list)
+
+print(list.len())
+
+list.push("d")
+print(list)
+
+list.pop()
+print(list)
+
+list.shift()
+print(list)
+
+str = list.join(",")
+print(str)

@@ -7,3 +7,23 @@ hash["f"] = func(x, y) {
     print(x + y)
 }
 hash["f"](1, 2)
+
+for key in hash.keys() {
+    print(key)
+}
+
+for val in hash.values() {
+    print(val)
+}
+
+print(hash.get("x", "x"))
+
+key = "t"
+e = hash.has(key)
+print(e)
+if e {
+    printf("key:%s in hash", key)
+    print(hash.get(key))
+} else {
+    printf("key:%s not in hash", key)
+}

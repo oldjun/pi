@@ -28,10 +28,7 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 		if ok && pair.Value.Type() == object.FUNCTION {
 			return pair.Value
 		}
-		if builtin, ok := hashBuiltins[method.String()]; ok {
-			args = append([]object.Object{hash}, args...)
-			return builtin.Fn(args...)
-		}
+		return hash.Method(method.String(), args)
 	case *object.List:
 		list := obj.(*object.List)
 		return list.Method(method.String(), args)

@@ -46,9 +46,8 @@ func (l *List) Method(method string, args []Object) Object {
 		return l.shift(args)
 	case "join":
 		return l.join(args)
-	default:
-		return nil
 	}
+	return nil
 }
 
 func (l *List) len(args []Object) Object {

@@ -57,3 +57,113 @@ func (h *Hash) Next() (Object, Object) {
 func (h *Hash) Reset() {
 	h.offset = 0
 }
+
+func (h *Hash) Method(method string, args []Object) Object {
+	switch method {
+	case "keys":
+		return h.keys(args)
+	case "values":
+		return h.values(args)
+	case "has":
+		return h.has(args)
+	case "get":
+		return h.get(args)
+	case "delete":
+		return h.delete(args)
+	}
+	return nil
+}
+
+func (h *Hash) keys(args []Object) Object {
+	if len(args) != 0 {
+		return newError("wrong number of arguments. hash.keys() got=%d", len(args))
+	}
+	pairs := h.Pairs
+	var keys []Object
+	for _, pair := range pairs {
+		key := pair.Key
+		keys = append(keys, key)
+	}
+	return &List{Elements: keys}
+}
+
+func (h *Hash) values(args []Object) Object {
+	if len(args) != 0 {
+		return newError("wrong number of arguments. hash.values() got=%d", len(args))
+	}
+	pairs := h.Pairs
+	var values []Object
+	for _, pair := range pairs {
+		value := pair.Value
+		values = append(values, value)
+	}
+	return &List{Elements: values}
+}
+
+func (h *Hash) has(args []Object) Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. hash.has() got=%d", len(args))
+	}
+	var key HashKey
+	switch args[0].(type) {
+	case *String:
+		key = args[0].(*String).HashKey()
+	case *Integer:
+		key = args[0].(*Integer).HashKey()
+	case *Boolean:
+		key = args[0].(*Boolean).HashKey()
+	default:
+		return newError("argument to hash.has() type error, got %s", args[0].Type())
+	}
+	if _, ok := h.Pairs[key]; ok {
+		return &Boolean{Value: true}
+	} else {
+		return &Boolean{Value: false}
+	}
+}
+
+func (h *Hash) get(args []Object) Object {
+	if len(args) > 2 {
+		return newError("wrong number of arguments. hash.get() got=%d", len(args))
+	}
+	var key HashKey
+	switch args[0].(type) {
+	case *String:
+		key = args[0].(*String).HashKey()
+	case *Integer:
+		key = args[0].(*Integer).HashKey()
+	case *Boolean:
+		key = args[0].(*Boolean).HashKey()
+	default:
+		return newError("argument to hash.get() type error, got %s", args[0].Type())
+	}
+	if pair, ok := h.Pairs[key]; ok {
+		return pair.Value
+	}
+	switch len(args) {
+	case 1:
+		return nil
+	case 2:
+		return args[1]
+	}
+	return nil
+}
+
+func (h *Hash) delete(args []Object) Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. hash.delete() got=%d", len(args))
+	}
+	var key HashKey
+	switch args[0].(type) {
+	case *String:
+		key = args[0].(*String).HashKey()
+	case *Integer:
+		key = args[0].(*Integer).HashKey()
+	case *Boolean:
+		key = args[0].(*Boolean).HashKey()
+	default:
+		return newError("argument to hash.delete() type error, got %s", args[1].Type())
+	}
+	delete(h.Pairs, key)
+	return nil
+}
