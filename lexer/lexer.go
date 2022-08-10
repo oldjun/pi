@@ -91,6 +91,9 @@ func (l *Lexer) NextToken() token.Token {
 			_ = l.readLine()
 			l.readChar()
 			return l.NextToken()
+		} else if l.peekChar() == '*' {
+			l.skipMultiLineComment()
+			return l.NextToken()
 		} else {
 			tok = l.newToken(token.SLASH, string(l.ch))
 		}
@@ -291,5 +294,23 @@ func (l *Lexer) peekChar() byte {
 		return 0
 	} else {
 		return l.input[l.readPosition]
+	}
+}
+
+func (l *Lexer) skipMultiLineComment() {
+	l.readChar()
+	end := false
+	for !end {
+		l.readChar()
+		if l.ch == 0 {
+			end = true
+		} else if l.ch == '\n' {
+			l.line += 1
+			l.column = 1
+		} else if l.ch == '*' && l.peekChar() == '/' {
+			end = true
+			l.readChar()
+			l.readChar()
+		}
 	}
 }
