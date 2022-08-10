@@ -18,3 +18,7 @@ if str.index(substr) >= 0 {
 }
 
 print(str.upper())
+
+str = "name = %s, age = %d"
+str_format = str.format("jack", 18)
+print(str_format)
