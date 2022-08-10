@@ -69,6 +69,7 @@ const (
 	SUPER           = "SUPER"
 	FROM            = "FROM"
 	IMPORT          = "IMPORT"
+	AS              = "as"
 )
 
 var keywords = map[string]Type{
@@ -88,6 +89,7 @@ var keywords = map[string]Type{
 	"super":    SUPER,
 	"from":     FROM,
 	"import":   IMPORT,
+	"as":       AS,
 }
 
 type Token struct {

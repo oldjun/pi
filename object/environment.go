@@ -1,19 +1,20 @@
 package object
 
-func NewEnvironment() *Environment {
+func NewEnvironment(directory string) *Environment {
 	s := make(map[string]Object)
-	return &Environment{store: s, outer: nil}
+	return &Environment{store: s, outer: nil, directory: directory}
 }
 
 func NewEnclosedEnvironment(outer *Environment) *Environment {
-	env := NewEnvironment()
+	env := NewEnvironment(outer.directory)
 	env.outer = outer
 	return env
 }
 
 type Environment struct {
-	store map[string]Object
-	outer *Environment
+	store     map[string]Object
+	outer     *Environment
+	directory string
 }
 
 func (e *Environment) Get(name string) (Object, bool) {
@@ -35,4 +36,28 @@ func (e *Environment) Del(name string) bool {
 		delete(e.store, name)
 	}
 	return true
+}
+
+func (e *Environment) All() map[string]Object {
+	return e.store
+}
+
+func (e *Environment) Has(name string) bool {
+	_, ok := e.store[name]
+	if !ok && e.outer != nil {
+		_, ok = e.outer.Get(name)
+	}
+	return ok
+}
+
+func (e *Environment) SetDirectory(directory string) {
+	e.directory = directory
+}
+
+func (e *Environment) GetDirectory() string {
+	directory := e.directory
+	if directory == "" && e.outer != nil {
+		directory = e.outer.GetDirectory()
+	}
+	return directory
 }

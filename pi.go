@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"pilang/evaluator"
 	"pilang/lexer"
 	"pilang/object"
@@ -16,10 +17,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	l := lexer.New(string(input), file)
+	directory, _ := os.Getwd()
+	l := lexer.New(string(input), filepath.Join(directory, file))
 	p := parser.New(l)
 	program := p.ParseProgram()
-	env := object.NewEnvironment()
+	env := object.NewEnvironment(directory)
 	evaluated := evaluator.Eval(program, env)
 	if evaluated != nil {
 		if evaluated.Type() != object.NULL {

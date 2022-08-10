@@ -98,7 +98,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.CLASS, p.parseClass)
 	p.registerPrefix(token.THIS, p.parseThis)
 	p.registerPrefix(token.SUPER, p.parseSuper)
-	//p.registerPrefix(token.FROM, p.parseImport)
+	p.registerPrefix(token.FROM, p.parseImport)
 
 	p.infixParseFns = make(map[token.Type]infixParseFn)
 	p.registerInfix(token.PLUS, p.parseInfix)

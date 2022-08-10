@@ -1,0 +1,8 @@
+
+from examples.module import a as num, str, Foo
+
+print(num)
+print(str)
+
+f = Foo("foo")
+print(f.name())

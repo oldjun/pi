@@ -10,7 +10,7 @@ func evalClass(node *ast.Class, env *object.Environment) object.Object {
 		Name:  node.Name,
 		Super: nil,
 		Env:   env,
-		Scope: object.NewEnvironment(),
+		Scope: object.NewEnvironment(env.GetDirectory()),
 	}
 
 	// super

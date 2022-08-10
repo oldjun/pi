@@ -1,0 +1,14 @@
+
+a = 123
+b = 456
+str = "hello world"
+
+class Foo {
+    func __init__(name) {
+        this.name = name
+    }
+
+    func name() {
+        return this.name
+    }
+}

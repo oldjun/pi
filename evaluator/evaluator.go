@@ -96,6 +96,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalThis(node, env)
 	case *ast.Super:
 		return evalSuper(node, env)
+	case *ast.Import:
+		return evalImport(node, env)
 	case *ast.Break:
 		return evalBreak(node)
 	case *ast.Continue:
@@ -120,10 +122,10 @@ func applyFunction(node object.Object, args []object.Object) object.Object {
 	case *object.Builtin:
 		return node.Fn(args...)
 	case *object.Class:
-		obj := &object.Instance{Class: node, Env: object.NewEnvironment()}
+		obj := &object.Instance{Class: node, Env: object.NewEnvironment(node.Env.GetDirectory())}
 		obj.Env.Set("this", obj)
 		if node.Super != nil {
-			super := &object.Instance{Class: node.Super, Env: object.NewEnvironment()}
+			super := &object.Instance{Class: node.Super, Env: object.NewEnvironment(node.Env.GetDirectory())}
 			obj.Env.Set("super", super)
 		}
 		fn, ok := node.Scope.Get("__init__")
