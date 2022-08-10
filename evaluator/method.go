@@ -30,10 +30,7 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 		return str.Method(method.String(), args)
 	case *object.File:
 		file := obj.(*object.File)
-		if builtin, ok := fileBuiltins[method.String()]; ok {
-			args = append([]object.Object{file}, args...)
-			return builtin.Fn(args...)
-		}
+		return file.Method(method.String(), args)
 	case *object.Instance:
 		obj := obj.(*object.Instance)
 		if fn, ok := obj.Class.Scope.Get(method.String()); ok {

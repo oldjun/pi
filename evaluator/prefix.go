@@ -26,15 +26,13 @@ func evalPrefix(node *ast.Prefix, env *object.Environment) object.Object {
 }
 
 func evalBangOperatorExpression(right object.Object) object.Object {
-	switch right {
-	case TRUE:
-		return FALSE
-	case FALSE:
-		return TRUE
-	case NULL:
-		return TRUE
+	switch right := right.(type) {
+	case *object.Null:
+		return &object.Boolean{Value: true}
+	case *object.Boolean:
+		return &object.Boolean{Value: !right.Value}
 	default:
-		return FALSE
+		return &object.Boolean{Value: false}
 	}
 }
 

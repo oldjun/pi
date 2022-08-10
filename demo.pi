@@ -1,24 +1,21 @@
-str = "hello world!"
-print(str)
+file = open("123.txt", "r")
+text = file.read()
+print(text)
+file.close()
 
-str = "thank" + " you"
-print(str)
-
-substr = "t"
-if substr in str {
-    printf("%s is in '%s'", substr, str)
-} else {
-    printf("%s is not in '%s'", substr, str)
+file = open("123.txt", "r")
+lines = file.lines()
+for line in lines {
+    print(line)
 }
 
-if str.index(substr) >= 0 {
-    printf("%s is in '%s'", substr, str)
-} else {
-    printf("%s is not in '%s'", substr, str)
+file.rewind()
+while true {
+    line = file.readline()
+    if !line {
+        break
+    }
+    print(line)
+    sleep(1000)
 }
-
-print(str.upper())
-
-str = "name = %s, age = %d"
-str_format = str.format("jack", 18)
-print(str_format)
+file.close()
