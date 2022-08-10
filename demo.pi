@@ -1,4 +1,16 @@
-a = 10
-b = 2
-c = ((a / b + 1) / 3 ) * 2
-print(c)
+
+a = 2
+switch a {
+    case 1, 2, 3:
+        print(a)
+        switch a {
+            case 1:
+                print("inner switch", a)
+        }
+    case 4:
+        print("case 4")
+    case 5:
+        print("case 5")
+    default:
+        print("default")
+}

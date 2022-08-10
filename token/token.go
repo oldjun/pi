@@ -64,6 +64,9 @@ const (
 	BIT_XOR_ASSIGN  = "^="
 	BIT_RIGHT_SHIFT = ">>"
 	BIT_LEFT_SHIFT  = "<<"
+	SWITCH          = "SWITCH"
+	CASE            = "CASE"
+	DEFAULT         = "DEFAULT"
 	CLASS           = "CLASS"
 	THIS            = "THIS"
 	SUPER           = "SUPER"
@@ -84,6 +87,9 @@ var keywords = map[string]Type{
 	"continue": CONTINUE,
 	"for":      FOR,
 	"in":       IN,
+	"switch":   SWITCH,
+	"case":     CASE,
+	"default":  DEFAULT,
 	"class":    CLASS,
 	"this":     THIS,
 	"super":    SUPER,

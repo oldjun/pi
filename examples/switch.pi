@@ -1,0 +1,48 @@
+
+a = 6
+switch a {
+    case 1, 2, 3:
+        print(a)
+    case 4:
+        print("case 4")
+    case 5:
+        print("case 5")
+    default:
+        print("default")
+}
+
+str = "a"
+switch str {
+    case "a":
+        print("a")
+    case "b":
+        print("b")
+    default:
+        print("default")
+}
+
+bool = false
+switch bool {
+    case true:
+        print(true)
+    case false:
+        print(false)
+    default:
+        print("unknown")
+}
+
+a = 2
+switch a {
+    case 1, 2, 3:
+        print(a)
+        switch a {
+            case 1:
+                print("inner switch", a)
+        }
+    case 4:
+        print("case 4")
+    case 5:
+        print("case 5")
+    default:
+        print("default")
+}
