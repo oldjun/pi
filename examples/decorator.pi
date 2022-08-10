@@ -1,5 +1,5 @@
-f test(fn) {
-    return f() {
+func test(fn) {
+    return wrapper() {
         print("before call")
         fn()
         print("after call")
@@ -7,7 +7,7 @@ f test(fn) {
 }
 
 @test
-f hello() {
+func hello() {
     print("hi")
 }
 
