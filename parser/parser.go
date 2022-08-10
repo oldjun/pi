@@ -98,6 +98,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.CLASS, p.parseClass)
 	p.registerPrefix(token.THIS, p.parseThis)
 	p.registerPrefix(token.SUPER, p.parseSuper)
+	//p.registerPrefix(token.FROM, p.parseImport)
 
 	p.infixParseFns = make(map[token.Type]infixParseFn)
 	p.registerInfix(token.PLUS, p.parseInfix)
@@ -105,7 +106,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.SLASH, p.parseInfix)
 	p.registerInfix(token.ASTERISK, p.parseInfix)
 	p.registerInfix(token.MODULO, p.parseInfix)
-	p.registerInfix(token.ASSIGN, p.parseAssignment)
+	p.registerInfix(token.ASSIGN, p.parseAssign)
 	p.registerInfix(token.PLUS_ASSIGN, p.parseCompound)
 	p.registerInfix(token.MINUS_ASSIGN, p.parseCompound)
 	p.registerInfix(token.SLASH_ASSIGN, p.parseCompound)
@@ -137,7 +138,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPostfix(token.PLUS_PLUS, p.parsePostfix)
 	p.registerPostfix(token.MINUS_MINUS, p.parsePostfix)
 
-	// Read two tokens, so curToken and peekToken are both set
+	// Read two tokens, so currToken and peekToken are both set
 	p.nextToken()
 	p.nextToken()
 	return p
@@ -189,7 +190,7 @@ func (p *Parser) noPrefixParseFnError(t token.Type) {
 	p.errors = append(p.errors, msg)
 }
 
-func (p *Parser) curTokenIs(t token.Type) bool {
+func (p *Parser) currTokenIs(t token.Type) bool {
 	return p.currToken.Type == t
 }
 

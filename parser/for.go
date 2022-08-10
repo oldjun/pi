@@ -10,7 +10,7 @@ import (
 func (p *Parser) parseFor() ast.Expression {
 	expression := &ast.For{Token: p.currToken}
 	p.nextToken()
-	if !p.curTokenIs(token.IDENTIFIER) {
+	if !p.currTokenIs(token.IDENTIFIER) {
 		return nil
 	}
 	if !p.peekTokenIs(token.ASSIGN) {
@@ -22,7 +22,7 @@ func (p *Parser) parseFor() ast.Expression {
 		return nil
 	}
 	p.nextToken()
-	for p.curTokenIs(token.SEMICOLON) {
+	for p.currTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
 	expression.Condition = p.parseExpression(LOWEST)
@@ -30,7 +30,7 @@ func (p *Parser) parseFor() ast.Expression {
 		return nil
 	}
 	p.nextToken()
-	for p.curTokenIs(token.SEMICOLON) {
+	for p.currTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
 	expression.Closer = p.parseExpression(LOWEST)
@@ -38,10 +38,10 @@ func (p *Parser) parseFor() ast.Expression {
 		return nil
 	}
 	p.nextToken()
-	for p.curTokenIs(token.SEMICOLON) {
+	for p.currTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
-	if !p.curTokenIs(token.LBRACE) {
+	if !p.currTokenIs(token.LBRACE) {
 		return nil
 	}
 	expression.Block = p.parseBlock()
@@ -51,15 +51,15 @@ func (p *Parser) parseFor() ast.Expression {
 // for x in [1,2,3] {}
 func (p *Parser) parseForInExpression(initialExpression *ast.For) ast.Expression {
 	expression := &ast.ForIn{Token: initialExpression.Token}
-	if !p.curTokenIs(token.IDENTIFIER) {
+	if !p.currTokenIs(token.IDENTIFIER) {
 		return nil
 	}
 	val := p.currToken.Literal
 	var key string
 	p.nextToken()
-	if p.curTokenIs(token.COMMA) {
+	if p.currTokenIs(token.COMMA) {
 		p.nextToken()
-		if !p.curTokenIs(token.IDENTIFIER) {
+		if !p.currTokenIs(token.IDENTIFIER) {
 			return nil
 		}
 		key = val
@@ -68,7 +68,7 @@ func (p *Parser) parseForInExpression(initialExpression *ast.For) ast.Expression
 	}
 	expression.Key = key
 	expression.Value = val
-	if !p.curTokenIs(token.IN) {
+	if !p.currTokenIs(token.IN) {
 		return nil
 	}
 	p.nextToken()

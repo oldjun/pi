@@ -16,7 +16,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	l := lexer.New(string(input))
+	l := lexer.New(string(input), file)
 	p := parser.New(l)
 	program := p.ParseProgram()
 	env := object.NewEnvironment()

@@ -7,7 +7,7 @@ import (
 
 func (p *Parser) parseBreak() *ast.Break {
 	stmt := &ast.Break{Token: p.currToken}
-	for p.curTokenIs(token.SEMICOLON) {
+	for p.currTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
 	return stmt

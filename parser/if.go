@@ -24,7 +24,7 @@ func (p *Parser) parseIf() ast.Expression {
 		p.nextToken()
 		scenario := &ast.Scenario{}
 		// ELSE IF
-		if p.curTokenIs(token.IF) {
+		if p.currTokenIs(token.IF) {
 			p.nextToken()
 			scenario.Condition = p.parseExpression(LOWEST)
 			if !p.expectPeek(token.LBRACE) {

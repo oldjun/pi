@@ -67,6 +67,8 @@ const (
 	CLASS           = "CLASS"
 	THIS            = "THIS"
 	SUPER           = "SUPER"
+	FROM            = "FROM"
+	IMPORT          = "IMPORT"
 )
 
 var keywords = map[string]Type{
@@ -84,11 +86,16 @@ var keywords = map[string]Type{
 	"class":    CLASS,
 	"this":     THIS,
 	"super":    SUPER,
+	"from":     FROM,
+	"import":   IMPORT,
 }
 
 type Token struct {
 	Type    Type
 	Literal string
+	File    string
+	Line    int
+	Column  int
 }
 
 func LookupIdent(ident string) Type {

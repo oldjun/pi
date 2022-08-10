@@ -7,7 +7,7 @@ import (
 
 func (p *Parser) parseContinue() *ast.Continue {
 	stmt := &ast.Continue{Token: p.currToken}
-	for p.curTokenIs(token.SEMICOLON) {
+	for p.currTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
 	return stmt

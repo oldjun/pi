@@ -9,10 +9,13 @@ type Lexer struct {
 	position     int  // current position in input (points to current char)
 	readPosition int  // current reading position in input (after current char)
 	ch           byte // current char under examination
+	file         string
+	line         int
+	column       int
 }
 
-func New(input string) *Lexer {
-	l := &Lexer{input: input}
+func New(input string, file string) *Lexer {
+	l := &Lexer{input: input, file: file, line: 1, column: 1}
 	l.readChar()
 	return l
 }
@@ -35,176 +38,177 @@ func (l *Lexer) NextToken() token.Token {
 		if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.EQ, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.EQ, string(ch)+string(l.ch))
 		} else {
-			tok = newToken(token.ASSIGN, l.ch)
+			tok = l.newToken(token.ASSIGN, string(l.ch))
 		}
 	case '!':
 		if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.NE, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.NE, string(ch)+string(l.ch))
 		} else {
-			tok = newToken(token.BANG, l.ch)
+			tok = l.newToken(token.BANG, string(l.ch))
 		}
 	case '+':
 		if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.PLUS_ASSIGN, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.PLUS_ASSIGN, string(ch)+string(l.ch))
 		} else if l.peekChar() == '+' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.PLUS_PLUS, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.PLUS_PLUS, string(ch)+string(l.ch))
 		} else {
-			tok = newToken(token.PLUS, l.ch)
+			tok = l.newToken(token.PLUS, string(l.ch))
 		}
 	case '-':
 		if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.MINUS_ASSIGN, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.MINUS_ASSIGN, string(ch)+string(l.ch))
 		} else if l.peekChar() == '-' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.MINUS_MINUS, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.MINUS_MINUS, string(ch)+string(l.ch))
 		} else {
-			tok = newToken(token.MINUS, l.ch)
+			tok = l.newToken(token.MINUS, string(l.ch))
 		}
 	case '*':
 		if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.ASTERISK_ASSIGN, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.ASTERISK_ASSIGN, string(ch)+string(l.ch))
 		} else {
-			tok = newToken(token.ASTERISK, l.ch)
+			tok = l.newToken(token.ASTERISK, string(l.ch))
 		}
 	case '/':
 		if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.SLASH_ASSIGN, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.SLASH_ASSIGN, string(ch)+string(l.ch))
+		} else if l.peekChar() == '/' {
+			_ = l.readLine()
+			l.readChar()
+			return l.NextToken()
 		} else {
-			tok = newToken(token.SLASH, l.ch)
+			tok = l.newToken(token.SLASH, string(l.ch))
 		}
 	case '%':
 		if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.MODULO_ASSIGN, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.MODULO_ASSIGN, string(ch)+string(l.ch))
 		} else {
-			tok = newToken(token.MODULO, l.ch)
+			tok = l.newToken(token.MODULO, string(l.ch))
 		}
 	case '<':
 		if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.LE, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.LE, string(ch)+string(l.ch))
 		} else if l.peekChar() == '<' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.BIT_LEFT_SHIFT, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.BIT_LEFT_SHIFT, string(ch)+string(l.ch))
 		} else {
-			tok = newToken(token.LT, l.ch)
+			tok = l.newToken(token.LT, string(l.ch))
 		}
 	case '>':
 		if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.GE, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.GE, string(ch)+string(l.ch))
 		} else if l.peekChar() == '>' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.BIT_RIGHT_SHIFT, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.BIT_RIGHT_SHIFT, string(ch)+string(l.ch))
 		} else {
-			tok = newToken(token.GT, l.ch)
+			tok = l.newToken(token.GT, string(l.ch))
 		}
 	case '&':
 		if l.peekChar() == '&' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.AND, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.AND, string(ch)+string(l.ch))
 		} else if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.BIT_AND_ASSIGN, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.BIT_AND_ASSIGN, string(ch)+string(l.ch))
 		} else {
-			tok = newToken(token.BIT_AND, l.ch)
+			tok = l.newToken(token.BIT_AND, string(l.ch))
 		}
 	case '|':
 		if l.peekChar() == '|' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.OR, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.OR, string(ch)+string(l.ch))
 		} else if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.BIT_OR_ASSIGN, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.BIT_OR_ASSIGN, string(ch)+string(l.ch))
 		} else {
-			tok = newToken(token.BIT_OR, l.ch)
+			tok = l.newToken(token.BIT_OR, string(l.ch))
 		}
 	case '^':
 		if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.BIT_XOR_ASSIGN, Literal: string(ch) + string(l.ch)}
+			tok = l.newToken(token.BIT_XOR_ASSIGN, string(ch)+string(l.ch))
 		} else {
-			tok = newToken(token.BIT_XOR, l.ch)
+			tok = l.newToken(token.BIT_XOR, string(l.ch))
 		}
 	case ';':
-		tok = newToken(token.SEMICOLON, l.ch)
+		tok = l.newToken(token.SEMICOLON, string(l.ch))
 	case ':':
-		tok = newToken(token.COLON, l.ch)
+		tok = l.newToken(token.COLON, string(l.ch))
 	case '(':
-		tok = newToken(token.LPAREN, l.ch)
+		tok = l.newToken(token.LPAREN, string(l.ch))
 	case ')':
-		tok = newToken(token.RPAREN, l.ch)
+		tok = l.newToken(token.RPAREN, string(l.ch))
 	case '~':
-		tok = newToken(token.TILDE, l.ch)
+		tok = l.newToken(token.TILDE, string(l.ch))
 	case ',':
-		tok = newToken(token.COMMA, l.ch)
+		tok = l.newToken(token.COMMA, string(l.ch))
 	case '{':
-		tok = newToken(token.LBRACE, l.ch)
+		tok = l.newToken(token.LBRACE, string(l.ch))
 	case '}':
-		tok = newToken(token.RBRACE, l.ch)
+		tok = l.newToken(token.RBRACE, string(l.ch))
 	case '[':
-		tok = newToken(token.LBRACKET, l.ch)
+		tok = l.newToken(token.LBRACKET, string(l.ch))
 	case ']':
-		tok = newToken(token.RBRACKET, l.ch)
+		tok = l.newToken(token.RBRACKET, string(l.ch))
 	case '@':
-		tok = newToken(token.AT, l.ch)
+		tok = l.newToken(token.AT, string(l.ch))
 	case '"':
-		tok.Type = token.STRING
-		tok.Literal = l.readString()
-	case '#':
-		_ = l.readLine()
-		l.readChar()
-		return l.NextToken()
+		tok = l.newToken(token.STRING, l.readString())
 	case '?':
-		tok = newToken(token.QUESTION, l.ch)
+		tok = l.newToken(token.QUESTION, string(l.ch))
 	case '.':
-		tok = newToken(token.DOT, l.ch)
+		tok = l.newToken(token.DOT, string(l.ch))
 	case 0:
-		tok.Literal = ""
-		tok.Type = token.EOF
+		tok = l.newToken(token.EOF, "")
 	default:
 		if isLetter(l.ch) {
-			tok.Literal = l.readIdentifier()
-			tok.Type = token.LookupIdent(tok.Literal)
+			literal := l.readIdentifier()
+			tokenType := token.LookupIdent(literal)
+			tok = l.newToken(tokenType, literal)
 			return tok
 		} else if isDigit(l.ch) {
 			tok = l.readDecimal()
 			return tok
 		} else {
-			tok = newToken(token.ILLEGAL, l.ch)
+			tok = l.newToken(token.ILLEGAL, string(l.ch))
 		}
 	}
 	l.readChar()
 	return tok
 }
 
-func newToken(tokenType token.Type, ch byte) token.Token {
-	return token.Token{Type: tokenType, Literal: string(ch)}
+func (l *Lexer) newToken(tokenType token.Type, literal string) token.Token {
+	tok := token.Token{Type: tokenType, Literal: literal, File: l.file, Line: l.line, Column: l.column}
+	l.column += len(literal)
+	return tok
 }
 
 func (l *Lexer) readIdentifier() string {
@@ -237,6 +241,8 @@ func (l *Lexer) readLine() string {
 			break
 		}
 	}
+	l.line += 1
+	l.column = 1
 	return l.input[position:l.position]
 }
 
@@ -246,6 +252,14 @@ func isLetter(ch byte) bool {
 
 func (l *Lexer) skipWhitespace() {
 	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
+		if l.ch == '\n' {
+			l.line += 1
+			l.column = 1
+		} else if l.ch == ' ' {
+			l.column += 1
+		} else if l.ch == '\t' {
+			l.column += 4
+		}
 		l.readChar()
 	}
 }
@@ -267,9 +281,9 @@ func (l *Lexer) readDecimal() token.Token {
 	if l.ch == '.' && isDigit(l.peekChar()) {
 		l.readChar()
 		fraction := l.readNumber()
-		return token.Token{Type: token.FLOAT, Literal: integer + "." + fraction}
+		return l.newToken(token.FLOAT, integer+"."+fraction)
 	}
-	return token.Token{Type: token.INT, Literal: integer}
+	return l.newToken(token.INT, integer)
 }
 
 func (l *Lexer) peekChar() byte {

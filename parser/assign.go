@@ -2,7 +2,7 @@ package parser
 
 import "pilang/ast"
 
-func (p *Parser) parseAssignment(left ast.Expression) ast.Expression {
+func (p *Parser) parseAssign(left ast.Expression) ast.Expression {
 	switch left.(type) {
 	case *ast.Identifier:
 		exp := &ast.Assign{
