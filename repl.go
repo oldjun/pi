@@ -7,7 +7,7 @@ import (
 	"pilang/repl"
 )
 
-func main() {
+func main2() {
 	u, err := user.Current()
 	if err != nil {
 		panic(err)

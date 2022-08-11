@@ -82,8 +82,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalReturn(node, env)
 	case *ast.Function:
 		return evalFunction(node, env)
-	//case *ast.Decorator:
-	//	return evalDecorator(node, env)
+	case *ast.Decorator:
+		return evalDecorator(node, env)
 	case *ast.Call:
 		return evalCall(node, env)
 	case *ast.List:

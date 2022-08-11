@@ -1,16 +1,39 @@
 
-a = 2
-switch a {
-    case 1, 2, 3:
-        print(a)
-        switch a {
-            case 1:
-                print("inner switch", a)
-        }
-    case 4:
-        print("case 4")
-    case 5:
-        print("case 5")
-    default:
-        print("default")
+func decor1(fn) {
+    func wrapper() {
+        print("decor1 before")
+        fn()
+        print("decor1 after")
+    }
+    return wrapper
 }
+
+func decor2(fn) {
+    return func() {
+        print("decor2 before")
+        fn()
+        print("decor2 after")
+    }
+}
+
+@decor1
+@decor2
+func hello() {
+    print("hello")
+}
+
+hello()
+
+class Foo {
+    func __init__(name) {
+        this.name = name
+    }
+
+    @decor1
+    func name() {
+        print(this.name)
+    }
+}
+
+f = Foo("foo")
+f.name()

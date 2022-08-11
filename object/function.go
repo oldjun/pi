@@ -11,6 +11,7 @@ type Function struct {
 	Parameters []*ast.Identifier
 	Body       *ast.Block
 	Decorated  *ast.Function
+	Node       *ast.Function
 	Env        *Environment
 }
 
