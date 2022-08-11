@@ -78,6 +78,7 @@ func New(l *lexer.Lexer) *Parser {
 	p := &Parser{l: l, errors: []string{}}
 	p.prefixParseFns = make(map[token.Type]prefixParseFn)
 	p.registerPrefix(token.IDENTIFIER, p.parseIdentifier)
+	p.registerPrefix(token.NULL, p.parseNull)
 	p.registerPrefix(token.INT, p.parseInteger)
 	p.registerPrefix(token.FLOAT, p.parseFloat)
 	p.registerPrefix(token.BANG, p.parsePrefix)

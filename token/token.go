@@ -42,6 +42,7 @@ const (
 	TILDE           = "~"
 	AT              = "@"
 	FUNCTION        = "FUNCTION"
+	NULL            = "NULL"
 	TRUE            = "TRUE"
 	FALSE           = "FALSE"
 	IF              = "IF"
@@ -77,6 +78,7 @@ const (
 
 var keywords = map[string]Type{
 	"func":     FUNCTION,
+	"null":     NULL,
 	"true":     TRUE,
 	"false":    FALSE,
 	"if":       IF,

@@ -8,6 +8,4 @@ type Continue struct {
 
 func (c *Continue) statementNode()       {}
 func (c *Continue) TokenLiteral() string { return c.Token.Literal }
-func (c *Continue) String() string {
-	return "continue"
-}
+func (c *Continue) String() string       { return "continue" }

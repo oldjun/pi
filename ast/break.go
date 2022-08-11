@@ -10,6 +10,4 @@ type Break struct {
 
 func (b *Break) statementNode()       {}
 func (b *Break) TokenLiteral() string { return b.Token.Literal }
-func (b *Break) String() string {
-	return "break"
-}
+func (b *Break) String() string       { return "break" }

@@ -1,3 +1,6 @@
 
-list = [1, 2, 3]
-print(list)
+n = null
+
+if !n {
+    printf("n is %v", n)
+}

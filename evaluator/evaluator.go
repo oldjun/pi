@@ -20,6 +20,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalProgram(node.Statements, env)
 	case *ast.ExpressionStatement:
 		return Eval(node.Expression, env)
+	case *ast.Null:
+		return evalNull(node)
 	case *ast.Integer:
 		return evalInteger(node)
 	case *ast.Float:
