@@ -1,4 +1,3 @@
-
 func decor1(fn) {
     func wrapper() {
         print("decor1 before")
@@ -23,17 +22,3 @@ func hello() {
 }
 
 hello()
-
-class Foo {
-    func __init__(name) {
-        this.name = name
-    }
-
-    @decor1
-    func name() {
-        print(this.name)
-    }
-}
-
-f = Foo("foo")
-f.name()

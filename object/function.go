@@ -10,8 +10,6 @@ type Function struct {
 	Name       string
 	Parameters []*ast.Identifier
 	Body       *ast.Block
-	Decorated  *ast.Function
-	Node       *ast.Function
 	Env        *Environment
 }
 

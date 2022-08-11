@@ -1,14 +1,50 @@
-func test(fn) {
-    return wrapper() {
-        print("before call")
+
+func decor1(fn) {
+    func wrapper() {
+        print("decor1 before")
         fn()
-        print("after call")
+        print("decor1 after")
+    }
+    return wrapper
+}
+
+func decor2(fn) {
+    return func() {
+        print("decor2 before")
+        fn()
+        print("decor2 after")
     }
 }
 
-@test
+@decor1
+@decor2
 func hello() {
-    print("hi")
+    print("hello")
 }
 
 hello()
+
+
+
+func decor(fn) {
+    func wrapper() {
+        print("decor1 before")
+        fn()
+        print("decor1 after")
+    }
+    return wrapper
+}
+
+class Foo {
+    func __init__(name) {
+        this.name = name
+    }
+
+    @decor
+    func name() {
+        print(this.name)
+    }
+}
+
+f = Foo("foo")
+f.name()

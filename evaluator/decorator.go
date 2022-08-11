@@ -39,7 +39,7 @@ func doEvalDecorator(node *ast.Decorator, env *object.Environment) (string, obje
 	switch decorated := node.Decorated.(type) {
 	case *ast.Function:
 		// Here we have a single decorator
-		fn := &object.Function{Name: name, Parameters: decorated.Parameters, Env: env, Body: decorated.Body, Node: decorated}
+		fn := &object.Function{Name: name, Parameters: decorated.Parameters, Env: env, Body: decorated.Body}
 		return name, applyFunction(decorator, []object.Object{fn}), nil
 	case *ast.Decorator:
 		// First eval the later decorator(s).
