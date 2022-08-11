@@ -10,6 +10,13 @@ func evalCall(node *ast.Call, env *object.Environment) object.Object {
 	if isError(function) {
 		return function
 	}
+	// if decorated function is a class method, env should carry `this`
+	if this, ok := env.Get("this"); ok {
+		switch function.(type) {
+		case *object.Function:
+			function.(*object.Function).Env.Set("this", this)
+		}
+	}
 	args := evalExpressions(node.Arguments, env)
 	if len(args) == 1 && isError(args[0]) {
 		return args[0]
