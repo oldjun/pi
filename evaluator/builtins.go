@@ -93,8 +93,10 @@ var builtins = map[string]*object.Builtin{
 					a = append(a, arg.(*object.Integer).Value)
 				case *object.Float:
 					a = append(a, arg.(*object.Float).Value)
+				case *object.Boolean:
+					a = append(a, arg.(*object.Boolean).Value)
 				default:
-					return newError("error occurred while calling 'printf', parameter type not support: %s", arg.String())
+					a = append(a, arg.String())
 				}
 			}
 			str := fmt.Sprintf(format, a...)
@@ -114,8 +116,10 @@ var builtins = map[string]*object.Builtin{
 					a = append(a, arg.(*object.Integer).Value)
 				case *object.Float:
 					a = append(a, arg.(*object.Float).Value)
+				case *object.Boolean:
+					a = append(a, arg.(*object.Boolean).Value)
 				default:
-					return newError("error occurred while calling 'printf', parameter type not support: %s", arg.String())
+					a = append(a, arg.String())
 				}
 			}
 			str := fmt.Sprintf(format, a...)
