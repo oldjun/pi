@@ -9,7 +9,7 @@ for line in lines {
     print(line)
 }
 
-file.rewind()
+file.seek()
 while true {
     line = file.readline()
     if !line {
@@ -19,3 +19,8 @@ while true {
     sleep(1000)
 }
 file.close()
+
+file = open("123.txt", "a")
+file.write("大家好吗？")
+file.close()
+

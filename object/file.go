@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strings"
 )
 
 type File struct {
@@ -28,8 +27,8 @@ func (f *File) Method(method string, args []Object) Object {
 		return f.readline(args)
 	case "lines":
 		return f.lines(args)
-	case "rewind":
-		return f.rewind(args)
+	case "seek":
+		return f.seek(args)
 	case "write":
 		return f.write(args)
 	case "close":
@@ -70,11 +69,7 @@ func (f *File) readline(args []Object) Object {
 	if f.Reader == nil {
 		return nil
 	}
-	line, err := f.Reader.ReadString('\n')
-	line = strings.Trim(line, "\r\n")
-	if err == io.EOF {
-		return &Null{}
-	}
+	line, _ := f.Reader.ReadString('\n')
 	return &String{Value: line}
 }
 
@@ -88,7 +83,6 @@ func (f *File) lines(args []Object) Object {
 	var lines []string
 	for {
 		line, err := f.Reader.ReadString('\n')
-		line = strings.Trim(line, "\r\n")
 		lines = append(lines, line)
 		if err == io.EOF {
 			break
@@ -102,17 +96,19 @@ func (f *File) lines(args []Object) Object {
 	return &List{Elements: result}
 }
 
-func (f *File) rewind(args []Object) Object {
-	if len(args) != 0 {
-		return newError("wrong number of arguments. file.rewind() got=%d", len(args))
+func (f *File) seek(args []Object) Object {
+	if len(args) != 2 {
+		return newError("wrong number of arguments. file.seek() got=%d", len(args))
 	}
-	_, err := f.Handle.Seek(0, 0)
+	offset := args[0].(*Integer).Value
+	whence := args[1].(*Integer).Value
+	_, err := f.Handle.Seek(offset, int(whence))
 	return &Boolean{Value: err == nil}
 }
 
 func (f *File) write(args []Object) Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. file.write got=%d", len(args))
+		return newError("wrong number of arguments. file.write() got=%d", len(args))
 	}
 	if f.Writer == nil {
 		return nil
