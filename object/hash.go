@@ -70,6 +70,8 @@ func (h *Hash) Method(method string, args []Object) Object {
 		return h.get(args)
 	case "delete":
 		return h.delete(args)
+	case "clear":
+		return h.clear(args)
 	}
 	return nil
 }
@@ -165,5 +167,13 @@ func (h *Hash) delete(args []Object) Object {
 		return newError("argument to hash.delete() type error, got %s", args[1].Type())
 	}
 	delete(h.Pairs, key)
+	return nil
+}
+
+func (h *Hash) clear(args []Object) Object {
+	if len(args) != 0 {
+		return newError("wrong number of arguments. hash.clear() got=%d", len(args))
+	}
+	h.Pairs = make(map[HashKey]HashPair)
 	return nil
 }

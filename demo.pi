@@ -1,3 +1,8 @@
 
 hash = {"a": 1, "b": 2, "c": 3}
-print(len(hash))
+print(hash)
+
+print(hash.keys())
+
+hash.clear()
+print(hash)
