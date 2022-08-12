@@ -40,7 +40,6 @@ class Foo {
     }
 
     @decor
-    @decor1
     func name() {
         print(this.name)
     }
