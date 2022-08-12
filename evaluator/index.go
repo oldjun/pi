@@ -20,7 +20,7 @@ func evalIndexExpression(node *ast.IndexExpression, env *object.Environment) obj
 	}
 	switch {
 	case left.Type() == object.LIST && index.Type() == object.INTEGER:
-		return evalArrayIndexExpression(left, index, end, node.IsRange)
+		return evalListIndexExpression(left, index, end, node.IsRange)
 	case left.Type() == object.HASH && index.Type() == object.STRING:
 		return evalHashIndexExpression(left, index)
 	case left.Type() == object.STRING && index.Type() == object.INTEGER:
@@ -30,7 +30,7 @@ func evalIndexExpression(node *ast.IndexExpression, env *object.Environment) obj
 	}
 }
 
-func evalArrayIndexExpression(left, index, end object.Object, isRange bool) object.Object {
+func evalListIndexExpression(left, index, end object.Object, isRange bool) object.Object {
 	leftObject := left.(*object.List)
 	idx := index.(*object.Integer).Value
 	max := int64(len(leftObject.Elements) - 1)

@@ -20,8 +20,12 @@ func evalInfix(operator string, left, right object.Object) object.Object {
 		return evalStringInfixExpression(operator, left, right)
 	case left.Type() == object.STRING && right.Type() == object.INTEGER:
 		return evalStringIntegerInfixExpression(operator, left, right)
-	case left.Type() == object.STRING && right.Type() == object.LIST:
+	case left.Type() == object.STRING && right.Type() == object.LIST && operator == "%":
 		return evalStringFormatInfixExpression(operator, left, right)
+	case left.Type() == object.LIST && right.Type() == object.LIST:
+		return evalListInfixExpression(operator, left, right)
+	case left.Type() == object.LIST && right.Type() == object.INTEGER:
+		return evalListIntegerInfixExpression(operator, left, right)
 	case operator == "in":
 		return evalInExpression(left, right)
 	case operator == "==":
@@ -108,7 +112,7 @@ func evalInExpression(left, right object.Object) object.Object {
 	case *object.String:
 		return evalInStringExpression(left, right)
 	case *object.List:
-		return evalInArrayExpression(left, right)
+		return evalInListExpression(left, right)
 	case *object.Hash:
 		return evalInHashExpression(left, right)
 	default:
@@ -137,9 +141,15 @@ func evalInHashExpression(left, right object.Object) object.Object {
 	return toBooleanObject(ok)
 }
 
-func evalInArrayExpression(left, right object.Object) object.Object {
+func evalInListExpression(left, right object.Object) object.Object {
 	rightVal := right.(*object.List)
 	switch leftVal := left.(type) {
+	case *object.Null:
+		for _, v := range rightVal.Elements {
+			if v.Type() == object.NULL {
+				return TRUE
+			}
+		}
 	case *object.String:
 		for _, v := range rightVal.Elements {
 			if v.Type() == object.STRING {
@@ -258,6 +268,43 @@ func evalStringFormatInfixExpression(operator string, left, right object.Object)
 		}
 		val := fmt.Sprintf(format, a...)
 		return &object.String{Value: val}
+	default:
+		return newError("unknown operator: %s %s %s",
+			left.Type(), operator, right.Type())
+	}
+}
+
+func evalListInfixExpression(operator string, left, right object.Object) object.Object {
+	leftElements := left.(*object.List).Elements
+	rightElements := right.(*object.List).Elements
+	switch operator {
+	case "+":
+		list := &object.List{}
+		for _, elem := range leftElements {
+			list.Elements = append(list.Elements, elem)
+		}
+		for _, elem := range rightElements {
+			list.Elements = append(list.Elements, elem)
+		}
+		return list
+	default:
+		return newError("unknown operator: %s %s %s",
+			left.Type(), operator, right.Type())
+	}
+}
+
+func evalListIntegerInfixExpression(operator string, left, right object.Object) object.Object {
+	leftElements := left.(*object.List).Elements
+	rightVal := int(right.(*object.Integer).Value)
+	switch operator {
+	case "*":
+		list := &object.List{}
+		for i := 0; i < rightVal; i++ {
+			for _, elem := range leftElements {
+				list.Elements = append(list.Elements, elem)
+			}
+		}
+		return list
 	default:
 		return newError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())
