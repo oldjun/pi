@@ -48,6 +48,8 @@ func (l *List) Method(method string, args []Object) Object {
 		return l.insert(args)
 	case "remove":
 		return l.remove(args)
+	case "index":
+		return l.index(args)
 	case "extend":
 		return l.extend(args)
 	case "join":
@@ -142,6 +144,18 @@ func (l *List) remove(args []Object) Object {
 	default:
 		return newError("wrong type of arguments. list.extend() got=%s", arg.Type())
 	}
+}
+
+func (l *List) index(args []Object) Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. list.index() got=%d", len(args))
+	}
+	for idx, elem := range l.Elements {
+		if (elem.Type() == args[0].Type()) && (elem.String() == args[0].String()) {
+			return &Integer{Value: int64(idx)}
+		}
+	}
+	return &Integer{Value: -1}
 }
 
 func (l *List) extend(args []Object) Object {
