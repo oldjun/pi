@@ -1,6 +1,5 @@
 
-n = null
+str = "hello world!"
+print(str)
 
-if !n {
-    printf("n is %v", n)
-}
+print(str[0:1])

@@ -1,6 +1,8 @@
 str = "hello world!"
 print(str)
 
+print(str[0:1])
+
 str = "thank" + " you"
 print(str)
 

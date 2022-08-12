@@ -17,6 +17,8 @@ func evalInfix(operator string, left, right object.Object) object.Object {
 		return evalFloatInfixExpression(operator, left, castFromIntegerToFloat(right))
 	case left.Type() == object.STRING && right.Type() == object.STRING:
 		return evalStringInfixExpression(operator, left, right)
+	case left.Type() == object.STRING && right.Type() == object.INTEGER:
+		return evalStringIntegerInfixExpression(operator, left, right)
 	case operator == "in":
 		return evalInExpression(left, right)
 	case operator == "==":
@@ -212,6 +214,19 @@ func evalStringInfixExpression(operator string, left, right object.Object) objec
 		return &object.Boolean{Value: leftVal < rightVal}
 	case "in":
 		return evalInStringExpression(left, right)
+	default:
+		return newError("unknown operator: %s %s %s",
+			left.Type(), operator, right.Type())
+	}
+}
+
+func evalStringIntegerInfixExpression(operator string, left, right object.Object) object.Object {
+	leftVal := left.(*object.String).Value
+	rightVal := right.(*object.Integer).Value
+	switch operator {
+	case "*":
+		val := strings.Repeat(leftVal, int(rightVal))
+		return &object.String{Value: val}
 	default:
 		return newError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())
