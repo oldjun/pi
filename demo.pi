@@ -1,5 +1,5 @@
 
 list = ["a", "b", "c"]
-list.insert(1, "e")
+list.remove(1)
 print(list)
 

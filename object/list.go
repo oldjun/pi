@@ -46,6 +46,8 @@ func (l *List) Method(method string, args []Object) Object {
 		return l.shift(args)
 	case "insert":
 		return l.insert(args)
+	case "remove":
+		return l.remove(args)
 	case "extend":
 		return l.extend(args)
 	case "join":
@@ -109,6 +111,30 @@ func (l *List) insert(args []Object) Object {
 		}
 		elements = append(elements, args[1])
 		for _, elem := range l.Elements[idx:] {
+			elements = append(elements, elem)
+		}
+		l.Elements = elements
+		return nil
+	default:
+		return newError("wrong type of arguments. list.extend() got=%s", arg.Type())
+	}
+}
+
+func (l *List) remove(args []Object) Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. list.remove() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		idx := int(arg.Value)
+		if idx >= len(l.Elements) {
+			return newError("out of range. list.remove() got=%d", idx)
+		}
+		var elements []Object
+		for _, elem := range l.Elements[0:idx] {
+			elements = append(elements, elem)
+		}
+		for _, elem := range l.Elements[idx+1:] {
 			elements = append(elements, elem)
 		}
 		l.Elements = elements
