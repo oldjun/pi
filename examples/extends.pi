@@ -1,32 +1,35 @@
 
-class Base {
-    func __init__(name) {
+class Person {
+    func __init__(name, age) {
         this.name = name
+        this.age = age
     }
 
     func name() {
         return this.name
     }
-}
-
-class Foo : Base {
-    func __init__(name, age) {
-        super.__init__(name)
-        this.age = age
-    }
 
     func age() {
         return this.age
     }
+}
 
-    func show() {
-        printf("name = %s, age= %d", this.name, this.age)
+class Male : Person {
+    func __init__(name, age) {
+        super.__init__(name, age)
+        this.gender = "male"
     }
 }
 
-a = Foo("a", 18)
-b = Foo("b", 20)
+class Female : Person {
+    func __init__(name, age) {
+        super.__init__(name, age)
+        this.gender = "female"
+    }
+}
 
-a.show()
-b.show()
+a = Male("jack", 18)
+b = Female("lucy", 20)
 
+printf("name=%s, age=%d, gender=%s", a.name(), a.age(), a.gender)
+printf("name=%s, age=%d, gender=%s", b.name(), b.age(), b.gender)

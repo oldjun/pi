@@ -1,22 +1,30 @@
-
-class A {
-    function __init__() {
-        this.name = "a"
-    }
-
-    function name() {
-        return this.name
-    }
-
-    function age() {
-        return this.age
-    }
-
-    function show() {
-        printf("name = %s, age = %d", this.name, this.age)
+class Foo {
+    func __init__() {
     }
 }
 
-a = A()
-a.age = 18
-a.show()
+f = Foo()
+
+print(type(Foo))
+print(type(f))
+
+class Person {
+    func __init__(name, age) {
+        this.name = name
+        this.age = age
+    }
+
+    func name() {
+        return this.name
+    }
+
+    func age() {
+        return this.age
+    }
+}
+
+a = Person("jack", 18)
+b = Person("lucy", 20)
+
+printf("name=%s, age=%d", a.name(), a.age())
+printf("name=%s, age=%d", b.name(), b.age())
