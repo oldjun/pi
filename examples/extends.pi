@@ -12,6 +12,10 @@ class Person {
     func age() {
         return this.age
     }
+
+    func gender() {
+        return this.gender
+    }
 }
 
 class Male : Person {

@@ -39,14 +39,28 @@ func (f *File) Method(method string, args []Object) Object {
 }
 
 func (f *File) read(args []Object) Object {
-	if len(args) != 0 {
+	if len(args) > 1 {
 		return newError("wrong number of arguments. file.read() got=%d", len(args))
 	}
 	if f.Reader == nil {
 		return nil
 	}
-	text, _ := io.ReadAll(f.Reader)
-	return &String{Value: string(text)}
+	if len(args) == 0 {
+		txt, _ := io.ReadAll(f.Reader)
+		return &String{Value: string(txt)}
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		size := arg.Value
+		buf := make([]byte, size)
+		_, err := io.ReadFull(f.Reader, buf)
+		if err != nil {
+			return nil
+		}
+		return &String{Value: string(buf)}
+	default:
+		return newError("wrong type of arguments. file.read() got=%s", arg.Type())
+	}
 }
 
 func (f *File) readline(args []Object) Object {
