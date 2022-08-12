@@ -6,7 +6,7 @@ import (
 	"pilang/repl"
 )
 
-func main() {
+func main2() {
 	fmt.Printf("Welcome to Pi Programming Language!\n")
 	repl.Start(os.Stdin, os.Stdout)
 }

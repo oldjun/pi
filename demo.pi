@@ -1,5 +1,5 @@
 
 list = ["a", "b", "c"]
-list.extend(["d", "f"])
+list.insert(1, "e")
 print(list)
 
