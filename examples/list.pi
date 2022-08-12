@@ -2,6 +2,30 @@
 list = ["a", "b", "c"]
 print(list)
 
+
+list = ["a", "b"] + [1, 2]
+print(list)
+
+list = ["a", "b"] * 2
+print(list)
+
+list = ["a", "b"]
+b = "a" in list
+
+list = ["a", "b", "c"]
+a = list[0]
+b = list[1]
+c = list[-1]
+
+list = ["a", "b", "c"]
+l1 = list[0:1]
+l2 = list[0:2]
+l3 = list[0:]
+print(l1)
+print(l2)
+print(l3)
+
+
 print(list.len())
 
 list.push("d")

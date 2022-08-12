@@ -1,5 +1,5 @@
 
-list = ["a", "b", "c", null, 1]
-if "b" in list {
-    print("yes")
-}
+list = ["a", "b", "c"]
+list.extend(["d", "f"])
+print(list)
+

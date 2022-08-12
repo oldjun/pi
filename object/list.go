@@ -44,6 +44,8 @@ func (l *List) Method(method string, args []Object) Object {
 		return l.pop(args)
 	case "shift":
 		return l.shift(args)
+	case "extend":
+		return l.extend(args)
 	case "join":
 		return l.join(args)
 	}
@@ -87,6 +89,21 @@ func (l *List) shift(args []Object) Object {
 	elem := l.Elements[0]
 	l.Elements = l.Elements[1:]
 	return elem
+}
+
+func (l *List) extend(args []Object) Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. list.extend() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *List:
+		for _, elem := range arg.Elements {
+			l.Elements = append(l.Elements, elem)
+		}
+		return nil
+	default:
+		return newError("wrong type of arguments. list.extend() got=%s", arg.Type())
+	}
 }
 
 func (l *List) join(args []Object) Object {
