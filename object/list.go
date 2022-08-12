@@ -38,8 +38,8 @@ func (l *List) Method(method string, args []Object) Object {
 	switch method {
 	case "len":
 		return l.len(args)
-	case "push":
-		return l.push(args)
+	case "append":
+		return l.append(args)
 	case "pop":
 		return l.pop(args)
 	case "shift":
@@ -65,7 +65,7 @@ func (l *List) len(args []Object) Object {
 	return &Integer{Value: int64(len(l.Elements))}
 }
 
-func (l *List) push(args []Object) Object {
+func (l *List) append(args []Object) Object {
 	if len(args) != 1 {
 		return newError("wrong number of arguments. list.push() got=%d", len(args))
 	}

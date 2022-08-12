@@ -1,5 +1,5 @@
 
 list = ["a", "b", "c"]
-n = list.index("d")
-print(n)
+list.append("d")
+print(list)
 
