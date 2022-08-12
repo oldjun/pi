@@ -68,6 +68,8 @@ func (h *Hash) Method(method string, args []Object) Object {
 		return h.has(args)
 	case "get":
 		return h.get(args)
+	case "copy":
+		return h.copy(args)
 	case "delete":
 		return h.delete(args)
 	case "clear":
@@ -149,6 +151,17 @@ func (h *Hash) get(args []Object) Object {
 		return args[1]
 	}
 	return nil
+}
+
+func (h *Hash) copy(args []Object) Object {
+	if len(args) != 0 {
+		return newError("wrong number of arguments. hash.copy() got=%d", len(args))
+	}
+	pairs := make(map[HashKey]HashPair)
+	for k, v := range h.Pairs {
+		pairs[k] = v
+	}
+	return &Hash{Pairs: pairs}
 }
 
 func (h *Hash) delete(args []Object) Object {
