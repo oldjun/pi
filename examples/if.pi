@@ -1,0 +1,49 @@
+a = null
+if a {
+    print("a is not null")
+} else {
+    print("a is null")
+}
+
+b = null
+if b == null {
+    print("b is null")
+} else {
+    print("b is not null")
+}
+
+a = ""
+if a {
+    print("a is not null")
+} else {
+    print("a is null")
+}
+
+if a != "" {
+    print("a is not empty")
+} else {
+    print("a is empty")
+}
+
+a = "hello"
+if a == "hello" {
+    printf("a equals to 'hello'")
+}
+if a > "he" {
+    print("yes")
+} else {
+    print("no")
+}
+
+a = 0
+if a {
+    print("a is not null")
+} else {
+    print("a is null")
+}
+
+if a == 0 {
+    print("a is 0")
+} else {
+    print("a is not 0")
+}

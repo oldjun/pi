@@ -1,0 +1,41 @@
+
+sum = 0
+for i = 0; i <= 100; i++ {
+    sum += i
+}
+print(sum)
+
+str = "hello"
+for s in str {
+    print(s)
+}
+
+for i, s in str {
+    printf("str[%d] = %s", i, s)
+}
+
+
+list = [1, 2, 3]
+for v in list {
+    print(v)
+}
+
+for k, v in list {
+    printf("list[%d] = %d", k, v)
+}
+
+hash = {"a": 1, "b": 2, "c": 3}
+for k in hash.keys() {
+    print(k)
+}
+
+for v in hash.values() {
+    print(v)
+}
+
+hash = {"a": 1, "b": 2, "c": 3}
+for k, v in hash {
+    printf("hash[%v] = %v", k, v)
+}
+
+

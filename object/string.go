@@ -7,7 +7,8 @@ import (
 )
 
 type String struct {
-	Value string
+	Value  string
+	offset int
 }
 
 func (s *String) Type() Type     { return STRING }
@@ -16,6 +17,17 @@ func (s *String) HashKey() HashKey {
 	h := fnv.New64a()
 	h.Write([]byte(s.Value))
 	return HashKey{Type: s.Type(), Value: h.Sum64()}
+}
+func (s *String) Next() (Object, Object) {
+	offset := s.offset
+	if len(s.Value) > offset {
+		s.offset = offset + 1
+		return &Integer{Value: int64(offset)}, &String{Value: string(s.Value[offset])}
+	}
+	return nil, nil
+}
+func (s *String) Reset() {
+	s.offset = 0
 }
 
 func (s *String) Method(method string, args []Object) Object {
