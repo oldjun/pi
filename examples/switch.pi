@@ -1,35 +1,46 @@
+a = null
+switch a {
+    case null:
+        print("case null")
+    default:
+        print("default")
+}
 
-a = 6
+a = true
+switch a {
+    case true:
+        print("case true")
+    case false:
+        print("case false")
+    default:
+        print("default")
+}
+
+a = 1
 switch a {
     case 1, 2, 3:
-        print(a)
+        printf("case %d", a)
     case 4:
         print("case 4")
+    case 4.5:
+        print("case 4.5")
     case 5:
         print("case 5")
     default:
         print("default")
 }
 
-str = "a"
-switch str {
-    case "a":
-        print("a")
-    case "b":
-        print("b")
+
+s = "hello"
+switch s {
+    case "hello":
+        print("case hello")
+    case "world":
+        print("case world")
     default:
         print("default")
 }
 
-bool = false
-switch bool {
-    case true:
-        print(true)
-    case false:
-        print(false)
-    default:
-        print("unknown")
-}
 
 a = 2
 switch a {

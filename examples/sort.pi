@@ -1,0 +1,46 @@
+
+func insert_sort(array) {
+    length = len(array)
+    for i = 0; i < length; i++ {
+        while i >= 1 && array[i-1] > array[i] {
+            tmp = array[i-1]
+            array[i-1] = array[i]
+            array[i] = tmp
+            i -= 1
+        }
+    }
+}
+
+list = [6, 2, 4, 0, 1, 7, 1, 1, 6, 0]
+print("排序前: ", list)
+insert_sort(list)
+print("排序后: ", list)
+
+
+
+// 按升序排序
+func sort_asc(a, b) {
+    return a < b ? true : false
+}
+
+// 按降序排序
+func sort_desc(a, b) {
+    return a > b ? true : false
+}
+
+func insert_sort_by_func(array, sort_func) {
+    length = len(array)
+    for i = 0; i < length; i++ {
+        while i >= 1 && sort_func(array[i], array[i-1]) {
+            tmp = array[i-1]
+            array[i-1] = array[i]
+            array[i] = tmp
+            i -= 1
+        }
+    }
+}
+
+list = [6, 2, 4, 0, 1, 7, 1, 1, 6, 0]
+print("排序前: ", list)
+insert_sort_by_func(list, sort_desc)
+print("排序后: ", list)

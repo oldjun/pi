@@ -1,11 +1,23 @@
-sum = fn(x, y) {
+func sum(x, y) {
     return x + y
 }
+total = sum(1, 2)
+print(total)
 
-num = sum(1, 2)
-print(num)
+sum = func(x, y) {
+    return x + y
+}
+total = sum(1, 2)
+print(total)
 
-fab = fn(n) {
+total = func(x, y) {
+    return x + y
+}(1, 2)
+
+print(total)
+
+
+fab = func(n) {
     if (n < 3) {
         return 1
     } else {
@@ -15,3 +27,4 @@ fab = fn(n) {
 
 a = fab(6)
 print(a)
+

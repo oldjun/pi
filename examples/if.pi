@@ -47,3 +47,10 @@ if a == 0 {
 } else {
     print("a is not 0")
 }
+
+a = true
+if a {
+    print("true")
+} else {
+    print("false")
+}
