@@ -19,7 +19,7 @@ func evalIndexExpression(node *ast.IndexExpression, env *object.Environment) obj
 		return end
 	}
 	switch {
-	case left.Type() == object.ARRAY && index.Type() == object.INTEGER:
+	case left.Type() == object.LIST && index.Type() == object.INTEGER:
 		return evalArrayIndexExpression(left, index, end, node.IsRange)
 	case left.Type() == object.HASH && index.Type() == object.STRING:
 		return evalHashIndexExpression(left, index)

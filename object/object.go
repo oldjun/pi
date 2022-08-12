@@ -7,16 +7,16 @@ type Type string
 type BuiltinFunction func(args []Object) Object
 
 const (
-	INTEGER  = "INTEGER"
-	BOOLEAN  = "BOOLEAN"
-	FLOAT    = "FLOAT"
 	NULL     = "NULL"
+	BOOLEAN  = "BOOLEAN"
+	INTEGER  = "INTEGER"
+	FLOAT    = "FLOAT"
+	STRING   = "STRING"
 	RETURN   = "RETURN"
 	ERROR    = "ERROR"
 	FUNCTION = "FUNCTION"
-	STRING   = "STRING"
 	BUILTIN  = "BUILTIN"
-	ARRAY    = "ARRAY"
+	LIST     = "LIST"
 	HASH     = "HASH"
 	FILE     = "FILE"
 	BREAK    = "BREAK"

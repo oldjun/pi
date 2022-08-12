@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"fmt"
 	"pilang/object"
 	"strings"
 )
@@ -19,6 +20,8 @@ func evalInfix(operator string, left, right object.Object) object.Object {
 		return evalStringInfixExpression(operator, left, right)
 	case left.Type() == object.STRING && right.Type() == object.INTEGER:
 		return evalStringIntegerInfixExpression(operator, left, right)
+	case left.Type() == object.STRING && right.Type() == object.LIST:
+		return evalStringFormatInfixExpression(operator, left, right)
 	case operator == "in":
 		return evalInExpression(left, right)
 	case operator == "==":
@@ -226,6 +229,34 @@ func evalStringIntegerInfixExpression(operator string, left, right object.Object
 	switch operator {
 	case "*":
 		val := strings.Repeat(leftVal, int(rightVal))
+		return &object.String{Value: val}
+	default:
+		return newError("unknown operator: %s %s %s",
+			left.Type(), operator, right.Type())
+	}
+}
+
+func evalStringFormatInfixExpression(operator string, left, right object.Object) object.Object {
+	format := left.(*object.String).Value
+	elements := right.(*object.List).Elements
+	switch operator {
+	case "%":
+		var a []interface{}
+		for _, elem := range elements {
+			switch elem.(type) {
+			case *object.String:
+				a = append(a, elem.(*object.String).Value)
+			case *object.Integer:
+				a = append(a, elem.(*object.Integer).Value)
+			case *object.Float:
+				a = append(a, elem.(*object.Float).Value)
+			case *object.Boolean:
+				a = append(a, elem.(*object.Boolean).Value)
+			default:
+				a = append(a, elem.String())
+			}
+		}
+		val := fmt.Sprintf(format, a...)
 		return &object.String{Value: val}
 	default:
 		return newError("unknown operator: %s %s %s",

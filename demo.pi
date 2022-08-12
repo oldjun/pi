@@ -1,5 +1,3 @@
 
-str = "hello world!"
+str = "name=%s, age=%d" % ["jack", 18]
 print(str)
-
-print(str[0:1])

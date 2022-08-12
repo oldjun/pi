@@ -10,7 +10,7 @@ type List struct {
 	offset   int
 }
 
-func (l *List) Type() Type { return ARRAY }
+func (l *List) Type() Type { return LIST }
 func (l *List) String() string {
 	var out bytes.Buffer
 	var elements []string
