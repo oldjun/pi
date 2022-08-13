@@ -1,8 +1,8 @@
+max = func(x, y) {
+    return x > y ? x : y
+}
 
-hash = {"a": 1, "b": 2, "c": 3}
-print(hash)
-
-print(hash.keys())
-
-hash.clear()
-print(hash)
+a = 1
+b = 2
+c = max(a, b)
+print(c)

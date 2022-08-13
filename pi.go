@@ -11,8 +11,11 @@ import (
 )
 
 func main() {
-	file := "demo.pi"
-	//file := os.Args[1]
+	if len(os.Args) != 2 {
+		fmt.Print("missing pi file")
+		return
+	}
+	file := os.Args[1]
 	input, err := os.ReadFile(file)
 	if err != nil {
 		panic(err)
