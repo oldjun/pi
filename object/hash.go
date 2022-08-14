@@ -150,7 +150,7 @@ func (h *Hash) get(args []Object) Object {
 	}
 	switch len(args) {
 	case 1:
-		return nil
+		return &Null{}
 	case 2:
 		return args[1]
 	}
