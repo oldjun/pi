@@ -1,8 +1,0 @@
-max = func(x, y) {
-    return x > y ? x : y
-}
-
-a = 1
-b = 2
-c = max(a, b)
-print(c)
