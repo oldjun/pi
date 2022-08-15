@@ -1,0 +1,29 @@
+foo = func(x, y) {
+    print(x, y)
+}
+foo(1, 2)
+foo(x=1, y=2)
+foo(y=2, x=1)
+
+fun = func(x, y, z, *args, **kwargs) {
+    print(x, y, z)
+    print(args)
+    print(args[0])
+    print(kwargs)
+    print(kwargs["name"])
+}
+fun(1, 2, 4, 6, name="jack", age=18, t=100)
+
+class Person {
+    func __init__(name) {
+        this.name = name
+    }
+
+    func name() {
+        return this.name
+    }
+}
+
+a = Person(name="jack")
+print(a.name())
+

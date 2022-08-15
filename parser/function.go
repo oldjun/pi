@@ -6,39 +6,55 @@ import (
 )
 
 func (p *Parser) parseFunction() ast.Expression {
-	lit := &ast.Function{Token: p.currToken}
+	fn := &ast.Function{Token: p.currToken}
 	if p.peekTokenIs(token.IDENTIFIER) {
 		p.nextToken()
-		lit.Name = p.currToken.Literal
+		fn.Name = p.currToken.Literal
 	}
 	if !p.expectPeek(token.LPAREN) {
 		return nil
 	}
-	lit.Parameters = p.parseFunctionParameters()
+	if !p.parseFunctionParameters(fn) {
+		return nil
+	}
 	if !p.expectPeek(token.LBRACE) {
 		return nil
 	}
-	lit.Body = p.parseBlock()
-	return lit
+	fn.Body = p.parseBlock()
+	return fn
 }
 
-func (p *Parser) parseFunctionParameters() []*ast.Identifier {
-	var identifiers []*ast.Identifier
-	if p.peekTokenIs(token.RPAREN) {
+func (p *Parser) parseFunctionParameters(fn *ast.Function) bool {
+	for !p.peekTokenIs(token.RPAREN) {
 		p.nextToken()
-		return identifiers
-	}
-	p.nextToken()
-	ident := &ast.Identifier{Token: p.currToken, Value: p.currToken.Literal}
-	identifiers = append(identifiers, ident)
-	for p.peekTokenIs(token.COMMA) {
-		p.nextToken()
-		p.nextToken()
-		ident := &ast.Identifier{Token: p.currToken, Value: p.currToken.Literal}
-		identifiers = append(identifiers, ident)
+		if p.currTokenIs(token.COMMA) {
+			continue
+		}
+		if p.currTokenIs(token.ASTERISK) {
+			p.nextToken()
+			fn.Args = &ast.Identifier{Token: p.currToken, Value: p.currToken.Literal}
+			if !p.peekTokenIs(token.COMMA) {
+				break
+			}
+			p.nextToken()
+			if !p.peekTokenIs(token.ASTERISK_ASTERISK) {
+				break
+			}
+			p.nextToken()
+			p.nextToken()
+			fn.KwArgs = &ast.Identifier{Token: p.currToken, Value: p.currToken.Literal}
+			break
+		} else if p.currTokenIs(token.ASTERISK_ASTERISK) {
+			p.nextToken()
+			fn.KwArgs = &ast.Identifier{Token: p.currToken, Value: p.currToken.Literal}
+			break
+		} else {
+			ident := &ast.Identifier{Token: p.currToken, Value: p.currToken.Literal}
+			fn.Parameters = append(fn.Parameters, ident)
+		}
 	}
 	if !p.expectPeek(token.RPAREN) {
-		return nil
+		return false
 	}
-	return identifiers
+	return true
 }

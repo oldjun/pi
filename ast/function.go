@@ -10,6 +10,8 @@ type Function struct {
 	Token      token.Token // The 'func' token
 	Name       string      // name of the function
 	Parameters []*Identifier
+	Args       *Identifier
+	KwArgs     *Identifier
 	Body       *Block
 }
 

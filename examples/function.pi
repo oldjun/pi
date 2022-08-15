@@ -28,3 +28,11 @@ fab = func(n) {
 a = fab(6)
 print(a)
 
+foo = func(**kwargs) {
+    print("foo")
+    print(kwargs)
+    print(kwargs["name"])
+}
+
+foo(name="kitty")
+

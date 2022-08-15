@@ -6,22 +6,102 @@ import (
 )
 
 func evalCall(node *ast.Call, env *object.Environment) object.Object {
-	function := Eval(node.Function, env)
-	if isError(function) {
-		return function
+	obj := Eval(node.Function, env)
+	if isError(obj) {
+		return obj
 	}
 	// if decorated function is a class method, env should carry `this`
 	if this, ok := env.Get("this"); ok {
-		switch function.(type) {
+		switch obj.(type) {
 		case *object.Function:
-			function.(*object.Function).Env.Set("this", this)
+			obj.(*object.Function).Env.Set("this", this)
 		}
 	}
-	args := evalExpressions(node.Arguments, env)
+	var args []object.Object
+	switch obj.(type) {
+	case *object.Function:
+		fn := obj.(*object.Function)
+		args = evalArgumentExpressions(node, fn, env)
+	case *object.Class:
+		fn, ok := obj.(*object.Class).Scope.Get("__init__")
+		if !ok {
+			return newError("class has not __init__ function")
+		}
+		args = evalArgumentExpressions(node, fn.(*object.Function), env)
+	default:
+		args = evalExpressions(node.Arguments, env)
+	}
 	if len(args) == 1 && isError(args[0]) {
 		return args[0]
 	}
-	return applyFunction(function, args)
+	return applyFunction(obj, args)
+}
+
+func evalArgumentExpressions(node *ast.Call, fn *object.Function, env *object.Environment) []object.Object {
+	argsList := &object.List{}
+	argsHash := &object.Hash{}
+	argsHash.Pairs = make(map[object.HashKey]object.HashPair)
+	for _, exp := range node.Arguments {
+		switch e := exp.(type) {
+		case *ast.Assign:
+			val := Eval(e.Value, env)
+			if isError(val) {
+				return []object.Object{val}
+			}
+			var keyHash object.HashKey
+			key := &object.String{Value: e.Name.Value}
+			keyHash = key.HashKey()
+			pair := object.HashPair{Key: key, Value: val}
+			argsHash.Pairs[keyHash] = pair
+		default:
+			evaluated := Eval(e, env)
+			if isError(evaluated) {
+				return []object.Object{evaluated}
+			}
+			argsList.Elements = append(argsList.Elements, evaluated)
+		}
+	}
+
+	var result []object.Object
+	params := make(map[string]bool)
+	for _, exp := range fn.Parameters {
+		params[exp.Value] = true
+		if len(argsList.Elements) > 0 {
+			result = append(result, argsList.Elements[0])
+			argsList.Elements = argsList.Elements[1:]
+		} else {
+			keyParam := &object.String{Value: exp.Value}
+			keyParamHash := keyParam.HashKey()
+			if valParam, ok := argsHash.Pairs[keyParamHash]; ok {
+				result = append(result, valParam.Value)
+				delete(argsHash.Pairs, keyParamHash)
+			} else {
+				return []object.Object{newError("function parameters error: %s", fn.Name)}
+			}
+		}
+	}
+
+	for _, pair := range argsHash.Pairs {
+		if _, ok := params[pair.Key.String()]; ok {
+			return []object.Object{newError("func got multiple values for argument '%s'", pair.Key.String())}
+		}
+	}
+
+	if fn.Args != nil {
+		result = append(result, argsList)
+	} else {
+		if len(argsList.Elements) > 0 {
+			return []object.Object{newError("function args parameters error: %s", fn.Name)}
+		}
+	}
+	if fn.KwArgs != nil {
+		result = append(result, argsHash)
+	} else {
+		if len(argsHash.Pairs) > 0 {
+			return []object.Object{newError("function kwargs parameters error: %s", fn.Name)}
+		}
+	}
+	return result
 }
 
 func applyFunction(node object.Object, args []object.Object) object.Object {
@@ -54,8 +134,16 @@ func applyFunction(node object.Object, args []object.Object) object.Object {
 
 func extendFunctionEnv(fn *object.Function, args []object.Object) *object.Environment {
 	env := object.NewEnclosedEnvironment(fn.Env)
-	for paramIdx, param := range fn.Parameters {
-		env.Set(param.Value, args[paramIdx])
+	for idx, param := range fn.Parameters {
+		env.Set(param.Value, args[idx])
+	}
+	if fn.Args != nil && fn.KwArgs != nil {
+		env.Set(fn.Args.Value, args[len(args)-2])
+		env.Set(fn.KwArgs.Value, args[len(args)-1])
+	} else if fn.Args != nil && fn.KwArgs == nil {
+		env.Set(fn.Args.Value, args[len(args)-1])
+	} else if fn.Args == nil && fn.KwArgs != nil {
+		env.Set(fn.KwArgs.Value, args[len(args)-1])
 	}
 	return env
 }
