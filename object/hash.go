@@ -27,8 +27,7 @@ func (h *Hash) String() string {
 	var out bytes.Buffer
 	var pairs []string
 	for _, pair := range h.Pairs {
-		pairs = append(pairs, fmt.Sprintf("%s: %s",
-			pair.Key.String(), pair.Value.String()))
+		pairs = append(pairs, fmt.Sprintf("%s: %s", pair.Key.String(), pair.Value.String()))
 	}
 	out.WriteString("{")
 	out.WriteString(strings.Join(pairs, ", "))
