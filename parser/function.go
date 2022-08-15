@@ -25,6 +25,7 @@ func (p *Parser) parseFunction() ast.Expression {
 }
 
 func (p *Parser) parseFunctionParameters(fn *ast.Function) bool {
+	fn.Defaults = make(map[string]ast.Expression)
 	for !p.peekTokenIs(token.RPAREN) {
 		p.nextToken()
 		if p.currTokenIs(token.COMMA) {
@@ -51,6 +52,15 @@ func (p *Parser) parseFunctionParameters(fn *ast.Function) bool {
 		} else {
 			ident := &ast.Identifier{Token: p.currToken, Value: p.currToken.Literal}
 			fn.Parameters = append(fn.Parameters, ident)
+			p.nextToken()
+			if p.currTokenIs(token.ASSIGN) {
+				p.nextToken()
+				fn.Defaults[ident.String()] = p.parseExpression(LOWEST)
+			} else {
+				if len(fn.Defaults) > 0 {
+					return false
+				}
+			}
 		}
 	}
 	if !p.expectPeek(token.RPAREN) {

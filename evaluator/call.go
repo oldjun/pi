@@ -73,7 +73,15 @@ func evalArgumentExpressions(node *ast.Call, fn *object.Function, env *object.En
 				result = append(result, valParam.Value)
 				delete(argsHash.Pairs, keyParamHash)
 			} else {
-				return []object.Object{newError("function %s missing parameter %s", fn.Name, exp.Value)}
+				if _e, _ok := fn.Defaults[exp.Value]; _ok {
+					evaluated := Eval(_e, env)
+					if isError(evaluated) {
+						return []object.Object{evaluated}
+					}
+					result = append(result, evaluated)
+				} else {
+					return []object.Object{newError("function %s missing parameter %s", fn.Name, exp.Value)}
+				}
 			}
 		}
 	}

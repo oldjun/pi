@@ -10,6 +10,7 @@ import (
 type Function struct {
 	Name       string
 	Parameters []*ast.Identifier
+	Defaults   map[string]ast.Expression
 	Args       *ast.Identifier
 	KwArgs     *ast.Identifier
 	Body       *ast.Block
@@ -21,7 +22,11 @@ func (f *Function) String() string {
 	var out bytes.Buffer
 	var params []string
 	for _, p := range f.Parameters {
-		params = append(params, p.String())
+		if e, ok := f.Defaults[p.String()]; ok {
+			params = append(params, p.String()+"="+e.String())
+		} else {
+			params = append(params, p.String())
+		}
 	}
 	if f.Args != nil {
 		params = append(params, token.ASTERISK+f.Args.String())
