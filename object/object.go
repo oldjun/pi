@@ -19,6 +19,7 @@ const (
 	LIST     = "LIST"
 	HASH     = "HASH"
 	FILE     = "FILE"
+	MATH     = "MATH"
 	BREAK    = "BREAK"
 	CONTINUE = "CONTINUE"
 	CLASS    = "CLASS"

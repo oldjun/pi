@@ -37,11 +37,15 @@ func evalBangOperatorExpression(right object.Object) object.Object {
 }
 
 func evalMinusPrefixOperatorExpression(right object.Object) object.Object {
-	if right.Type() != object.INTEGER {
-		return newError("unknown operator: -%s", right.Type())
+	if right.Type() == object.INTEGER {
+		value := right.(*object.Integer).Value
+		return &object.Integer{Value: -value}
 	}
-	value := right.(*object.Integer).Value
-	return &object.Integer{Value: -value}
+	if right.Type() == object.FLOAT {
+		value := right.(*object.Float).Value
+		return &object.Float{Value: -value}
+	}
+	return newError("unknown operator: -%s", right.Type())
 }
 
 func evalTildePrefixOperatorExpression(right object.Object) object.Object {

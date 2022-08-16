@@ -2,9 +2,7 @@ package evaluator
 
 import (
 	"bufio"
-	"crypto/rand"
 	"fmt"
-	"math/big"
 	"os"
 	"pilang/object"
 	"strings"
@@ -21,14 +19,14 @@ var builtins = map[string]*object.Builtin{
 	"exit": {
 		Fn: exitFunction,
 	},
+	"math": {
+		Fn: mathFunction,
+	},
 	"sleep": {
 		Fn: sleepFunction,
 	},
 	"time": {
 		Fn: timeFunction,
-	},
-	"random": {
-		Fn: randomFunction,
 	},
 	"print": {
 		Fn: printFunction,
@@ -67,6 +65,24 @@ func typeFunction(args []object.Object) object.Object {
 	return &object.String{Value: string(args[0].Type())}
 }
 
+func exitFunction(args []object.Object) object.Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. exit() got=%d", len(args))
+	}
+	if args[0].Type() != object.INTEGER {
+		return newError("argument to `exit` must be INTEGER, got=%s", args[0].Type())
+	}
+	os.Exit(int(args[0].(*object.Integer).Value))
+	return NULL
+}
+
+func mathFunction(args []object.Object) object.Object {
+	if len(args) != 0 {
+		return newError("wrong number of arguments. math() got=%d", len(args))
+	}
+	return &object.Math{}
+}
+
 func sleepFunction(args []object.Object) object.Object {
 	if len(args) != 1 {
 		return newError("wrong number of arguments. got=%d", len(args))
@@ -85,18 +101,6 @@ func timeFunction(args []object.Object) object.Object {
 		return newError("wrong number of arguments. got=%d", len(args))
 	}
 	return &object.Integer{Value: time.Now().UnixNano() / 1000000}
-}
-
-func randomFunction(args []object.Object) object.Object {
-	if len(args) != 1 {
-		return newError("wrong number of arguments. got=%d, want=2", len(args))
-	}
-	max := args[0].(*object.Integer).Value
-	r, ok := rand.Int(rand.Reader, big.NewInt(max))
-	if ok != nil {
-		return newError("error occurred while calling 'random(%v)': %s", max, ok.Error())
-	}
-	return &object.Integer{Value: r.Int64()}
 }
 
 func printFunction(args []object.Object) object.Object {
@@ -187,15 +191,4 @@ func openFunction(args []object.Object) object.Object {
 		writer = bufio.NewWriter(file)
 	}
 	return &object.File{Filename: filename, Reader: reader, Writer: writer, Handle: file}
-}
-
-func exitFunction(args []object.Object) object.Object {
-	if len(args) != 1 {
-		return newError("wrong number of arguments. exit() got=%d", len(args))
-	}
-	if args[0].Type() != object.INTEGER {
-		return newError("argument to `exit` must be INTEGER, got=%s", args[0].Type())
-	}
-	os.Exit(int(args[0].(*object.Integer).Value))
-	return NULL
 }

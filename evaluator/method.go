@@ -31,6 +31,9 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 	case *object.File:
 		file := obj.(*object.File)
 		return file.Method(method.String(), args)
+	case *object.Math:
+		math := obj.(*object.Math)
+		return math.Method(method.String(), args)
 	case *object.Instance:
 		obj := obj.(*object.Instance)
 		if fn, ok := obj.Class.Scope.Get(method.String()); ok {
