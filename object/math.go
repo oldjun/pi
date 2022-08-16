@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"time"
 )
 
 type Math struct{}
@@ -104,6 +105,7 @@ func (m *Math) random(args []Object) Object {
 	l := args[0]
 	r := args[1]
 	if (l.Type() == INTEGER) && (r.Type() == INTEGER) {
+		rand.Seed(time.Now().UnixNano())
 		min := l.(*Integer).Value
 		max := r.(*Integer).Value
 		r := rand.Int63n(max - min)
