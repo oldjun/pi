@@ -14,6 +14,24 @@ func (m *Math) String() string {
 	return fmt.Sprintf("<math>")
 }
 
+func (m *Math) Property(property string) Object {
+	switch property {
+	case "pi":
+		return m.pi()
+	case "e":
+		return m.e()
+	}
+	return nil
+}
+
+func (m *Math) pi() Object {
+	return &Float{Value: 3.141592653589793}
+}
+
+func (m *Math) e() Object {
+	return &Float{Value: 2.718281828459045}
+}
+
 func (m *Math) Method(method string, args []Object) Object {
 	switch method {
 	case "abs":

@@ -31,6 +31,13 @@ func evalPropertyExpression(node *ast.PropertyExpression, env *object.Environmen
 				break
 			}
 		}
+	case *object.Math:
+		obj := left.(*object.Math)
+		prop := node.Property.(*ast.Identifier).String()
+		val := obj.Property(prop)
+		if val != nil {
+			return val
+		}
 	}
 	return newError("invalid property '%s' on type %s", node.Property.String(), left.String())
 }

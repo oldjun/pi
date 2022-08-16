@@ -100,6 +100,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalSuper(node, env)
 	case *ast.From:
 		return evalFrom(node, env)
+	case *ast.Import:
+		return evalImport(node, env)
 	case *ast.Switch:
 		return evalSwitch(node, env)
 	case *ast.Break:
