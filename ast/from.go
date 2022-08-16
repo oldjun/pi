@@ -20,8 +20,12 @@ func (f *From) String() string {
 	out.WriteString(" from " + f.File)
 	out.WriteString("import ")
 	var pairs []string
-	for key, _ := range f.Identifiers {
-		pairs = append(pairs, key)
+	for key, val := range f.Identifiers {
+		if key != val.Value {
+			pairs = append(pairs, val.Value+" as "+key)
+		} else {
+			pairs = append(pairs, key)
+		}
 	}
 	out.WriteString(strings.Join(pairs, ", "))
 	return out.String()
