@@ -28,6 +28,12 @@ func (m *Math) Method(method string, args []Object) Object {
 		return m.ceil(args)
 	case "random":
 		return m.random(args)
+	//case "round":
+	//	return m.round(args)
+	case "sqrt":
+		return m.sqrt(args)
+	case "cbrt":
+		return m.cbrt(args)
 	case "sin":
 		return m.sin(args)
 	case "sinh":
@@ -168,6 +174,36 @@ func (m *Math) random(args []Object) Object {
 		return &Integer{Value: r + min}
 	}
 	return newError("wrong type of arguments. math.random()")
+}
+
+func (m *Math) sqrt(args []Object) Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. math.sqrt() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		num := math.Sqrt(float64(arg.Value))
+		return &Float{Value: num}
+	case *Float:
+		num := math.Sqrt(arg.Value)
+		return &Float{Value: num}
+	}
+	return newError("wrong type of arguments. math.sqrt()")
+}
+
+func (m *Math) cbrt(args []Object) Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. math.cbrt() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		num := math.Cbrt(float64(arg.Value))
+		return &Float{Value: num}
+	case *Float:
+		num := math.Cbrt(arg.Value)
+		return &Float{Value: num}
+	}
+	return newError("wrong type of arguments. math.cbrt()")
 }
 
 func (m *Math) sin(args []Object) Object {
