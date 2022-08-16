@@ -40,18 +40,30 @@ func (m *Math) Method(method string, args []Object) Object {
 		return m.min(args)
 	case "max":
 		return m.max(args)
+	case "mod":
+		return m.mod(args)
+	case "exp":
+		return m.exp(args)
+	case "trunc":
+		return m.trunc(args)
+	case "round":
+		return m.round(args)
+	case "sum":
+		return m.sum(args)
 	case "floor":
 		return m.floor(args)
 	case "ceil":
 		return m.ceil(args)
 	case "random":
 		return m.random(args)
-	//case "round":
-	//	return m.round(args)
 	case "sqrt":
 		return m.sqrt(args)
 	case "cbrt":
 		return m.cbrt(args)
+	case "pow":
+		return m.pow(args)
+	case "log":
+		return m.log(args)
 	case "sin":
 		return m.sin(args)
 	case "sinh":
@@ -76,8 +88,12 @@ func (m *Math) Method(method string, args []Object) Object {
 		return m.atan(args)
 	case "atanh":
 		return m.atanh(args)
+	case "erf":
+		return m.erf(args)
+	case "erfc":
+		return m.erfc(args)
 	}
-	return nil
+	return newError("math module function not exists: %s", method)
 }
 
 func (m *Math) abs(args []Object) Object {
@@ -101,17 +117,13 @@ func (m *Math) min(args []Object) Object {
 	l := args[0]
 	r := args[1]
 	if (l.Type() == INTEGER) && (r.Type() == INTEGER) {
-		num := math.Min(float64(l.(*Integer).Value), float64(r.(*Integer).Value))
-		return &Float{Value: num}
+		return &Float{Value: math.Min(float64(l.(*Integer).Value), float64(r.(*Integer).Value))}
 	} else if (l.Type() == FLOAT) && (r.Type() == FLOAT) {
-		num := math.Min(l.(*Float).Value, r.(*Float).Value)
-		return &Float{Value: num}
+		return &Float{Value: math.Min(l.(*Float).Value, r.(*Float).Value)}
 	} else if (l.Type() == INTEGER) && (r.Type() == FLOAT) {
-		num := math.Min(float64(l.(*Integer).Value), r.(*Float).Value)
-		return &Float{Value: num}
+		return &Float{Value: math.Min(float64(l.(*Integer).Value), r.(*Float).Value)}
 	} else if (l.Type() == FLOAT) && (r.Type() == INTEGER) {
-		num := math.Min(l.(*Float).Value, float64(r.(*Integer).Value))
-		return &Float{Value: num}
+		return &Float{Value: math.Min(l.(*Float).Value, float64(r.(*Integer).Value))}
 	}
 	if l.Type() != INTEGER || l.Type() != FLOAT {
 		return newError("wrong type of arguments. math.min() got=%s", l.Type())
@@ -129,17 +141,13 @@ func (m *Math) max(args []Object) Object {
 	l := args[0]
 	r := args[1]
 	if (l.Type() == INTEGER) && (r.Type() == INTEGER) {
-		num := math.Max(float64(l.(*Integer).Value), float64(r.(*Integer).Value))
-		return &Float{Value: num}
+		return &Float{Value: math.Max(float64(l.(*Integer).Value), float64(r.(*Integer).Value))}
 	} else if (l.Type() == FLOAT) && (r.Type() == FLOAT) {
-		num := math.Max(l.(*Float).Value, r.(*Float).Value)
-		return &Float{Value: num}
+		return &Float{Value: math.Max(l.(*Float).Value, r.(*Float).Value)}
 	} else if (l.Type() == INTEGER) && (r.Type() == FLOAT) {
-		num := math.Max(float64(l.(*Integer).Value), r.(*Float).Value)
-		return &Float{Value: num}
+		return &Float{Value: math.Max(float64(l.(*Integer).Value), r.(*Float).Value)}
 	} else if (l.Type() == FLOAT) && (r.Type() == INTEGER) {
-		num := math.Max(l.(*Float).Value, float64(r.(*Integer).Value))
-		return &Float{Value: num}
+		return &Float{Value: math.Max(l.(*Float).Value, float64(r.(*Integer).Value))}
 	}
 	if l.Type() != INTEGER || l.Type() != FLOAT {
 		return newError("wrong type of arguments. math.max() got=%s", l.Type())
@@ -150,30 +158,109 @@ func (m *Math) max(args []Object) Object {
 	return newError("wrong type of arguments. math.max()")
 }
 
-func (m *Math) floor(args []Object) Object {
+func (m *Math) mod(args []Object) Object {
 	if len(args) != 2 {
+		return newError("wrong number of arguments. math.mod() got=%d", len(args))
+	}
+	l := args[0]
+	r := args[1]
+	if (l.Type() == INTEGER) && (r.Type() == INTEGER) {
+		return &Float{Value: math.Mod(float64(l.(*Integer).Value), float64(r.(*Integer).Value))}
+	} else if (l.Type() == FLOAT) && (r.Type() == FLOAT) {
+		return &Float{Value: math.Mod(l.(*Float).Value, r.(*Float).Value)}
+	} else if (l.Type() == INTEGER) && (r.Type() == FLOAT) {
+		return &Float{Value: math.Mod(float64(l.(*Integer).Value), r.(*Float).Value)}
+	} else if (l.Type() == FLOAT) && (r.Type() == INTEGER) {
+		return &Float{Value: math.Mod(l.(*Float).Value, float64(r.(*Integer).Value))}
+	}
+	if l.Type() != INTEGER || l.Type() != FLOAT {
+		return newError("wrong type of arguments. math.mod() got=%s", l.Type())
+	}
+	if r.Type() != INTEGER || r.Type() != FLOAT {
+		return newError("wrong type of arguments. math.mod() got=%s", r.Type())
+	}
+	return newError("wrong type of arguments. math.mod()")
+}
+
+func (m *Math) exp(args []Object) Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. math.exp() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		return &Float{Value: math.Exp(float64(arg.Value))}
+	case *Float:
+		return &Float{Value: math.Exp(arg.Value)}
+	}
+	return newError("wrong type of arguments. math.exp()")
+}
+
+func (m *Math) trunc(args []Object) Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. math.trunc() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		return &Float{Value: math.Trunc(float64(arg.Value))}
+	case *Float:
+		return &Float{Value: math.Trunc(arg.Value)}
+	}
+	return newError("wrong type of arguments. math.trunc()")
+}
+
+func (m *Math) round(args []Object) Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. math.round() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		return &Float{Value: math.Round(float64(arg.Value))}
+	case *Float:
+		return &Float{Value: math.Round(arg.Value)}
+	}
+	return newError("wrong type of arguments. math.round()")
+}
+
+func (m *Math) sum(args []Object) Object {
+	if len(args) < 1 {
+		return newError("wrong number of arguments. math.sum() got=%d", len(args))
+	}
+	sum := 0.0
+	for _, arg := range args {
+		switch val := arg.(type) {
+		case *Integer:
+			sum += float64(val.Value)
+		case *Float:
+			sum += val.Value
+		default:
+			return newError("wrong type of arguments. math.sum()")
+		}
+	}
+	return &Float{Value: sum}
+}
+
+func (m *Math) floor(args []Object) Object {
+	if len(args) != 1 {
 		return newError("wrong number of arguments. math.floor() got=%d", len(args))
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
 		return &Integer{Value: arg.Value}
 	case *Float:
-		num := math.Floor(arg.Value)
-		return &Integer{Value: int64(num)}
+		return &Integer{Value: int64(math.Floor(arg.Value))}
 	}
 	return newError("wrong type of arguments. math.floor()")
 }
 
 func (m *Math) ceil(args []Object) Object {
-	if len(args) != 2 {
+	if len(args) != 1 {
 		return newError("wrong number of arguments. math.ceil() got=%d", len(args))
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
 		return &Integer{Value: arg.Value}
 	case *Float:
-		num := math.Ceil(arg.Value)
-		return &Integer{Value: int64(num)}
+		return &Integer{Value: int64(math.Ceil(arg.Value))}
 	}
 	return newError("wrong type of arguments. math.ceil()")
 }
@@ -200,11 +287,9 @@ func (m *Math) sqrt(args []Object) Object {
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
-		num := math.Sqrt(float64(arg.Value))
-		return &Float{Value: num}
+		return &Float{Value: math.Sqrt(float64(arg.Value))}
 	case *Float:
-		num := math.Sqrt(arg.Value)
-		return &Float{Value: num}
+		return &Float{Value: math.Sqrt(arg.Value)}
 	}
 	return newError("wrong type of arguments. math.sqrt()")
 }
@@ -224,17 +309,52 @@ func (m *Math) cbrt(args []Object) Object {
 	return newError("wrong type of arguments. math.cbrt()")
 }
 
+func (m *Math) pow(args []Object) Object {
+	if len(args) != 2 {
+		return newError("wrong number of arguments. math.pow() got=%d", len(args))
+	}
+	l := args[0]
+	r := args[1]
+	if (l.Type() == INTEGER) && (r.Type() == INTEGER) {
+		return &Float{Value: math.Pow(float64(l.(*Integer).Value), float64(r.(*Integer).Value))}
+	} else if (l.Type() == FLOAT) && (r.Type() == FLOAT) {
+		return &Float{Value: math.Pow(l.(*Float).Value, r.(*Float).Value)}
+	} else if (l.Type() == INTEGER) && (r.Type() == FLOAT) {
+		return &Float{Value: math.Pow(float64(l.(*Integer).Value), r.(*Float).Value)}
+	} else if (l.Type() == FLOAT) && (r.Type() == INTEGER) {
+		return &Float{Value: math.Pow(l.(*Float).Value, float64(r.(*Integer).Value))}
+	}
+	if l.Type() != INTEGER || l.Type() != FLOAT {
+		return newError("wrong type of arguments. math.pow() got=%s", l.Type())
+	}
+	if r.Type() != INTEGER || r.Type() != FLOAT {
+		return newError("wrong type of arguments. math.pow() got=%s", r.Type())
+	}
+	return newError("wrong type of arguments. math.pow()")
+}
+
+func (m *Math) log(args []Object) Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. math.log() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		return &Float{Value: math.Log(float64(arg.Value))}
+	case *Float:
+		return &Float{Value: math.Log(arg.Value)}
+	}
+	return newError("wrong type of arguments. math.log()")
+}
+
 func (m *Math) sin(args []Object) Object {
 	if len(args) != 1 {
 		return newError("wrong number of arguments. math.sin() got=%d", len(args))
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
-		val := math.Sin(float64(arg.Value))
-		return &Float{Value: val}
+		return &Float{Value: math.Sin(float64(arg.Value))}
 	case *Float:
-		val := math.Sin(arg.Value)
-		return &Float{Value: val}
+		return &Float{Value: math.Sin(arg.Value)}
 	}
 	return newError("wrong type of arguments. math.sin()")
 }
@@ -245,11 +365,9 @@ func (m *Math) sinh(args []Object) Object {
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
-		val := math.Sinh(float64(arg.Value))
-		return &Float{Value: val}
+		return &Float{Value: math.Sinh(float64(arg.Value))}
 	case *Float:
-		val := math.Sinh(arg.Value)
-		return &Float{Value: val}
+		return &Float{Value: math.Sinh(arg.Value)}
 	}
 	return newError("wrong type of arguments. math.sinh()")
 }
@@ -260,11 +378,9 @@ func (m *Math) asin(args []Object) Object {
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
-		val := math.Asin(float64(arg.Value))
-		return &Float{Value: val}
+		return &Float{Value: math.Asin(float64(arg.Value))}
 	case *Float:
-		val := math.Asin(arg.Value)
-		return &Float{Value: val}
+		return &Float{Value: math.Asin(arg.Value)}
 	}
 	return newError("wrong type of arguments. math.asin()")
 }
@@ -275,11 +391,9 @@ func (m *Math) asinh(args []Object) Object {
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
-		val := math.Asinh(float64(arg.Value))
-		return &Float{Value: val}
+		return &Float{Value: math.Asinh(float64(arg.Value))}
 	case *Float:
-		val := math.Asinh(arg.Value)
-		return &Float{Value: val}
+		return &Float{Value: math.Asinh(arg.Value)}
 	}
 	return newError("wrong type of arguments. math.asinh()")
 }
@@ -290,11 +404,9 @@ func (m *Math) cos(args []Object) Object {
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
-		val := math.Cos(float64(arg.Value))
-		return &Float{Value: val}
+		return &Float{Value: math.Cos(float64(arg.Value))}
 	case *Float:
-		val := math.Cos(arg.Value)
-		return &Float{Value: val}
+		return &Float{Value: math.Cos(arg.Value)}
 	}
 	return newError("wrong type of arguments. math.cos()")
 }
@@ -305,11 +417,9 @@ func (m *Math) cosh(args []Object) Object {
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
-		val := math.Cosh(float64(arg.Value))
-		return &Float{Value: val}
+		return &Float{Value: math.Cosh(float64(arg.Value))}
 	case *Float:
-		val := math.Cosh(arg.Value)
-		return &Float{Value: val}
+		return &Float{Value: math.Cosh(arg.Value)}
 	}
 	return newError("wrong type of arguments. math.cosh()")
 }
@@ -320,11 +430,9 @@ func (m *Math) acos(args []Object) Object {
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
-		val := math.Acos(float64(arg.Value))
-		return &Float{Value: val}
+		return &Float{Value: math.Acos(float64(arg.Value))}
 	case *Float:
-		val := math.Acos(arg.Value)
-		return &Float{Value: val}
+		return &Float{Value: math.Acos(arg.Value)}
 	}
 	return newError("wrong type of arguments. math.acos()")
 }
@@ -335,11 +443,9 @@ func (m *Math) acosh(args []Object) Object {
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
-		val := math.Acosh(float64(arg.Value))
-		return &Float{Value: val}
+		return &Float{Value: math.Acosh(float64(arg.Value))}
 	case *Float:
-		val := math.Acosh(arg.Value)
-		return &Float{Value: val}
+		return &Float{Value: math.Acosh(arg.Value)}
 	}
 	return newError("wrong type of arguments. math.acosh()")
 }
@@ -350,11 +456,9 @@ func (m *Math) tan(args []Object) Object {
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
-		val := math.Tan(float64(arg.Value))
-		return &Float{Value: val}
+		return &Float{Value: math.Tan(float64(arg.Value))}
 	case *Float:
-		val := math.Tan(arg.Value)
-		return &Float{Value: val}
+		return &Float{Value: math.Tan(arg.Value)}
 	}
 	return newError("wrong type of arguments. math.tan()")
 }
@@ -365,11 +469,9 @@ func (m *Math) tanh(args []Object) Object {
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
-		val := math.Tanh(float64(arg.Value))
-		return &Float{Value: val}
+		return &Float{Value: math.Tanh(float64(arg.Value))}
 	case *Float:
-		val := math.Tanh(arg.Value)
-		return &Float{Value: val}
+		return &Float{Value: math.Tanh(arg.Value)}
 	}
 	return newError("wrong type of arguments. math.tanh()")
 }
@@ -380,11 +482,9 @@ func (m *Math) atan(args []Object) Object {
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
-		val := math.Atan(float64(arg.Value))
-		return &Float{Value: val}
+		return &Float{Value: math.Atan(float64(arg.Value))}
 	case *Float:
-		val := math.Atan(arg.Value)
-		return &Float{Value: val}
+		return &Float{Value: math.Atan(arg.Value)}
 	}
 	return newError("wrong type of arguments. math.atan()")
 }
@@ -395,11 +495,35 @@ func (m *Math) atanh(args []Object) Object {
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
-		val := math.Atanh(float64(arg.Value))
-		return &Float{Value: val}
+		return &Float{Value: math.Atanh(float64(arg.Value))}
 	case *Float:
-		val := math.Atanh(arg.Value)
-		return &Float{Value: val}
+		return &Float{Value: math.Atanh(arg.Value)}
 	}
 	return newError("wrong type of arguments. math.atanh()")
+}
+
+func (m *Math) erf(args []Object) Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. math.erf() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		return &Float{Value: math.Erf(float64(arg.Value))}
+	case *Float:
+		return &Float{Value: math.Erf(arg.Value)}
+	}
+	return newError("wrong type of arguments. math.erf()")
+}
+
+func (m *Math) erfc(args []Object) Object {
+	if len(args) != 1 {
+		return newError("wrong number of arguments. math.erfc() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		return &Float{Value: math.Erfc(float64(arg.Value))}
+	case *Float:
+		return &Float{Value: math.Erfc(arg.Value)}
+	}
+	return newError("wrong type of arguments. math.erfc()")
 }
