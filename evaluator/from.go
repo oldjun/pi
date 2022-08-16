@@ -18,7 +18,7 @@ func init() {
 	imported = make(map[string]*object.Environment)
 }
 
-func evalImport(node *ast.Import, env *object.Environment) object.Object {
+func evalFrom(node *ast.From, env *object.Environment) object.Object {
 	addSearchPath(env.GetDirectory())
 	filename := findFile(node.File)
 	if filename == "" {
@@ -79,7 +79,7 @@ func evaluateFile(file string, env *object.Environment) *object.Environment {
 	return scope
 }
 
-func importFile(node *ast.Import, env *object.Environment, scope *object.Environment) object.Object {
+func importFile(node *ast.From, env *object.Environment, scope *object.Environment) object.Object {
 	if node.Everything {
 		for alias, value := range scope.All() {
 			env.Set(alias, value)

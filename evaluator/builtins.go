@@ -19,9 +19,6 @@ var builtins = map[string]*object.Builtin{
 	"exit": {
 		Fn: exitFunction,
 	},
-	"math": {
-		Fn: mathFunction,
-	},
 	"sleep": {
 		Fn: sleepFunction,
 	},
@@ -74,13 +71,6 @@ func exitFunction(args []object.Object) object.Object {
 	}
 	os.Exit(int(args[0].(*object.Integer).Value))
 	return NULL
-}
-
-func mathFunction(args []object.Object) object.Object {
-	if len(args) != 0 {
-		return newError("wrong number of arguments. math() got=%d", len(args))
-	}
-	return &object.Math{}
 }
 
 func sleepFunction(args []object.Object) object.Object {

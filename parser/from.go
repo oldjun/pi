@@ -7,7 +7,7 @@ import (
 )
 
 func (p *Parser) parseImport() ast.Expression {
-	expr := &ast.Import{Token: p.currToken}
+	expr := &ast.From{Token: p.currToken}
 	expr.Identifiers = make(map[string]*ast.Identifier)
 
 	p.nextToken()
