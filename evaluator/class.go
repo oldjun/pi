@@ -6,12 +6,6 @@ import (
 )
 
 func evalClass(node *ast.Class, env *object.Environment) object.Object {
-	//class := &object.Class{
-	//	Name:  node.Name,
-	//	Super: nil,
-	//	Env:   env,
-	//	Scope: object.NewEnvironment(env.GetDirectory()),
-	//}
 	class := &object.Class{
 		Name:  node.Name,
 		Super: nil,
