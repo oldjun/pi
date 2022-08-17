@@ -85,7 +85,7 @@ func evalForIn(fie *ast.ForIn, env *object.Environment) object.Object {
 		}()
 		return loopIterable(i.Next, env, fie)
 	default:
-		return newError("'%s' is a %s, not an iterable, cannot be used in for loop", i.String(), i.Type())
+		return object.NewError("'%s' is a %s, not an iterable, cannot be used in for loop", i.String(), i.Type())
 	}
 }
 

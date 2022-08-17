@@ -39,7 +39,7 @@ func (f *File) Method(method string, args []Object) Object {
 
 func (f *File) read(args []Object) Object {
 	if len(args) > 1 {
-		return newError("wrong number of arguments. file.read() got=%d", len(args))
+		return NewError("wrong number of arguments. file.read() got=%d", len(args))
 	}
 	if f.Reader == nil {
 		return nil
@@ -58,13 +58,13 @@ func (f *File) read(args []Object) Object {
 		}
 		return &String{Value: string(buf)}
 	default:
-		return newError("wrong type of arguments. file.read() got=%s", arg.Type())
+		return NewError("wrong type of arguments. file.read() got=%s", arg.Type())
 	}
 }
 
 func (f *File) readline(args []Object) Object {
 	if len(args) != 0 {
-		return newError("wrong number of arguments. file.readline got=%d", len(args))
+		return NewError("wrong number of arguments. file.readline got=%d", len(args))
 	}
 	if f.Reader == nil {
 		return nil
@@ -75,7 +75,7 @@ func (f *File) readline(args []Object) Object {
 
 func (f *File) lines(args []Object) Object {
 	if len(args) != 0 {
-		return newError("wrong number of arguments. file.lines() got=%d", len(args))
+		return NewError("wrong number of arguments. file.lines() got=%d", len(args))
 	}
 	if f.Reader == nil {
 		return nil
@@ -98,7 +98,7 @@ func (f *File) lines(args []Object) Object {
 
 func (f *File) seek(args []Object) Object {
 	if len(args) != 2 {
-		return newError("wrong number of arguments. file.seek() got=%d", len(args))
+		return NewError("wrong number of arguments. file.seek() got=%d", len(args))
 	}
 	offset := args[0].(*Integer).Value
 	whence := args[1].(*Integer).Value
@@ -108,7 +108,7 @@ func (f *File) seek(args []Object) Object {
 
 func (f *File) write(args []Object) Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. file.write() got=%d", len(args))
+		return NewError("wrong number of arguments. file.write() got=%d", len(args))
 	}
 	if f.Writer == nil {
 		return nil
@@ -124,7 +124,7 @@ func (f *File) write(args []Object) Object {
 
 func (f *File) close(args []Object) Object {
 	if len(args) != 0 {
-		return newError("wrong number of arguments. file.close() got=%d", len(args))
+		return NewError("wrong number of arguments. file.close() got=%d", len(args))
 	}
 	_ = f.Handle.Close()
 	return &Null{}

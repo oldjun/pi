@@ -41,10 +41,6 @@ type Iterable interface {
 	Reset()
 }
 
-func newError(format string, a ...interface{}) *Error {
-	return &Error{Message: fmt.Sprintf(format, a...)}
-}
-
 func NewError(format string, a ...interface{}) *Error {
 	return &Error{Message: fmt.Sprintf(format, a...)}
 }

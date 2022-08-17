@@ -12,5 +12,5 @@ func evalSuper(node *ast.Super, env *object.Environment) object.Object {
 			return super
 		}
 	}
-	return newError("runtime error: cannot call 'super' outside of scope")
+	return object.NewError("runtime error: cannot call 'super' outside of scope")
 }

@@ -21,7 +21,7 @@ func evalPrefix(node *ast.Prefix, env *object.Environment) object.Object {
 	case "~":
 		return evalTildePrefixOperatorExpression(right)
 	default:
-		return newError("unknown operator: %s%s", operator, right.Type())
+		return object.NewError("unknown operator: %s%s", operator, right.Type())
 	}
 }
 
@@ -45,12 +45,12 @@ func evalMinusPrefixOperatorExpression(right object.Object) object.Object {
 		value := right.(*object.Float).Value
 		return &object.Float{Value: -value}
 	}
-	return newError("unknown operator: -%s", right.Type())
+	return object.NewError("unknown operator: -%s", right.Type())
 }
 
 func evalTildePrefixOperatorExpression(right object.Object) object.Object {
 	if right.Type() != object.INTEGER {
-		return newError("unknown operator: ~%s", right.Type())
+		return object.NewError("unknown operator: ~%s", right.Type())
 	}
 	value := right.(*object.Integer).Value
 	return &object.Integer{Value: ^value}

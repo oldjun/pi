@@ -41,7 +41,7 @@ var builtins = map[string]*object.Builtin{
 
 func lenFunction(args []object.Object) object.Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. got=%d", len(args))
+		return object.NewError("wrong number of arguments. got=%d", len(args))
 	}
 	switch arg := args[0].(type) {
 	case *object.String:
@@ -51,23 +51,23 @@ func lenFunction(args []object.Object) object.Object {
 	case *object.Hash:
 		return &object.Integer{Value: int64(len(arg.Pairs))}
 	default:
-		return newError("argument to `len` not supported, got %s", args[0].Type())
+		return object.NewError("argument to `len` not supported, got %s", args[0].Type())
 	}
 }
 
 func typeFunction(args []object.Object) object.Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. got=%d", len(args))
+		return object.NewError("wrong number of arguments. got=%d", len(args))
 	}
 	return &object.String{Value: string(args[0].Type())}
 }
 
 func exitFunction(args []object.Object) object.Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. exit() got=%d", len(args))
+		return object.NewError("wrong number of arguments. exit() got=%d", len(args))
 	}
 	if args[0].Type() != object.INTEGER {
-		return newError("argument to `exit` must be INTEGER, got=%s", args[0].Type())
+		return object.NewError("argument to `exit` must be INTEGER, got=%s", args[0].Type())
 	}
 	os.Exit(int(args[0].(*object.Integer).Value))
 	return NULL
@@ -75,20 +75,20 @@ func exitFunction(args []object.Object) object.Object {
 
 func sleepFunction(args []object.Object) object.Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. got=%d", len(args))
+		return object.NewError("wrong number of arguments. got=%d", len(args))
 	}
 	switch arg := args[0].(type) {
 	case *object.Integer:
 		time.Sleep(time.Duration(arg.Value) * time.Millisecond)
 		return NULL
 	default:
-		return newError("argument to `sleep` not supported, got %s", args[0].Type())
+		return object.NewError("argument to `sleep` not supported, got %s", args[0].Type())
 	}
 }
 
 func timeFunction(args []object.Object) object.Object {
 	if len(args) != 0 {
-		return newError("wrong number of arguments. got=%d", len(args))
+		return object.NewError("wrong number of arguments. got=%d", len(args))
 	}
 	return &object.Integer{Value: time.Now().UnixNano() / 1000000}
 }
@@ -148,7 +148,7 @@ func sprintfFunction(args []object.Object) object.Object {
 
 func openFunction(args []object.Object) object.Object {
 	if len(args) > 2 {
-		return newError("wrong number of arguments. got=%d", len(args))
+		return object.NewError("wrong number of arguments. got=%d", len(args))
 	}
 	filename := args[0].(*object.String).Value
 	mode := os.O_RDONLY
@@ -166,7 +166,7 @@ func openFunction(args []object.Object) object.Object {
 		case "a":
 			mode = os.O_APPEND
 		default:
-			return newError("file mode error. got=%s", fileMode)
+			return object.NewError("file mode error. got=%s", fileMode)
 		}
 	}
 	file, err := os.OpenFile(filename, os.O_CREATE|mode, 0644)

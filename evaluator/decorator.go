@@ -30,11 +30,11 @@ func doEvalDecorator(node *ast.Decorator, env *object.Environment) (string, obje
 	case *object.Function:
 		decorator = evaluated
 	default:
-		return "", nil, newError("decorator '%s' is not a function", evaluated.String())
+		return "", nil, object.NewError("decorator '%s' is not a function", evaluated.String())
 	}
 	name, ok := getDecoratedName(node.Decorated)
 	if !ok {
-		return "", nil, newError("error while processing decorator: unable to find the name of the function you're trying to decorate")
+		return "", nil, object.NewError("error while processing decorator: unable to find the name of the function you're trying to decorate")
 	}
 	switch decorated := node.Decorated.(type) {
 	case *ast.Function:
@@ -49,7 +49,7 @@ func doEvalDecorator(node *ast.Decorator, env *object.Environment) (string, obje
 		}
 		return fnName, applyFunction(decorator, append([]object.Object{fn})), nil
 	default:
-		return "", nil, newError("a decorator must decorate a named function or another decorator")
+		return "", nil, object.NewError("a decorator must decorate a named function or another decorator")
 	}
 }
 

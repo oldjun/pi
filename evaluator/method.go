@@ -56,5 +56,5 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 			super = super.Super
 		}
 	}
-	return newError("%s does not have method '%s()'", obj.String(), method.String())
+	return object.NewError("%s does not have method '%s()'", obj.String(), method.String())
 }

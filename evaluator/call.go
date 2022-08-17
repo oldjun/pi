@@ -22,7 +22,7 @@ func evalCall(node *ast.Call, env *object.Environment) object.Object {
 	case *object.Class:
 		fn, ok := obj.(*object.Class).Scope.Get("__init__")
 		if !ok {
-			return newError("class has not __init__ function")
+			return object.NewError("class has not __init__ function")
 		}
 		args = evalArgumentExpressions(node, fn.(*object.Function), env)
 	default:
@@ -80,7 +80,7 @@ func evalArgumentExpressions(node *ast.Call, fn *object.Function, env *object.En
 					}
 					result = append(result, evaluated)
 				} else {
-					return []object.Object{newError("function %s missing parameter %s", fn.Name, exp.Value)}
+					return []object.Object{object.NewError("function %s missing parameter %s", fn.Name, exp.Value)}
 				}
 			}
 		}
@@ -88,7 +88,7 @@ func evalArgumentExpressions(node *ast.Call, fn *object.Function, env *object.En
 
 	for _, pair := range argsHash.Pairs {
 		if _, ok := params[pair.Key.String()]; ok {
-			return []object.Object{newError("func got multiple values for argument '%s'", pair.Key.String())}
+			return []object.Object{object.NewError("func got multiple values for argument '%s'", pair.Key.String())}
 		}
 	}
 
@@ -96,14 +96,14 @@ func evalArgumentExpressions(node *ast.Call, fn *object.Function, env *object.En
 		result = append(result, argsList)
 	} else {
 		if len(argsList.Elements) > 0 {
-			return []object.Object{newError("function args parameters error: %s", fn.Name)}
+			return []object.Object{object.NewError("function args parameters error: %s", fn.Name)}
 		}
 	}
 	if fn.KwArgs != nil {
 		result = append(result, argsHash)
 	} else {
 		if len(argsHash.Pairs) > 0 {
-			return []object.Object{newError("function kwargs parameters error: %s", fn.Name)}
+			return []object.Object{object.NewError("function kwargs parameters error: %s", fn.Name)}
 		}
 	}
 	return result
@@ -126,14 +126,14 @@ func applyFunction(node object.Object, args []object.Object) object.Object {
 		}
 		fn, ok := node.Scope.Get("__init__")
 		if !ok {
-			return newError("%s missing __init__ function", node.String())
+			return object.NewError("%s missing __init__ function", node.String())
 		}
 		fn.(*object.Function).Env.Set("this", obj)
 		applyFunction(fn, args)
 		fn.(*object.Function).Env.Del("this")
 		return obj
 	default:
-		return newError("not a function: %s", node.Type())
+		return object.NewError("not a function: %s", node.Type())
 	}
 }
 

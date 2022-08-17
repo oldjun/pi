@@ -38,7 +38,7 @@ func evalPropertyExpression(node *ast.PropertyExpression, env *object.Environmen
 			return val()
 		}
 	}
-	return newError("invalid property '%s' on type %s", node.Property.String(), left.String())
+	return object.NewError("invalid property '%s' on type %s", node.Property.String(), left.String())
 }
 
 func evalPropertyAssignment(name *ast.PropertyExpression, val object.Object, env *object.Environment) object.Object {
@@ -72,7 +72,7 @@ func evalPropertyAssignment(name *ast.PropertyExpression, val object.Object, env
 		}
 		obj.Env.Set(prop, val)
 	default:
-		return newError("property assign error: %s", left.Type())
+		return object.NewError("property assign error: %s", left.Type())
 	}
 	return NULL
 }

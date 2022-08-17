@@ -41,7 +41,7 @@ func (b *Builtin) Method(method string, args []Object) Object {
 
 func (b *Builtin) len(args []Object) Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. len() got=%d", len(args))
+		return NewError("wrong number of arguments. len() got=%d", len(args))
 	}
 	switch arg := args[0].(type) {
 	case *String:
@@ -49,12 +49,12 @@ func (b *Builtin) len(args []Object) Object {
 	case *List:
 		return &Integer{Value: int64(len(arg.Elements))}
 	}
-	return newError("argument to `len` not supported, got %s", args[0].Type())
+	return NewError("argument to `len` not supported, got %s", args[0].Type())
 }
 
 func (b *Builtin) typeof(args []Object) Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. type() got=%d", len(args))
+		return NewError("wrong number of arguments. type() got=%d", len(args))
 	}
 	return &String{Value: string(args[0].Type())}
 }
@@ -68,12 +68,12 @@ func (b *Builtin) sleep(args []Object) Object {
 		time.Sleep(time.Duration(arg.Value) * time.Millisecond)
 		return &Null{}
 	}
-	return newError("argument to `sleep` not supported, got %s", args[0].Type())
+	return NewError("argument to `sleep` not supported, got %s", args[0].Type())
 }
 
 func (b *Builtin) time(args []Object) Object {
 	if len(args) != 0 {
-		return newError("wrong number of arguments. time() got=%d", len(args))
+		return NewError("wrong number of arguments. time() got=%d", len(args))
 	}
 	return &Integer{Value: time.Now().UnixNano() / 1000000}
 }
@@ -100,7 +100,7 @@ func (b *Builtin) printf(args []Object) Object {
 		case *Float:
 			a = append(a, arg.(*Float).Value)
 		default:
-			return newError("error occurred while calling 'printf', parameter type not support: %s", arg.String())
+			return NewError("error occurred while calling 'printf', parameter type not support: %s", arg.String())
 		}
 	}
 	str := fmt.Sprintf(format, a...)
@@ -120,7 +120,7 @@ func (b *Builtin) sprintf(args []Object) Object {
 		case *Float:
 			a = append(a, arg.(*Float).Value)
 		default:
-			return newError("error occurred while calling 'sprintf', parameter type not support: %s", arg.String())
+			return NewError("error occurred while calling 'sprintf', parameter type not support: %s", arg.String())
 		}
 	}
 	str := fmt.Sprintf(format, a...)
@@ -129,7 +129,7 @@ func (b *Builtin) sprintf(args []Object) Object {
 
 func (b *Builtin) open(args []Object) Object {
 	if len(args) > 2 {
-		return newError("wrong number of arguments. open() got=%d", len(args))
+		return NewError("wrong number of arguments. open() got=%d", len(args))
 	}
 	filename := args[0].(*String).Value
 	mode := os.O_RDONLY
@@ -147,7 +147,7 @@ func (b *Builtin) open(args []Object) Object {
 		case "a":
 			mode = os.O_APPEND
 		default:
-			return newError("file mode error. got=%s", fileMode)
+			return NewError("file mode error. got=%s", fileMode)
 		}
 	}
 	file, err := os.OpenFile(filename, os.O_CREATE|mode, 0644)
@@ -166,7 +166,7 @@ func (b *Builtin) open(args []Object) Object {
 
 func (b *Builtin) exit(args []Object) Object {
 	if len(args) != 2 {
-		return newError("wrong number of arguments. exit() got=%d", len(args))
+		return NewError("wrong number of arguments. exit() got=%d", len(args))
 	}
 	switch arg := args[0].(type) {
 	case *Integer:

@@ -14,7 +14,7 @@ func evalHash(node *ast.Hash, env *object.Environment) object.Object {
 		}
 		hashKey, ok := key.(object.Hashable)
 		if !ok {
-			return newError("unusable as hash key: %s", key.Type())
+			return object.NewError("unusable as hash key: %s", key.Type())
 		}
 		value := Eval(valueNode, env)
 		if isError(value) {

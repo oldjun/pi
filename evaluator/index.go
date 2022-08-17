@@ -26,7 +26,7 @@ func evalIndexExpression(node *ast.IndexExpression, env *object.Environment) obj
 	case left.Type() == object.STRING && index.Type() == object.INTEGER:
 		return evalStringIndexExpression(left, index, end, node.IsRange)
 	default:
-		return newError("index operator not supported: %s on %s", index.String(), left.Type())
+		return object.NewError("index operator not supported: %s on %s", index.String(), left.Type())
 	}
 }
 
@@ -52,7 +52,7 @@ func evalListIndexExpression(left, index, end object.Object, isRange bool) objec
 			if ok {
 				endIdx := endObj.Value
 				if endIdx < -(max+1) || endIdx > max {
-					return newError(`index out of range: got "%s"`, end.String())
+					return object.NewError(`index out of range: got "%s"`, end.String())
 				}
 				if endIdx < 0 {
 					endIdx += max + 1
@@ -62,7 +62,7 @@ func evalListIndexExpression(left, index, end object.Object, isRange bool) objec
 				}
 				return &object.List{Elements: leftObject.Elements[idx:endIdx]}
 			} else {
-				return newError(`index range can only be numerical: got "%s" (type %s)`, end.String(), end.Type())
+				return object.NewError(`index range can only be numerical: got "%s" (type %s)`, end.String(), end.Type())
 			}
 		}
 	} else {
@@ -77,7 +77,7 @@ func evalHashIndexExpression(hash, index object.Object) object.Object {
 	hashObject := hash.(*object.Hash)
 	key, ok := index.(object.Hashable)
 	if !ok {
-		return newError("unusable as hash key: %s", index.Type())
+		return object.NewError("unusable as hash key: %s", index.Type())
 	}
 	pair, ok := hashObject.Pairs[key.HashKey()]
 	if !ok {
@@ -108,7 +108,7 @@ func evalStringIndexExpression(left, index, end object.Object, isRange bool) obj
 			if ok {
 				endIdx := endObj.Value
 				if endIdx < -(max+1) || endIdx > max {
-					return newError(`index out of range: got "%s"`, end.String())
+					return object.NewError(`index out of range: got "%s"`, end.String())
 				}
 				if endIdx < 0 {
 					endIdx += max + 1
@@ -118,7 +118,7 @@ func evalStringIndexExpression(left, index, end object.Object, isRange bool) obj
 				}
 				return &object.String{Value: leftObject.Value[idx:endIdx]}
 			} else {
-				return newError(`index range can only be numerical: got "%s" (type %s)`, end.String(), end.Type())
+				return object.NewError(`index range can only be numerical: got "%s" (type %s)`, end.String(), end.Type())
 			}
 		}
 	} else {
@@ -143,7 +143,7 @@ func evalIndexAssignment(name *ast.IndexExpression, val object.Object, env *obje
 		array := left.(*object.List)
 		idx := int(index.(*object.Integer).Value)
 		if idx < 0 {
-			return newError("index out of range: %d", idx)
+			return object.NewError("index out of range: %d", idx)
 		}
 		if idx >= len(array.Elements) {
 			// expand the array by appending null objects
@@ -156,12 +156,12 @@ func evalIndexAssignment(name *ast.IndexExpression, val object.Object, env *obje
 		hash := left.(*object.Hash)
 		key, ok := index.(object.Hashable)
 		if !ok {
-			return newError("unusable as hash key: %s", index.Type())
+			return object.NewError("unusable as hash key: %s", index.Type())
 		}
 		hashKey := key.HashKey()
 		hash.Pairs[hashKey] = object.HashPair{Key: index, Value: val}
 	default:
-		return newError("index assignment error: %s", left.Type())
+		return object.NewError("index assignment error: %s", left.Type())
 	}
 	return NULL
 }

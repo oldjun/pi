@@ -11,7 +11,7 @@ func evalImport(node *ast.Import, env *object.Environment) object.Object {
 		if mod, ok := module.Map[val.Value]; ok {
 			env.Set(key, mod)
 		} else {
-			return newError("module not exists: %s", val.Value)
+			return object.NewError("module not exists: %s", val.Value)
 		}
 	}
 	return NULL

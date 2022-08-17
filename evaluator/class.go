@@ -23,11 +23,11 @@ func evalClass(node *ast.Class, env *object.Environment) object.Object {
 	if node.Super != nil {
 		identifier, ok := env.Get(node.Super.Value)
 		if !ok {
-			newError("runtime error: identifier '%s' not found", node.Super.Value)
+			object.NewError("runtime error: identifier '%s' not found", node.Super.Value)
 		}
 		super, ok := identifier.(*object.Class)
 		if !ok {
-			newError("runtime error: referenced identifier in extends not a class, got=%T", super)
+			object.NewError("runtime error: referenced identifier in extends not a class, got=%T", super)
 		}
 		class.Super = super
 	}

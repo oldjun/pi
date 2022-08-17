@@ -64,35 +64,35 @@ func (s *String) Method(method string, args []Object) Object {
 
 func (s *String) len(args []Object) Object {
 	if len(args) != 0 {
-		return newError("wrong number of arguments. string.len() got=%d", len(args))
+		return NewError("wrong number of arguments. string.len() got=%d", len(args))
 	}
 	return &Integer{Value: int64(len(s.Value))}
 }
 
 func (s *String) upper(args []Object) Object {
 	if len(args) != 0 {
-		return newError("wrong number of arguments. string.upper() got=%d", len(args))
+		return NewError("wrong number of arguments. string.upper() got=%d", len(args))
 	}
 	return &String{Value: strings.ToUpper(s.Value)}
 }
 
 func (s *String) lower(args []Object) Object {
 	if len(args) != 0 {
-		return newError("wrong number of arguments. string.lower got=%d", len(args))
+		return NewError("wrong number of arguments. string.lower got=%d", len(args))
 	}
 	return &String{Value: strings.ToLower(s.Value)}
 }
 
 func (s *String) title(args []Object) Object {
 	if len(args) != 0 {
-		return newError("wrong number of arguments. string.title() got=%d", len(args))
+		return NewError("wrong number of arguments. string.title() got=%d", len(args))
 	}
 	return &String{Value: strings.Title(s.Value)}
 }
 
 func (s *String) split(args []Object) Object {
 	if len(args) > 1 {
-		return newError("wrong number of arguments. string.split() got=%d", len(args))
+		return NewError("wrong number of arguments. string.split() got=%d", len(args))
 	}
 	sep := " "
 	if len(args) == 1 {
@@ -109,7 +109,7 @@ func (s *String) split(args []Object) Object {
 
 func (s *String) replace(args []Object) Object {
 	if len(args) != 2 {
-		return newError("wrong number of arguments. string.replace() got=%d", len(args))
+		return NewError("wrong number of arguments. string.replace() got=%d", len(args))
 	}
 	oldStr := args[0].(*String).Value
 	newStr := args[1].(*String).Value
@@ -118,7 +118,7 @@ func (s *String) replace(args []Object) Object {
 
 func (s *String) contain(args []Object) Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. string.contain() got=%d", len(args))
+		return NewError("wrong number of arguments. string.contain() got=%d", len(args))
 	}
 	substr := args[0].(*String).Value
 	return &Boolean{Value: strings.Contains(s.Value, substr)}
@@ -126,7 +126,7 @@ func (s *String) contain(args []Object) Object {
 
 func (s *String) prefix(args []Object) Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. string.prefix() got=%d", len(args))
+		return NewError("wrong number of arguments. string.prefix() got=%d", len(args))
 	}
 	substr := args[0].(*String).Value
 	return &Boolean{Value: strings.HasPrefix(s.Value, substr)}
@@ -134,7 +134,7 @@ func (s *String) prefix(args []Object) Object {
 
 func (s *String) suffix(args []Object) Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. string.suffix() got=%d", len(args))
+		return NewError("wrong number of arguments. string.suffix() got=%d", len(args))
 	}
 	substr := args[0].(*String).Value
 	return &Boolean{Value: strings.HasSuffix(s.Value, substr)}
@@ -142,7 +142,7 @@ func (s *String) suffix(args []Object) Object {
 
 func (s *String) repeat(args []Object) Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. string.repeat() got=%d", len(args))
+		return NewError("wrong number of arguments. string.repeat() got=%d", len(args))
 	}
 	count := args[0].(*Integer).Value
 	return &String{Value: strings.Repeat(s.Value, int(count))}
@@ -150,7 +150,7 @@ func (s *String) repeat(args []Object) Object {
 
 func (s *String) trim(args []Object) Object {
 	if len(args) > 1 {
-		return newError("wrong number of arguments. string.trim() got=%d", len(args))
+		return NewError("wrong number of arguments. string.trim() got=%d", len(args))
 	}
 	cut := " "
 	if len(args) == 1 {
@@ -161,7 +161,7 @@ func (s *String) trim(args []Object) Object {
 
 func (s *String) index(args []Object) Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. string.index() got=%d", len(args))
+		return NewError("wrong number of arguments. string.index() got=%d", len(args))
 	}
 	substr := args[0].(*String).Value
 	idx := strings.Index(s.Value, substr)
@@ -179,7 +179,7 @@ func (s *String) format(args []Object) Object {
 		case *Float:
 			list = append(list, arg.(*Float).Value)
 		default:
-			return newError("error occurred while calling string.format(), parameter type not support: %s", arg.String())
+			return NewError("error occurred while calling string.format(), parameter type not support: %s", arg.String())
 		}
 	}
 	return &String{Value: fmt.Sprintf(s.Value, list...)}

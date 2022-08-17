@@ -60,14 +60,14 @@ func (l *List) Method(method string, args []Object) Object {
 
 func (l *List) len(args []Object) Object {
 	if len(args) != 0 {
-		return newError("wrong number of arguments. list.len() got=%d", len(args))
+		return NewError("wrong number of arguments. list.len() got=%d", len(args))
 	}
 	return &Integer{Value: int64(len(l.Elements))}
 }
 
 func (l *List) append(args []Object) Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. list.push() got=%d", len(args))
+		return NewError("wrong number of arguments. list.push() got=%d", len(args))
 	}
 	l.Elements = append(l.Elements, args[0])
 	return nil
@@ -75,7 +75,7 @@ func (l *List) append(args []Object) Object {
 
 func (l *List) pop(args []Object) Object {
 	if len(args) != 0 {
-		return newError("wrong number of arguments. list.pop() got=%d", len(args))
+		return NewError("wrong number of arguments. list.pop() got=%d", len(args))
 	}
 	if len(l.Elements) == 0 {
 		return nil
@@ -87,7 +87,7 @@ func (l *List) pop(args []Object) Object {
 
 func (l *List) shift(args []Object) Object {
 	if len(args) != 0 {
-		return newError("wrong number of arguments. list.shift() got=%d", len(args))
+		return NewError("wrong number of arguments. list.shift() got=%d", len(args))
 	}
 	if len(l.Elements) == 0 {
 		return nil
@@ -99,13 +99,13 @@ func (l *List) shift(args []Object) Object {
 
 func (l *List) insert(args []Object) Object {
 	if len(args) != 2 {
-		return newError("wrong number of arguments. list.insert() got=%d", len(args))
+		return NewError("wrong number of arguments. list.insert() got=%d", len(args))
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
 		idx := int(arg.Value)
 		if idx > len(l.Elements) {
-			return newError("out of range. list.insert() got=%d", idx)
+			return NewError("out of range. list.insert() got=%d", idx)
 		}
 		var elements []Object
 		for _, elem := range l.Elements[0:idx] {
@@ -118,19 +118,19 @@ func (l *List) insert(args []Object) Object {
 		l.Elements = elements
 		return nil
 	default:
-		return newError("wrong type of arguments. list.extend() got=%s", arg.Type())
+		return NewError("wrong type of arguments. list.extend() got=%s", arg.Type())
 	}
 }
 
 func (l *List) remove(args []Object) Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. list.remove() got=%d", len(args))
+		return NewError("wrong number of arguments. list.remove() got=%d", len(args))
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
 		idx := int(arg.Value)
 		if idx >= len(l.Elements) {
-			return newError("out of range. list.remove() got=%d", idx)
+			return NewError("out of range. list.remove() got=%d", idx)
 		}
 		var elements []Object
 		for _, elem := range l.Elements[0:idx] {
@@ -142,13 +142,13 @@ func (l *List) remove(args []Object) Object {
 		l.Elements = elements
 		return nil
 	default:
-		return newError("wrong type of arguments. list.extend() got=%s", arg.Type())
+		return NewError("wrong type of arguments. list.extend() got=%s", arg.Type())
 	}
 }
 
 func (l *List) index(args []Object) Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. list.index() got=%d", len(args))
+		return NewError("wrong number of arguments. list.index() got=%d", len(args))
 	}
 	for idx, elem := range l.Elements {
 		if (elem.Type() == args[0].Type()) && (elem.String() == args[0].String()) {
@@ -160,7 +160,7 @@ func (l *List) index(args []Object) Object {
 
 func (l *List) extend(args []Object) Object {
 	if len(args) != 1 {
-		return newError("wrong number of arguments. list.extend() got=%d", len(args))
+		return NewError("wrong number of arguments. list.extend() got=%d", len(args))
 	}
 	switch arg := args[0].(type) {
 	case *List:
@@ -169,13 +169,13 @@ func (l *List) extend(args []Object) Object {
 		}
 		return nil
 	default:
-		return newError("wrong type of arguments. list.extend() got=%s", arg.Type())
+		return NewError("wrong type of arguments. list.extend() got=%s", arg.Type())
 	}
 }
 
 func (l *List) join(args []Object) Object {
 	if len(args) > 1 {
-		return newError("wrong number of arguments. list.join() got=%d", len(args))
+		return NewError("wrong number of arguments. list.join() got=%d", len(args))
 	}
 	if len(l.Elements) > 0 {
 		glue := ""

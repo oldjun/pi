@@ -35,10 +35,10 @@ func evalInfix(operator string, left, right object.Object) object.Object {
 	case operator == "and" || operator == "or" || operator == "&&" || operator == "||":
 		return evalBooleanInfixExpression(operator, left, right)
 	case left.Type() != right.Type():
-		return newError("type mismatch: %s %s %s",
+		return object.NewError("type mismatch: %s %s %s",
 			left.Type(), operator, right.Type())
 	default:
-		return newError("unknown operator: %s %s %s",
+		return object.NewError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())
 	}
 }
@@ -60,7 +60,7 @@ func evalBooleanInfixExpression(operator string, left, right object.Object) obje
 			return FALSE
 		}
 	default:
-		return newError("unknown operator: %s %s %s",
+		return object.NewError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())
 	}
 }
@@ -102,7 +102,7 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 	case "!=":
 		return toBooleanObject(leftVal != rightVal)
 	default:
-		return newError("unknown operator: %s %s %s",
+		return object.NewError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())
 	}
 }
@@ -133,7 +133,7 @@ func evalInStringExpression(left, right object.Object) object.Object {
 func evalInHashExpression(left, right object.Object) object.Object {
 	leftVal, ok := left.(object.Hashable)
 	if !ok {
-		return newError("unusable as hash key: %s", left.Type())
+		return object.NewError("unusable as hash key: %s", left.Type())
 	}
 	key := leftVal.HashKey()
 	rightVal := right.(*object.Hash).Pairs
@@ -206,7 +206,7 @@ func evalFloatInfixExpression(operator string, left, right object.Object) object
 	case "!=":
 		return toBooleanObject(leftVal != rightVal)
 	default:
-		return newError("unknown operator: %s %s %s",
+		return object.NewError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())
 	}
 }
@@ -228,7 +228,7 @@ func evalStringInfixExpression(operator string, left, right object.Object) objec
 	case "in":
 		return evalInStringExpression(left, right)
 	default:
-		return newError("unknown operator: %s %s %s",
+		return object.NewError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())
 	}
 }
@@ -241,7 +241,7 @@ func evalStringIntegerInfixExpression(operator string, left, right object.Object
 		val := strings.Repeat(leftVal, int(rightVal))
 		return &object.String{Value: val}
 	default:
-		return newError("unknown operator: %s %s %s",
+		return object.NewError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())
 	}
 }
@@ -269,7 +269,7 @@ func evalStringFormatInfixExpression(operator string, left, right object.Object)
 		val := fmt.Sprintf(format, a...)
 		return &object.String{Value: val}
 	default:
-		return newError("unknown operator: %s %s %s",
+		return object.NewError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())
 	}
 }
@@ -288,7 +288,7 @@ func evalListInfixExpression(operator string, left, right object.Object) object.
 		}
 		return list
 	default:
-		return newError("unknown operator: %s %s %s",
+		return object.NewError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())
 	}
 }
@@ -306,7 +306,7 @@ func evalListIntegerInfixExpression(operator string, left, right object.Object) 
 		}
 		return list
 	default:
-		return newError("unknown operator: %s %s %s",
+		return object.NewError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())
 	}
 }

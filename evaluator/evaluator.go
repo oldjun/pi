@@ -1,7 +1,6 @@
 package evaluator
 
 import (
-	"fmt"
 	"pilang/ast"
 	"pilang/object"
 )
@@ -132,8 +131,4 @@ func isTruthy(obj object.Object) bool {
 		return obj.Value
 	}
 	return true
-}
-
-func newError(format string, a ...interface{}) *object.Error {
-	return &object.Error{Message: fmt.Sprintf(format, a...)}
 }

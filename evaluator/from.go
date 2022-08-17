@@ -22,7 +22,7 @@ func evalFrom(node *ast.From, env *object.Environment) object.Object {
 	addSearchPath(env.GetDirectory())
 	filename := findFile(node.File)
 	if filename == "" {
-		return newError("runtime error: no file found at '%s.pi'", node.File)
+		return object.NewError("runtime error: no file found at '%s.pi'", node.File)
 	}
 	var scope *object.Environment
 	if hasImported(filename) {
@@ -89,7 +89,7 @@ func importFile(node *ast.From, env *object.Environment, scope *object.Environme
 	for alias, identifier := range node.Identifiers {
 		value, ok := scope.Get(identifier.Value)
 		if !ok {
-			return newError("runtime error: identifier '%s' not found in module '%s.pi'", identifier.Value, node.File)
+			return object.NewError("runtime error: identifier '%s' not found in module '%s.pi'", identifier.Value, node.File)
 		}
 		env.Set(alias, value)
 	}
