@@ -6,7 +6,6 @@ import (
 	"os"
 	"pilang/object"
 	"strings"
-	"time"
 )
 
 var builtins = map[string]*object.Builtin{
@@ -18,12 +17,6 @@ var builtins = map[string]*object.Builtin{
 	},
 	"exit": {
 		Fn: exitFunction,
-	},
-	"sleep": {
-		Fn: sleepFunction,
-	},
-	"time": {
-		Fn: timeFunction,
 	},
 	"print": {
 		Fn: printFunction,
@@ -71,26 +64,6 @@ func exitFunction(args []object.Object) object.Object {
 	}
 	os.Exit(int(args[0].(*object.Integer).Value))
 	return NULL
-}
-
-func sleepFunction(args []object.Object) object.Object {
-	if len(args) != 1 {
-		return object.NewError("wrong number of arguments. got=%d", len(args))
-	}
-	switch arg := args[0].(type) {
-	case *object.Integer:
-		time.Sleep(time.Duration(arg.Value) * time.Millisecond)
-		return NULL
-	default:
-		return object.NewError("argument to `sleep` not supported, got %s", args[0].Type())
-	}
-}
-
-func timeFunction(args []object.Object) object.Object {
-	if len(args) != 0 {
-		return object.NewError("wrong number of arguments. got=%d", len(args))
-	}
-	return &object.Integer{Value: time.Now().UnixNano() / 1000000}
 }
 
 func printFunction(args []object.Object) object.Object {
