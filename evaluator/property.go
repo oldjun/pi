@@ -31,12 +31,11 @@ func evalPropertyExpression(node *ast.PropertyExpression, env *object.Environmen
 				break
 			}
 		}
-	case *object.Math:
-		obj := left.(*object.Math)
+	case *object.Module:
+		mod := left.(*object.Module)
 		prop := node.Property.(*ast.Identifier).String()
-		val := obj.Property(prop)
-		if val != nil {
-			return val
+		if val, ok := mod.Properties[prop]; ok {
+			return val()
 		}
 	}
 	return newError("invalid property '%s' on type %s", node.Property.String(), left.String())

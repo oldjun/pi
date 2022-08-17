@@ -1,20 +1,19 @@
 package object
 
-import "fmt"
+import (
+	"fmt"
+)
+
+type ModuleProperty func() Object
+type ModuleFunction func(args []Object) Object
 
 type Module struct {
-	Name  string
-	Value Object
+	Name       string
+	Functions  map[string]ModuleFunction
+	Properties map[string]ModuleProperty
 }
 
 func (m *Module) Type() Type { return MODULE }
 func (m *Module) String() string {
 	return fmt.Sprintf("<module:%s>", m.Name)
-}
-
-var ModuleMap map[string]*Module
-
-func init() {
-	ModuleMap = make(map[string]*Module)
-	ModuleMap["math"] = &Module{Name: "math", Value: &Math{}}
 }
