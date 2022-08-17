@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"time"
 )
 
 type Builtin struct {
@@ -15,31 +14,19 @@ type Builtin struct {
 func (b *Builtin) Type() Type     { return BUILTIN }
 func (b *Builtin) String() string { return "builtin function" }
 
-func (b *Builtin) Method(method string, args []Object) Object {
-	switch method {
-	case "len":
-		return b.len(args)
-	case "type":
-		return b.typeof(args)
-	case "sleep":
-		return b.sleep(args)
-	case "time":
-		return b.time(args)
-	case "print":
-		return b.print(args)
-	case "printf":
-		return b.printf(args)
-	case "sprintf":
-		return b.sprintf(args)
-	case "open":
-		return b.open(args)
-	case "exit":
-		return b.exit(args)
-	}
-	return nil
+var Builtins = map[string]*Builtin{}
+
+func init() {
+	Builtins["len"] = &Builtin{Fn: lenFunction}
+	Builtins["type"] = &Builtin{Fn: typeFunction}
+	Builtins["open"] = &Builtin{Fn: openFunction}
+	Builtins["exit"] = &Builtin{Fn: exitFunction}
+	Builtins["print"] = &Builtin{Fn: printFunction}
+	Builtins["printf"] = &Builtin{Fn: printfFunction}
+	Builtins["sprintf"] = &Builtin{Fn: sprintfFunction}
 }
 
-func (b *Builtin) len(args []Object) Object {
+func lenFunction(args []Object) Object {
 	if len(args) != 1 {
 		return NewError("wrong number of arguments. len() got=%d", len(args))
 	}
@@ -52,33 +39,14 @@ func (b *Builtin) len(args []Object) Object {
 	return NewError("argument to `len` not supported, got %s", args[0].Type())
 }
 
-func (b *Builtin) typeof(args []Object) Object {
+func typeFunction(args []Object) Object {
 	if len(args) != 1 {
 		return NewError("wrong number of arguments. type() got=%d", len(args))
 	}
 	return &String{Value: string(args[0].Type())}
 }
 
-func (b *Builtin) sleep(args []Object) Object {
-	if len(args) != 1 {
-		return NewError("wrong number of arguments. sleep() got=%d", len(args))
-	}
-	switch arg := args[0].(type) {
-	case *Integer:
-		time.Sleep(time.Duration(arg.Value) * time.Millisecond)
-		return &Null{}
-	}
-	return NewError("argument to `sleep` not supported, got %s", args[0].Type())
-}
-
-func (b *Builtin) time(args []Object) Object {
-	if len(args) != 0 {
-		return NewError("wrong number of arguments. time() got=%d", len(args))
-	}
-	return &Integer{Value: time.Now().UnixNano() / 1000000}
-}
-
-func (b *Builtin) print(args []Object) Object {
+func printFunction(args []Object) Object {
 	var arr []string
 	for _, arg := range args {
 		arr = append(arr, arg.String())
@@ -88,7 +56,7 @@ func (b *Builtin) print(args []Object) Object {
 	return &Null{}
 }
 
-func (b *Builtin) printf(args []Object) Object {
+func printfFunction(args []Object) Object {
 	format := args[0].(*String).Value
 	var a []interface{}
 	for _, arg := range args[1:] {
@@ -108,7 +76,7 @@ func (b *Builtin) printf(args []Object) Object {
 	return &Null{}
 }
 
-func (b *Builtin) sprintf(args []Object) Object {
+func sprintfFunction(args []Object) Object {
 	format := args[0].(*String).Value
 	var a []interface{}
 	for _, arg := range args[1:] {
@@ -127,7 +95,7 @@ func (b *Builtin) sprintf(args []Object) Object {
 	return &String{Value: str}
 }
 
-func (b *Builtin) open(args []Object) Object {
+func openFunction(args []Object) Object {
 	if len(args) > 2 {
 		return NewError("wrong number of arguments. open() got=%d", len(args))
 	}
@@ -164,8 +132,11 @@ func (b *Builtin) open(args []Object) Object {
 	return &File{Filename: filename, Reader: reader, Writer: writer, Handle: file}
 }
 
-func (b *Builtin) exit(args []Object) Object {
-	if len(args) != 2 {
+func exitFunction(args []Object) Object {
+	if len(args) == 0 {
+		os.Exit(0)
+	}
+	if len(args) != 1 {
 		return NewError("wrong number of arguments. exit() got=%d", len(args))
 	}
 	switch arg := args[0].(type) {
