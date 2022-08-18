@@ -11,6 +11,11 @@ func evalPropertyExpression(node *ast.PropertyExpression, env *object.Environmen
 		return left
 	}
 	switch left.(type) {
+	case *object.Hash:
+		obj := left.(*object.Hash)
+		prop := node.Property.(*ast.Identifier)
+		index := &object.String{Value: prop.String()}
+		return evalHashIndexExpression(obj, index)
 	case *object.Instance:
 		obj := left.(*object.Instance)
 		prop := node.Property.(*ast.Identifier).String()
@@ -47,6 +52,11 @@ func evalPropertyAssignment(name *ast.PropertyExpression, val object.Object, env
 		return left
 	}
 	switch left.(type) {
+	case *object.Hash:
+		hash := left.(*object.Hash)
+		prop := &object.String{Value: name.Property.(*ast.Identifier).Value}
+		hashKey := prop.HashKey()
+		hash.Pairs[hashKey] = object.HashPair{Key: prop, Value: val}
 	case *object.Instance:
 		obj := left.(*object.Instance)
 		prop := name.Property.String()

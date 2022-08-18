@@ -3,6 +3,13 @@ for k,v in hash {
     print(k, v)
 }
 
+hash = {'name': 'jack', 'age': 18, 'get': 'this is a get property'}
+print(hash)
+hash.age += 2
+
+hash.update = "update prop"
+print(hash)
+
 hash["f"] = func(x, y) {
     print(x + y)
 }
