@@ -1,9 +1,14 @@
 str = "hello world!"
 print(str)
-
 print(str[0:1])
 
 str = "thank" + " you"
+print(str)
+
+str = 'hello "xi" \' world'
+print(str)
+
+str = "hello \" '' \\ \t \n world"
 print(str)
 
 substr = "t"

@@ -188,7 +188,9 @@ func (l *Lexer) NextToken() token.Token {
 	case '@':
 		tok = l.newToken(token.AT, string(l.ch))
 	case '"':
-		tok = l.newToken(token.STRING, l.readString())
+		tok = l.newToken(token.STRING, l.readDoubleQuoteString())
+	case '\'':
+		tok = l.newToken(token.STRING, l.readSingleQuoteString())
 	case '?':
 		tok = l.newToken(token.QUESTION, string(l.ch))
 	case '.':
@@ -227,15 +229,48 @@ func (l *Lexer) readIdentifier() string {
 	return l.input[position:l.position]
 }
 
-func (l *Lexer) readString() string {
-	position := l.position + 1
+func (l *Lexer) readDoubleQuoteString() string {
+	var str string
 	for {
 		l.readChar()
-		if l.ch == '"' {
+		if l.ch == '"' || l.ch == 0 {
 			break
+		} else if l.ch == '\\' {
+			switch l.peekChar() {
+			case 'n':
+				l.readChar()
+				l.ch = '\n'
+			case 'r':
+				l.readChar()
+				l.ch = '\r'
+			case 't':
+				l.readChar()
+				l.ch = '\t'
+			case '"':
+				l.readChar()
+				l.ch = '"'
+			case '\\':
+				l.readChar()
+				l.ch = '\\'
+			}
 		}
+		str += string(l.ch)
 	}
-	return l.input[position:l.position]
+	return str
+}
+
+func (l *Lexer) readSingleQuoteString() string {
+	var str string
+	for {
+		l.readChar()
+		if l.ch == '\'' || l.ch == 0 {
+			break
+		} else if l.ch == '\\' && l.peekChar() == '\'' {
+			l.readChar()
+		}
+		str += string(l.ch)
+	}
+	return str
 }
 
 // Go ahead until you find a new line.
