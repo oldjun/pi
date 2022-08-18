@@ -8,3 +8,11 @@ print(hash)
 str = '["abc", 123, true, false]'
 list = json.decode(str)
 print(list)
+
+hash = {'name': 'jack', 'age': 18}
+str = json.encode(hash)
+print(str)
+
+list = ['abc', 123, true, false, null]
+str = json.encode(list)
+print(str)

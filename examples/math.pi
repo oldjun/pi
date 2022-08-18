@@ -2,4 +2,6 @@
 import math
 
 print(math.pi)
+print(math.e)
 print(math.abs(-1.23))
+print(math.sqrt(2))
