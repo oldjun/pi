@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+type BuiltinFunction func(args []Object) Object
+
 type Builtin struct {
 	Fn BuiltinFunction
 }

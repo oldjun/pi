@@ -4,8 +4,6 @@ import "fmt"
 
 type Type string
 
-type BuiltinFunction func(args []Object) Object
-
 const (
 	NULL     = "NULL"
 	BOOLEAN  = "BOOLEAN"
