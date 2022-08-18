@@ -91,6 +91,8 @@ func (h *Hash) Method(method string, args []Object) Object {
 		return h.delete(args)
 	case "clear":
 		return h.clear(args)
+	case "json":
+		return h.json(args)
 	}
 	return nil
 }
@@ -240,4 +242,11 @@ func (h *Hash) clear(args []Object) Object {
 	}
 	h.Pairs = make(map[HashKey]HashPair)
 	return nil
+}
+
+func (h *Hash) json(args []Object) Object {
+	if len(args) != 0 {
+		return NewError("wrong number of arguments. hash.json() got=%d", len(args))
+	}
+	return &String{Value: h.String()}
 }

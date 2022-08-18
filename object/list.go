@@ -59,6 +59,8 @@ func (l *List) Method(method string, args []Object) Object {
 		return l.extend(args)
 	case "join":
 		return l.join(args)
+	case "json":
+		return l.json(args)
 	}
 	return nil
 }
@@ -196,4 +198,11 @@ func (l *List) join(args []Object) Object {
 	} else {
 		return &String{Value: ""}
 	}
+}
+
+func (l *List) json(args []Object) Object {
+	if len(args) != 0 {
+		return NewError("wrong number of arguments. list.json() got=%d", len(args))
+	}
+	return &String{Value: l.String()}
 }
