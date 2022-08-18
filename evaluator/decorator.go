@@ -25,7 +25,7 @@ func evalDecorator(node *ast.Decorator, env *object.Environment) object.Object {
 // test = decor(test)
 func doEvalDecorator(node *ast.Decorator, env *object.Environment) (string, object.Object, object.Object) {
 	var decorator object.Object
-	evaluated := Eval(node.Expression, env)
+	evaluated := Eval(node.Function, env)
 	switch evaluated.(type) {
 	case *object.Function:
 		decorator = evaluated

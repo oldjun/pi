@@ -55,7 +55,7 @@ func (p *Parser) parseFunctionParameters(fn *ast.Function) bool {
 			if p.peekTokenIs(token.ASSIGN) {
 				p.nextToken()
 				p.nextToken()
-				fn.Defaults[ident.String()] = p.parseExpression(LOWEST)
+				fn.Defaults[ident.Value] = p.parseExpression(LOWEST)
 			} else {
 				if len(fn.Defaults) > 0 {
 					return false

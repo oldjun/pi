@@ -6,7 +6,7 @@ import (
 )
 
 // We first try parsing the code as a regular for loop.
-// If we realize this is a for .. in we will then switch around.
+// If we realize this is a for in we will then switch around.
 func (p *Parser) parseFor() ast.Expression {
 	expression := &ast.For{Token: p.currToken}
 	p.nextToken()

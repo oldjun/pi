@@ -5,9 +5,6 @@ import (
 )
 
 type This struct {
+	Expression
 	Token token.Token
 }
-
-func (t *This) expressionNode()      {}
-func (t *This) TokenLiteral() string { return t.Token.Literal }
-func (t *This) String() string       { return t.Token.Literal }

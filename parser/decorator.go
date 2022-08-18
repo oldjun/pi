@@ -22,6 +22,6 @@ func (p *Parser) parseDecorator() ast.Expression {
 
 	p.nextToken()
 	exp := p.parseExpressionStatement()
-	dc.Expression = exp.Expression
+	dc.Function = exp.Expression
 	return dc
 }
