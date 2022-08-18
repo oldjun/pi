@@ -27,7 +27,16 @@ func decode(args []object.Object) object.Object {
 }
 
 func encode(args []object.Object) object.Object {
-	return &object.Null{}
+	if len(args) != 1 {
+		return object.NewError("wrong number of arguments. json.encode() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *object.List:
+		return &object.String{Value: arg.String()}
+	case *object.Hash:
+		return &object.String{Value: arg.String()}
+	}
+	return object.NewError("wrong type of arguments. json.encode() got=%s", args[0].Type())
 }
 
 func interfaceToObject(i interface{}) object.Object {
