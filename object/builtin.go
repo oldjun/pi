@@ -10,22 +10,25 @@ import (
 type BuiltinFunction func(args []Object) Object
 
 type Builtin struct {
-	Fn BuiltinFunction
+	Name string
+	Fn   BuiltinFunction
 }
 
-func (b *Builtin) Type() Type     { return BUILTIN }
-func (b *Builtin) String() string { return "builtin function" }
+func (b *Builtin) Type() Type { return BUILTIN }
+func (b *Builtin) String() string {
+	return fmt.Sprintf("<builtin:%s>", b.Name)
+}
 
 var Builtins = map[string]*Builtin{}
 
 func init() {
-	Builtins["len"] = &Builtin{Fn: lenFunction}
-	Builtins["type"] = &Builtin{Fn: typeFunction}
-	Builtins["open"] = &Builtin{Fn: openFunction}
-	Builtins["exit"] = &Builtin{Fn: exitFunction}
-	Builtins["print"] = &Builtin{Fn: printFunction}
-	Builtins["printf"] = &Builtin{Fn: printfFunction}
-	Builtins["sprintf"] = &Builtin{Fn: sprintfFunction}
+	Builtins["len"] = &Builtin{Name: "len", Fn: lenFunction}
+	Builtins["type"] = &Builtin{Name: "type", Fn: typeFunction}
+	Builtins["open"] = &Builtin{Name: "open", Fn: openFunction}
+	Builtins["exit"] = &Builtin{Name: "exit", Fn: exitFunction}
+	Builtins["print"] = &Builtin{Name: "print", Fn: printFunction}
+	Builtins["printf"] = &Builtin{Name: "printf", Fn: printfFunction}
+	Builtins["sprintf"] = &Builtin{Name: "sprintf", Fn: sprintfFunction}
 }
 
 func lenFunction(args []Object) Object {
