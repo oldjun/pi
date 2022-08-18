@@ -1,0 +1,10 @@
+
+import json
+
+str = '{"name": "jack", "age": 18, "height": 1.7}'
+hash = json.decode(str)
+print(hash)
+
+str = '["abc", 123, true, false]'
+list = json.decode(str)
+print(list)
