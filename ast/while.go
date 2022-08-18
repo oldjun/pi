@@ -17,7 +17,8 @@ func (w *While) String() string {
 	var out bytes.Buffer
 	out.WriteString("while")
 	out.WriteString(w.Condition.String())
-	out.WriteString(" ")
+	out.WriteString(" {")
 	out.WriteString(w.Consequence.String())
+	out.WriteString(" }")
 	return out.String()
 }

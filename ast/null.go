@@ -8,4 +8,4 @@ type Null struct {
 
 func (b *Null) expressionNode()      {}
 func (b *Null) TokenLiteral() string { return b.Token.Literal }
-func (b *Null) String() string       { return "null" }
+func (b *Null) String() string       { return b.Token.Literal }

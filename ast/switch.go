@@ -10,6 +10,4 @@ type Switch struct {
 
 func (s *Switch) expressionNode()      {}
 func (s *Switch) TokenLiteral() string { return s.Token.Literal }
-func (s *Switch) String() string {
-	return "switch"
-}
+func (s *Switch) String() string       { return "switch" }
