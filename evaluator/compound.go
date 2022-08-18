@@ -31,10 +31,9 @@ func evalCompound(node *ast.Compound, env *object.Environment) object.Object {
 	case *ast.IndexExpression:
 		return evalIndexAssignment(nodeLeft, val, env)
 	case *ast.PropertyExpression:
-		// support assignment to hash property: h.a += 1
 		return evalPropertyAssignment(nodeLeft, val, env)
 	}
-	// otherwise
-	env.Set(node.Left.String(), val)
+	//// otherwise
+	//env.Set(node.Left.String(), val)
 	return NULL
 }

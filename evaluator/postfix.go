@@ -24,13 +24,11 @@ func evalPostfix(node *ast.Postfix, env *object.Environment) object.Object {
 		env.Set(nodeLeft.Value, val)
 		return NULL
 	case *ast.IndexExpression:
-		// support assignment to index expression: h["a"]++
 		return evalIndexAssignment(nodeLeft, val, env)
 	case *ast.PropertyExpression:
-		// support assignment to hash property: h.a++
 		return evalPropertyAssignment(nodeLeft, val, env)
 	}
-	// otherwise
-	env.Set(node.Left.String(), val)
+	//// otherwise
+	//env.Set(node.Left.String(), val)
 	return NULL
 }

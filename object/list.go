@@ -15,7 +15,12 @@ func (l *List) String() string {
 	var out bytes.Buffer
 	var elements []string
 	for _, e := range l.Elements {
-		elements = append(elements, e.String())
+		switch e := e.(type) {
+		case *String:
+			elements = append(elements, "\""+e.String()+"\"")
+		default:
+			elements = append(elements, e.String())
+		}
 	}
 	out.WriteString("[")
 	out.WriteString(strings.Join(elements, ", "))

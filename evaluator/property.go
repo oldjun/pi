@@ -14,11 +14,11 @@ func evalPropertyExpression(node *ast.PropertyExpression, env *object.Environmen
 	case *object.Hash:
 		obj := left.(*object.Hash)
 		prop := node.Property.(*ast.Identifier)
-		index := &object.String{Value: prop.String()}
+		index := &object.String{Value: prop.Value}
 		return evalHashIndexExpression(obj, index)
 	case *object.Instance:
 		obj := left.(*object.Instance)
-		prop := node.Property.(*ast.Identifier).String()
+		prop := node.Property.(*ast.Identifier).Value
 		if val, ok := obj.Env.Get(prop); ok {
 			return val
 		}
@@ -38,12 +38,12 @@ func evalPropertyExpression(node *ast.PropertyExpression, env *object.Environmen
 		}
 	case *object.Module:
 		mod := left.(*object.Module)
-		prop := node.Property.(*ast.Identifier).String()
+		prop := node.Property.(*ast.Identifier).Value
 		if val, ok := mod.Properties[prop]; ok {
 			return val()
 		}
 	}
-	return object.NewError("invalid property '%s' on type %s", node.Property.String(), left.String())
+	return object.NewError("invalid property %s on type %s", node.Property.(*ast.Identifier).Value, left.String())
 }
 
 func evalPropertyAssignment(name *ast.PropertyExpression, val object.Object, env *object.Environment) object.Object {
@@ -59,7 +59,7 @@ func evalPropertyAssignment(name *ast.PropertyExpression, val object.Object, env
 		hash.Pairs[hashKey] = object.HashPair{Key: prop, Value: val}
 	case *object.Instance:
 		obj := left.(*object.Instance)
-		prop := name.Property.String()
+		prop := name.Property.(*ast.Identifier).Value
 		if _, ok := obj.Env.Get(prop); ok {
 			obj.Env.Set(prop, val)
 			return NULL

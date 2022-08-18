@@ -11,8 +11,10 @@ type String struct {
 	offset int
 }
 
-func (s *String) Type() Type     { return STRING }
-func (s *String) String() string { return s.Value }
+func (s *String) Type() Type { return STRING }
+func (s *String) String() string {
+	return s.Value
+}
 func (s *String) HashKey() HashKey {
 	h := fnv.New64a()
 	h.Write([]byte(s.Value))

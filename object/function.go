@@ -1,10 +1,8 @@
 package object
 
 import (
-	"bytes"
+	"fmt"
 	"pilang/ast"
-	"pilang/token"
-	"strings"
 )
 
 type Function struct {
@@ -18,6 +16,11 @@ type Function struct {
 }
 
 func (f *Function) Type() Type { return FUNCTION }
+func (f *Function) String() string {
+	return fmt.Sprintf("<func:%s>", f.Name)
+}
+
+/*
 func (f *Function) String() string {
 	var out bytes.Buffer
 	var params []string
@@ -46,3 +49,4 @@ func (f *Function) String() string {
 	out.WriteString(" }")
 	return out.String()
 }
+*/

@@ -21,24 +21,24 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 	switch obj.(type) {
 	case *object.Hash:
 		hash := obj.(*object.Hash)
-		return hash.Method(method.String(), args)
+		return hash.Method(method.(*ast.Identifier).Value, args)
 	case *object.List:
 		list := obj.(*object.List)
-		return list.Method(method.String(), args)
+		return list.Method(method.(*ast.Identifier).Value, args)
 	case *object.String:
 		str := obj.(*object.String)
-		return str.Method(method.String(), args)
+		return str.Method(method.(*ast.Identifier).Value, args)
 	case *object.File:
 		file := obj.(*object.File)
-		return file.Method(method.String(), args)
+		return file.Method(method.(*ast.Identifier).Value, args)
 	case *object.Module:
 		mod := obj.(*object.Module)
-		if fn, ok := mod.Functions[method.String()]; ok {
+		if fn, ok := mod.Functions[method.(*ast.Identifier).Value]; ok {
 			return fn(args)
 		}
 	case *object.Instance:
 		obj := obj.(*object.Instance)
-		if fn, ok := obj.Class.Scope.Get(method.String()); ok {
+		if fn, ok := obj.Class.Scope.Get(method.(*ast.Identifier).Value); ok {
 			fn.(*object.Function).Env.Set("this", obj)
 			ret := applyFunction(fn, args)
 			fn.(*object.Function).Env.Del("this")
@@ -47,7 +47,7 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 		// walk up the chain of super instance looking for it
 		super := obj.Class.Super
 		for super != nil {
-			if fn, ok := super.Scope.Get(method.String()); ok {
+			if fn, ok := super.Scope.Get(method.(*ast.Identifier).Value); ok {
 				fn.(*object.Function).Env.Set("this", obj)
 				ret := applyFunction(fn, args)
 				fn.(*object.Function).Env.Del("this")
@@ -56,5 +56,5 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 			super = super.Super
 		}
 	}
-	return object.NewError("%s does not have method '%s()'", obj.String(), method.String())
+	return object.NewError("%s does not have method '%s()'", obj.String(), method.(*ast.Identifier).Value)
 }

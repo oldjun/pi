@@ -52,7 +52,7 @@ func evalListIndexExpression(left, index, end object.Object, isRange bool) objec
 			if ok {
 				endIdx := endObj.Value
 				if endIdx < -(max+1) || endIdx > max {
-					return object.NewError(`index out of range: got "%s"`, end.String())
+					return object.NewError(`index out of range: got %s`, end.String())
 				}
 				if endIdx < 0 {
 					endIdx += max + 1
@@ -62,7 +62,7 @@ func evalListIndexExpression(left, index, end object.Object, isRange bool) objec
 				}
 				return &object.List{Elements: leftObject.Elements[idx:endIdx]}
 			} else {
-				return object.NewError(`index range can only be numerical: got "%s" (type %s)`, end.String(), end.Type())
+				return object.NewError(`index range can only be numerical: got %s (type %s)`, end.String(), end.Type())
 			}
 		}
 	} else {
@@ -108,7 +108,7 @@ func evalStringIndexExpression(left, index, end object.Object, isRange bool) obj
 			if ok {
 				endIdx := endObj.Value
 				if endIdx < -(max+1) || endIdx > max {
-					return object.NewError(`index out of range: got "%s"`, end.String())
+					return object.NewError(`index out of range: got %s`, end.String())
 				}
 				if endIdx < 0 {
 					endIdx += max + 1
@@ -118,7 +118,7 @@ func evalStringIndexExpression(left, index, end object.Object, isRange bool) obj
 				}
 				return &object.String{Value: leftObject.Value[idx:endIdx]}
 			} else {
-				return object.NewError(`index range can only be numerical: got "%s" (type %s)`, end.String(), end.Type())
+				return object.NewError(`index range can only be numerical: got %s (type %s)`, end.String(), end.Type())
 			}
 		}
 	} else {

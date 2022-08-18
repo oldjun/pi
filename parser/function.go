@@ -52,8 +52,8 @@ func (p *Parser) parseFunctionParameters(fn *ast.Function) bool {
 		} else {
 			ident := &ast.Identifier{Token: p.currToken, Value: p.currToken.Literal}
 			fn.Parameters = append(fn.Parameters, ident)
-			p.nextToken()
-			if p.currTokenIs(token.ASSIGN) {
+			if p.peekTokenIs(token.ASSIGN) {
+				p.nextToken()
 				p.nextToken()
 				fn.Defaults[ident.String()] = p.parseExpression(LOWEST)
 			} else {

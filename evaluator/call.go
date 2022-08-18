@@ -87,8 +87,8 @@ func evalArgumentExpressions(node *ast.Call, fn *object.Function, env *object.En
 	}
 
 	for _, pair := range argsHash.Pairs {
-		if _, ok := params[pair.Key.String()]; ok {
-			return []object.Object{object.NewError("func got multiple values for argument '%s'", pair.Key.String())}
+		if _, ok := params[pair.Key.(*object.String).Value]; ok {
+			return []object.Object{object.NewError("func got multiple values for argument %s", pair.Key.(*object.String).Value)}
 		}
 	}
 
@@ -126,7 +126,7 @@ func applyFunction(node object.Object, args []object.Object) object.Object {
 		}
 		fn, ok := node.Scope.Get("__init__")
 		if !ok {
-			return object.NewError("%s missing __init__ function", node.String())
+			return object.NewError("class %s missing __init__ function", node.Name.Value)
 		}
 		fn.(*object.Function).Env.Set("this", obj)
 		applyFunction(fn, args)

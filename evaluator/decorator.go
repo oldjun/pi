@@ -30,7 +30,7 @@ func doEvalDecorator(node *ast.Decorator, env *object.Environment) (string, obje
 	case *object.Function:
 		decorator = evaluated
 	default:
-		return "", nil, object.NewError("decorator '%s' is not a function", evaluated.String())
+		return "", nil, object.NewError("decorator %s is not a function", evaluated.String())
 	}
 	name, ok := getDecoratedName(node.Decorated)
 	if !ok {

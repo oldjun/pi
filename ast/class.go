@@ -1,7 +1,7 @@
 package ast
 
 import (
-	"bytes"
+	"fmt"
 	"pilang/token"
 )
 
@@ -15,6 +15,5 @@ type Class struct {
 func (c *Class) expressionNode()      {}
 func (c *Class) TokenLiteral() string { return c.Token.Literal }
 func (c *Class) String() string {
-	var out bytes.Buffer
-	return out.String()
+	return fmt.Sprintf("<class:%s>", c.Name.Value)
 }

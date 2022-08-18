@@ -1,9 +1,8 @@
 package ast
 
 import (
-	"bytes"
+	"fmt"
 	"pilang/token"
-	"strings"
 )
 
 type Function struct {
@@ -19,6 +18,11 @@ type Function struct {
 func (f *Function) expressionNode()      {}
 func (f *Function) TokenLiteral() string { return f.Token.Literal }
 func (f *Function) String() string {
+	return fmt.Sprintf("<func:%s>", f.Name)
+}
+
+/*
+func (f *Function) String() string {
 	var out bytes.Buffer
 	var params []string
 	for _, p := range f.Parameters {
@@ -31,3 +35,4 @@ func (f *Function) String() string {
 	out.WriteString(f.Body.String())
 	return out.String()
 }
+*/
