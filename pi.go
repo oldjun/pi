@@ -11,14 +11,22 @@ import (
 	"path/filepath"
 )
 
+var version = "v0.0.1"
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Print("missing pi file")
 		return
 	}
 	switch os.Args[1] {
+	case "help":
+		__help()
 	case "repl":
 		__repl()
+	case "version":
+		__version()
+	case "install":
+		__install()
 	}
 	file := os.Args[1]
 	input, err := os.ReadFile(file)
@@ -38,8 +46,23 @@ func main() {
 	}
 }
 
+func __help() {
+	fmt.Println("help")
+	os.Exit(0)
+}
+
 func __repl() {
 	fmt.Printf("Welcome to Pi Programming Language!\n")
 	repl.Start(os.Stdin, os.Stdout)
+	os.Exit(0)
+}
+
+func __version() {
+	fmt.Println(version)
+	os.Exit(0)
+}
+
+func __install() {
+	fmt.Println("install")
 	os.Exit(0)
 }
