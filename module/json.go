@@ -12,11 +12,10 @@ var JsonProperties = map[string]object.ModuleProperty{}
 var JsonFunctions = map[string]object.ModuleFunction{}
 
 func init() {
-	JsonFunctions["decode"] = decode
-	JsonFunctions["encode"] = encode
+	JsonFunctions["parse"] = parse
 }
 
-func decode(args []object.Object) object.Object {
+func parse(args []object.Object) object.Object {
 	var i interface{}
 	input := args[0].(*object.String).Value
 	err := json.Unmarshal([]byte(input), &i)
@@ -24,19 +23,6 @@ func decode(args []object.Object) object.Object {
 		return object.NewError("Error while parsing json: %s", err)
 	}
 	return interfaceToObject(i)
-}
-
-func encode(args []object.Object) object.Object {
-	if len(args) != 1 {
-		return object.NewError("wrong number of arguments. json.encode() got=%d", len(args))
-	}
-	switch arg := args[0].(type) {
-	case *object.List:
-		return &object.String{Value: arg.String()}
-	case *object.Hash:
-		return &object.String{Value: arg.String()}
-	}
-	return object.NewError("wrong type of arguments. json.encode() got=%s", args[0].Type())
 }
 
 func interfaceToObject(i interface{}) object.Object {
