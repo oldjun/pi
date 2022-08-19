@@ -15,13 +15,11 @@ var version = "v0.0.1"
 
 func main() {
 	if len(os.Args) < 2 {
-		__help()
+		__repl()
 	}
 	switch os.Args[1] {
 	case "help":
 		__help()
-	case "repl":
-		__repl()
 	case "version":
 		__version()
 	case "install":
