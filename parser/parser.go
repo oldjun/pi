@@ -2,9 +2,9 @@ package parser
 
 import (
 	"fmt"
-	"pilang/ast"
-	"pilang/lexer"
-	"pilang/token"
+	"github.com/oldjun/pi/ast"
+	"github.com/oldjun/pi/lexer"
+	"github.com/oldjun/pi/token"
 )
 
 const (

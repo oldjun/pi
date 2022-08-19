@@ -2,7 +2,7 @@ package module
 
 import (
 	"encoding/json"
-	"pilang/object"
+	"github.com/oldjun/pi/object"
 )
 
 // JsonProperties module properties

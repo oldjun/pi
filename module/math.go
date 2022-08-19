@@ -1,9 +1,9 @@
 package module
 
 import (
+	"github.com/oldjun/pi/object"
 	"math"
 	"math/rand"
-	"pilang/object"
 	"time"
 )
 

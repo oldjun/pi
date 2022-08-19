@@ -1,6 +1,6 @@
 package parser
 
-import "pilang/ast"
+import "github.com/oldjun/pi/ast"
 
 func (p *Parser) parsePrefix() ast.Expression {
 	expression := &ast.Prefix{

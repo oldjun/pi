@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"pilang/ast"
-	"pilang/token"
+	"github.com/oldjun/pi/ast"
+	"github.com/oldjun/pi/token"
 )
 
 func (p *Parser) parseList() ast.Expression {

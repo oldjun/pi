@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"pilang/ast"
-	"pilang/token"
+	"github.com/oldjun/pi/ast"
+	"github.com/oldjun/pi/token"
 )
 
 // We first try parsing the code as a regular for loop.

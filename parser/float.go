@@ -2,7 +2,7 @@ package parser
 
 import (
 	"fmt"
-	"pilang/ast"
+	"github.com/oldjun/pi/ast"
 	"strconv"
 )
 

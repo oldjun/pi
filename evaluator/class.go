@@ -1,8 +1,8 @@
 package evaluator
 
 import (
-	"pilang/ast"
-	"pilang/object"
+	"github.com/oldjun/pi/ast"
+	"github.com/oldjun/pi/object"
 )
 
 func evalClass(node *ast.Class, env *object.Environment) object.Object {

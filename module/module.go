@@ -1,6 +1,6 @@
 package module
 
-import "pilang/object"
+import "github.com/oldjun/pi/object"
 
 var Map = map[string]*object.Module{}
 

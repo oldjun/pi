@@ -1,6 +1,6 @@
 package parser
 
-import "pilang/ast"
+import "github.com/oldjun/pi/ast"
 
 func (p *Parser) parseAssign(left ast.Expression) ast.Expression {
 	switch left.(type) {

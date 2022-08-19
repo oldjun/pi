@@ -2,7 +2,7 @@ package evaluator
 
 import (
 	"fmt"
-	"pilang/object"
+	"github.com/oldjun/pi/object"
 	"strings"
 )
 

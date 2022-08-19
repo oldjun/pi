@@ -1,6 +1,6 @@
 package parser
 
-import "pilang/ast"
+import "github.com/oldjun/pi/ast"
 
 func (p *Parser) parseDecorator() ast.Expression {
 	dc := &ast.Decorator{Token: p.currToken}

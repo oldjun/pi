@@ -1,7 +1,7 @@
 package lexer
 
 import (
-	"pilang/token"
+	"github.com/oldjun/pi/token"
 )
 
 type Lexer struct {

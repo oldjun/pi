@@ -1,6 +1,6 @@
 package ast
 
-import "pilang/token"
+import "github.com/oldjun/pi/token"
 
 type Decorator struct {
 	Expression

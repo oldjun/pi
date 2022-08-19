@@ -3,30 +3,14 @@ package repl
 import (
 	"bufio"
 	"fmt"
+	"github.com/oldjun/pi/evaluator"
+	"github.com/oldjun/pi/lexer"
+	"github.com/oldjun/pi/object"
+	"github.com/oldjun/pi/parser"
 	"io"
-	"pilang/evaluator"
-	"pilang/lexer"
-	"pilang/object"
-	"pilang/parser"
 )
 
 const PROMPT = ">> "
-
-//func Start(in io.Reader, out io.Writer) {
-//	scanner := bufio.NewScanner(in)
-//	for {
-//		fmt.Printf(PROMPT)
-//		scanned := scanner.Scan()
-//		if !scanned {
-//			return
-//		}
-//		line := scanner.Text()
-//		l := lexer.New(line)
-//		for tok := l.NextToken(); tok.Type != token.EOF; tok = l.NextToken() {
-//			fmt.Printf("%+v\n", tok)
-//		}
-//	}
-//}
 
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)

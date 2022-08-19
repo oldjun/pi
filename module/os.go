@@ -1,8 +1,8 @@
 package module
 
 import (
+	"github.com/oldjun/pi/object"
 	"os"
-	"pilang/object"
 	"runtime"
 )
 

@@ -2,13 +2,13 @@ package evaluator
 
 import (
 	"fmt"
+	"github.com/oldjun/pi/ast"
+	"github.com/oldjun/pi/lexer"
+	"github.com/oldjun/pi/object"
+	"github.com/oldjun/pi/parser"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"pilang/ast"
-	"pilang/lexer"
-	"pilang/object"
-	"pilang/parser"
 )
 
 var searchPaths []string

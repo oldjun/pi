@@ -1,7 +1,7 @@
 package module
 
 import (
-	"pilang/object"
+	"github.com/oldjun/pi/object"
 	"strings"
 	"time"
 )

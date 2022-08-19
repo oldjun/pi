@@ -1,7 +1,7 @@
 package ast
 
 import (
-	"pilang/token"
+	"github.com/oldjun/pi/token"
 )
 
 type Return struct {

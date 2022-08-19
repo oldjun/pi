@@ -2,7 +2,7 @@ package object
 
 import (
 	"fmt"
-	"pilang/ast"
+	"github.com/oldjun/pi/ast"
 )
 
 type Class struct {
