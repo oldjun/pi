@@ -15,8 +15,7 @@ var version = "v0.0.1"
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Print("missing pi file")
-		return
+		__help()
 	}
 	switch os.Args[1] {
 	case "help":
