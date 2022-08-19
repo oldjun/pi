@@ -9,6 +9,7 @@ import (
 	"github.com/oldjun/pi/repl"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 var version = "v0.0.1"
@@ -26,9 +27,20 @@ func main() {
 		__install()
 	}
 	file := os.Args[1]
-	input, err := os.ReadFile(file)
+	if !strings.HasSuffix(file, ".pi") {
+		fmt.Printf("file:%s not a valid program", file)
+		os.Exit(0)
+	}
+	_, err := os.Stat(file)
 	if err != nil {
-		panic(err)
+		if os.IsNotExist(err) {
+			fmt.Printf("file:%s not exists", file)
+			os.Exit(0)
+		}
+	}
+	input, ok := os.ReadFile(file)
+	if ok != nil {
+		panic(ok)
 	}
 	directory, _ := os.Getwd()
 	l := lexer.New(string(input), filepath.Join(directory, file))
