@@ -21,6 +21,9 @@ func (p *Parser) parseImport() ast.Expression {
 		if p.peekTokenIs(token.COMMA) {
 			p.nextToken()
 		}
+		if p.peekTokenIs(token.EOF) {
+			break
+		}
 	}
 	return expr
 }
