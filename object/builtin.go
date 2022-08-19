@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -23,6 +24,9 @@ var Builtins = map[string]*Builtin{}
 
 func init() {
 	Builtins["len"] = &Builtin{Name: "len", Fn: lenFunction}
+	Builtins["int"] = &Builtin{Name: "int", Fn: intFunction}
+	Builtins["float"] = &Builtin{Name: "float", Fn: floatFunction}
+	Builtins["string"] = &Builtin{Name: "string", Fn: stringFunction}
 	Builtins["type"] = &Builtin{Name: "type", Fn: typeFunction}
 	Builtins["open"] = &Builtin{Name: "open", Fn: openFunction}
 	Builtins["exit"] = &Builtin{Name: "exit", Fn: exitFunction}
@@ -42,6 +46,59 @@ func lenFunction(args []Object) Object {
 		return &Integer{Value: int64(len(arg.Elements))}
 	}
 	return NewError("argument to `len` not supported, got %s", args[0].Type())
+}
+
+func intFunction(args []Object) Object {
+	if len(args) != 1 {
+		return NewError("wrong number of arguments. int() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		return &Integer{Value: arg.Value}
+	case *Float:
+		return &Integer{Value: int64(arg.Value)}
+	case *String:
+		val, ok := strconv.ParseInt(arg.Value, 10, 64)
+		if ok != nil {
+			return NewError("argument to `int` error, got %s", arg.String())
+		}
+		return &Integer{Value: val}
+	}
+	return NewError("argument to `int` not supported, got %s", args[0].Type())
+}
+
+func floatFunction(args []Object) Object {
+	if len(args) != 1 {
+		return NewError("wrong number of arguments. float() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		return &Float{Value: float64(arg.Value)}
+	case *Float:
+		return &Float{Value: arg.Value}
+	case *String:
+		val, ok := strconv.ParseFloat(arg.Value, 64)
+		if ok != nil {
+			return NewError("argument to `float` error, got %s", arg.String())
+		}
+		return &Float{Value: val}
+	}
+	return NewError("argument to `float` not supported, got %s", args[0].Type())
+}
+
+func stringFunction(args []Object) Object {
+	if len(args) != 1 {
+		return NewError("wrong number of arguments. string() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		return &String{Value: arg.String()}
+	case *Float:
+		return &String{Value: arg.String()}
+	case *String:
+		return &String{Value: arg.Value}
+	}
+	return NewError("argument to `string` not supported, got %s", args[0].Type())
 }
 
 func typeFunction(args []Object) Object {
