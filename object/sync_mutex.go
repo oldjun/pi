@@ -6,12 +6,12 @@ import (
 )
 
 type SyncMutex struct {
-	Value *sync.Mutex
+	Handler *sync.Mutex
 }
 
-func (s *SyncMutex) Type() Type { return SYNC_MUTEX }
+func (s *SyncMutex) Type() Type { return "SYNC_MUTEX" }
 func (s *SyncMutex) String() string {
-	return fmt.Sprintf("<sync_mutex:%v>", s.Value)
+	return fmt.Sprintf("<sync_mutex:%v>", s.Handler)
 }
 
 func (s *SyncMutex) Method(method string, args []Object) Object {
@@ -28,7 +28,7 @@ func (s *SyncMutex) lock(args []Object) Object {
 	if len(args) != 0 {
 		return NewError("wrong number of arguments. mutex.lock() got=%d", len(args))
 	}
-	s.Value.Lock()
+	s.Handler.Lock()
 	return &Null{}
 }
 
@@ -36,6 +36,6 @@ func (s *SyncMutex) unlock(args []Object) Object {
 	if len(args) != 0 {
 		return NewError("wrong number of arguments. mutex.unlock() got=%d", len(args))
 	}
-	s.Value.Unlock()
+	s.Handler.Unlock()
 	return &Null{}
 }

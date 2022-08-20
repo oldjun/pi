@@ -42,6 +42,12 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 	case *object.SyncMutex:
 		mutex := obj.(*object.SyncMutex)
 		return mutex.Method(method.(*ast.Identifier).Value, args)
+	case *object.TcpListener:
+		listener := obj.(*object.TcpListener)
+		return listener.Method(method.(*ast.Identifier).Value, args)
+	case *object.TcpConnection:
+		conn := obj.(*object.TcpConnection)
+		return conn.Method(method.(*ast.Identifier).Value, args)
 	case *object.Instance:
 		obj := obj.(*object.Instance)
 		if fn, ok := obj.Class.Scope.Get(method.(*ast.Identifier).Value); ok {

@@ -8,6 +8,7 @@ var Map = map[string]*object.Module{}
 
 func init() {
 	Map["os"] = &object.Module{Name: "os", Functions: OsFunctions, Properties: OsProperties}
+	Map["net"] = &object.Module{Name: "net", Functions: NetFunctions, Properties: NetProperties}
 	Map["time"] = &object.Module{Name: "time", Functions: TimeFunctions, Properties: TimeProperties}
 	Map["math"] = &object.Module{Name: "math", Functions: MathFunctions, Properties: MathProperties}
 	Map["json"] = &object.Module{Name: "json", Functions: JsonFunctions, Properties: JsonProperties}

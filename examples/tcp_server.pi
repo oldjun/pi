@@ -1,0 +1,14 @@
+
+import net
+import time
+
+server = net.listen("tcp", "127.0.0.1:8000")
+
+while true {
+	print("listen ...")
+	time.sleep(1000)
+	conn = server.accept()
+	data = conn.read(64)
+	conn.send(data)
+	print(data)
+}

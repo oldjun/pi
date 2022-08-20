@@ -20,12 +20,12 @@ func await(args []object.Object) object.Object {
 	if len(args) != 0 {
 		return object.NewError("wrong number of arguments. sync.await() got=%d", len(args))
 	}
-	return &object.SyncAwait{Value: &sync.WaitGroup{}}
+	return &object.SyncAwait{Handler: &sync.WaitGroup{}}
 }
 
 func mutex(args []object.Object) object.Object {
 	if len(args) != 0 {
 		return object.NewError("wrong number of arguments. sync.mutex() got=%d", len(args))
 	}
-	return &object.SyncMutex{Value: &sync.Mutex{}}
+	return &object.SyncMutex{Handler: &sync.Mutex{}}
 }
