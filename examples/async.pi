@@ -3,10 +3,11 @@ import time
 
 func foo(x) {
 	print(x)
+	time.sleep(1000)
 }
 
 for i = 0; i < 10; i++ {
 	async foo(i)
 }
 
-time.sleep(1000)
+time.sleep(2000)
