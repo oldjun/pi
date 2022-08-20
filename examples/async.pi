@@ -1,0 +1,16 @@
+
+import time
+
+func foo(x) {
+	time.sleep(1000)
+	print(x)
+}
+
+start_time = time.time()
+for i = 0; i < 10; i++ {
+	async foo(i)
+}
+end_time = time.time()
+
+print("time cost:", end_time - start_time)
+time.sleep(2000)

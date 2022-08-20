@@ -36,6 +36,9 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 		if fn, ok := mod.Functions[method.(*ast.Identifier).Value]; ok {
 			return fn(args)
 		}
+	case *object.SyncWaitGroup:
+		obj := obj.(*object.SyncWaitGroup)
+		return obj.Method(method.(*ast.Identifier).Value, args)
 	case *object.Instance:
 		obj := obj.(*object.Instance)
 		if fn, ok := obj.Class.Scope.Get(method.(*ast.Identifier).Value); ok {

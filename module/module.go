@@ -1,6 +1,8 @@
 package module
 
-import "github.com/oldjun/pi/object"
+import (
+	"github.com/oldjun/pi/object"
+)
 
 var Map = map[string]*object.Module{}
 
@@ -9,4 +11,5 @@ func init() {
 	Map["time"] = &object.Module{Name: "time", Functions: TimeFunctions, Properties: TimeProperties}
 	Map["math"] = &object.Module{Name: "math", Functions: MathFunctions, Properties: MathProperties}
 	Map["json"] = &object.Module{Name: "json", Functions: JsonFunctions, Properties: JsonProperties}
+	Map["sync"] = &object.Module{Name: "sync", Functions: SyncFunctions, Properties: SyncProperties}
 }
