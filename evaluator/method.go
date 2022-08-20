@@ -37,8 +37,11 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 			return fn(args)
 		}
 	case *object.SyncAwait:
-		obj := obj.(*object.SyncAwait)
-		return obj.Method(method.(*ast.Identifier).Value, args)
+		await := obj.(*object.SyncAwait)
+		return await.Method(method.(*ast.Identifier).Value, args)
+	case *object.SyncMutex:
+		mutex := obj.(*object.SyncMutex)
+		return mutex.Method(method.(*ast.Identifier).Value, args)
 	case *object.Instance:
 		obj := obj.(*object.Instance)
 		if fn, ok := obj.Class.Scope.Get(method.(*ast.Identifier).Value); ok {

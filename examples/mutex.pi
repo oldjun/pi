@@ -1,0 +1,19 @@
+
+import sync
+
+aw = sync.await()
+mt = sync.mutex()
+
+sum = 0
+for i = 0; i < 10; i++ {
+    aw.add(1)
+	async func(x, aw, mt) {
+        mt.lock()
+		sum += x
+        mt.unlock()
+        aw.done()
+	}(i, aw, mt)
+}
+
+aw.wait()
+print("sum =", sum)

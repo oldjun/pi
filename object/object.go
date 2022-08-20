@@ -24,6 +24,7 @@ const (
 	THIS       = "THIS"
 	MODULE     = "MODULE"
 	SYNC_AWAIT = "SYNC_AWAIT"
+	SYNC_MUTEX = "SYNC_MUTEX"
 )
 
 type Object interface {

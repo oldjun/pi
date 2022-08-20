@@ -1,21 +1,14 @@
 
-import time
 import sync
 
-func foo(wg, x) {
-	time.sleep(1000)
-	print(x)
-	wg.done()
-}
+aw = sync.await()
 
-await = sync.await()
-
-start_time = time.time()
 for i = 0; i < 10; i++ {
-	await.add(1)
-	async foo(await, i)
+    aw.add(1)
+    async func(x, aw) {
+        print(x)
+        aw.done()
+    }(i, aw)
 }
-await.wait()
-end_time = time.time()
 
-print("cost time:", end_time - start_time)
+aw.wait()

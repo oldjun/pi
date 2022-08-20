@@ -23,7 +23,7 @@ func (s *SyncAwait) Method(method string, args []Object) Object {
 	case "wait":
 		return s.wait(args)
 	}
-	return nil
+	return NewError("sync await undefined method: %s", method)
 }
 
 func (s *SyncAwait) add(args []Object) Object {

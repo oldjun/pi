@@ -13,6 +13,7 @@ var SyncFunctions = map[string]object.ModuleFunction{}
 
 func init() {
 	SyncFunctions["await"] = await
+	SyncFunctions["mutex"] = mutex
 }
 
 func await(args []object.Object) object.Object {
@@ -20,4 +21,11 @@ func await(args []object.Object) object.Object {
 		return object.NewError("wrong number of arguments. sync.await() got=%d", len(args))
 	}
 	return &object.SyncAwait{Value: &sync.WaitGroup{}}
+}
+
+func mutex(args []object.Object) object.Object {
+	if len(args) != 0 {
+		return object.NewError("wrong number of arguments. sync.mutex() got=%d", len(args))
+	}
+	return &object.SyncMutex{Value: &sync.Mutex{}}
 }

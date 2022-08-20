@@ -8,6 +8,7 @@ import (
 func evalAsync(node *ast.Async, env *object.Environment) object.Object {
 	switch call := node.Call.(type) {
 	case *ast.Call:
+		//scope := object.NewEnclosedEnvironment(env)
 		scope := object.NewEnvironment(env.GetDirectory())
 		for key, val := range env.All() {
 			scope.Set(key, val)
