@@ -79,7 +79,7 @@ func evalArgumentExpressions(node *ast.Call, fn *object.Function, env *object.En
 	}
 
 	var result []object.Object
-	params := make(map[string]bool)
+	var params = map[string]bool{}
 	for _, exp := range fn.Parameters {
 		params[exp.Value] = true
 		if len(argsList.Elements) > 0 {

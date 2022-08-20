@@ -97,7 +97,6 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.FOR, p.parseFor)
 	p.registerPrefix(token.SWITCH, p.parseSwitch)
 	p.registerPrefix(token.FUNCTION, p.parseFunction)
-	p.registerPrefix(token.ARGUMENTS, p.parseArguments)
 	p.registerPrefix(token.STRING, p.parseString)
 	p.registerPrefix(token.AT, p.parseDecorator)
 	p.registerPrefix(token.CLASS, p.parseClass)

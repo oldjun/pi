@@ -66,7 +66,6 @@ const (
 	BIT_XOR_ASSIGN    = "^="
 	BIT_RIGHT_SHIFT   = ">>"
 	BIT_LEFT_SHIFT    = "<<"
-	ARGUMENTS         = "..."
 	SWITCH            = "SWITCH"
 	CASE              = "CASE"
 	DEFAULT           = "DEFAULT"
