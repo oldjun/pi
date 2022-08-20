@@ -1,0 +1,24 @@
+
+func sum(*args) {
+	total = 0
+	for arg in args {
+		total += arg
+	}
+	return total
+}
+
+list = [1, 2, 3]
+total = sum(*list)
+print(total)
+
+
+func foo(x, y, z, name, *args, **kwargs) {
+	print(x, y, z)
+	print(name)
+	print(args)
+	print(kwargs)
+}
+
+list = [1, 2, 3]
+hash = {'name': 'jack', 'age': 18}
+foo(*list, **hash)

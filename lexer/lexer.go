@@ -194,7 +194,15 @@ func (l *Lexer) NextToken() token.Token {
 	case '?':
 		tok = l.newToken(token.QUESTION, string(l.ch))
 	case '.':
-		tok = l.newToken(token.DOT, string(l.ch))
+		if l.peekChar() == '.' {
+			l.readChar()
+			if l.peekChar() == '.' {
+				l.readChar()
+				tok = l.newToken(token.ARGUMENTS, "...")
+			}
+		} else {
+			tok = l.newToken(token.DOT, string(l.ch))
+		}
 	case 0:
 		tok = l.newToken(token.EOF, "")
 	default:

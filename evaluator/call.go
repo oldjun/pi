@@ -3,6 +3,7 @@ package evaluator
 import (
 	"github.com/oldjun/pi/ast"
 	"github.com/oldjun/pi/object"
+	"github.com/oldjun/pi/token"
 )
 
 func evalCall(node *ast.Call, env *object.Environment) object.Object {
@@ -50,6 +51,24 @@ func evalArgumentExpressions(node *ast.Call, fn *object.Function, env *object.En
 			keyHash = key.HashKey()
 			pair := object.HashPair{Key: key, Value: val}
 			argsHash.Pairs[keyHash] = pair
+		case *ast.Prefix:
+			if e.Operator == token.ASTERISK {
+				list := Eval(e.Right, env)
+				if isError(list) {
+					return []object.Object{list}
+				}
+				for _, elem := range list.(*object.List).Elements {
+					argsList.Elements = append(argsList.Elements, elem)
+				}
+			} else if e.Operator == token.ASTERISK_ASTERISK {
+				hash := Eval(e.Right, env)
+				if isError(hash) {
+					return []object.Object{hash}
+				}
+				for hashKey, pair := range hash.(*object.Hash).Pairs {
+					argsHash.Pairs[hashKey] = object.HashPair{Key: pair.Key, Value: pair.Value}
+				}
+			}
 		default:
 			evaluated := Eval(e, env)
 			if isError(evaluated) {
