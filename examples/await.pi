@@ -8,14 +8,14 @@ func foo(wg, x) {
 	wg.done()
 }
 
-wg = sync.wait_group()
+await = sync.await()
 
 start_time = time.time()
 for i = 0; i < 10; i++ {
-	wg.add(1)
-	async foo(wg, i)
+	await.add(1)
+	async foo(await, i)
 }
-wg.wait()
+await.wait()
 end_time = time.time()
 
 print("cost time:", end_time - start_time)

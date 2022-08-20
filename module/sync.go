@@ -12,12 +12,12 @@ var SyncProperties = map[string]object.ModuleProperty{}
 var SyncFunctions = map[string]object.ModuleFunction{}
 
 func init() {
-	SyncFunctions["wait_group"] = waitGroup
+	SyncFunctions["await"] = await
 }
 
-func waitGroup(args []object.Object) object.Object {
+func await(args []object.Object) object.Object {
 	if len(args) != 0 {
-		return object.NewError("wrong number of arguments. sync.wait_group() got=%d", len(args))
+		return object.NewError("wrong number of arguments. sync.await() got=%d", len(args))
 	}
-	return &object.SyncWaitGroup{Value: &sync.WaitGroup{}}
+	return &object.SyncAwait{Value: &sync.WaitGroup{}}
 }
