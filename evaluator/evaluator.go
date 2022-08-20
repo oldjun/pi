@@ -103,6 +103,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalImport(node, env)
 	case *ast.Switch:
 		return evalSwitch(node, env)
+	case *ast.Async:
+		return evalAsync(node, env)
 	case *ast.Break:
 		return evalBreak(node)
 	case *ast.Continue:

@@ -33,7 +33,5 @@ func evalCompound(node *ast.Compound, env *object.Environment) object.Object {
 	case *ast.PropertyExpression:
 		return evalPropertyAssignment(nodeLeft, val, env)
 	}
-	//// otherwise
-	//env.Set(node.Left.String(), val)
 	return NULL
 }

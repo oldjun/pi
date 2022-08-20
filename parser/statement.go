@@ -13,6 +13,8 @@ func (p *Parser) parseStatement() ast.Statement {
 		return p.parseBreak()
 	case token.CONTINUE:
 		return p.parseContinue()
+	case token.ASYNC:
+		return p.parseAsync()
 	default:
 		return p.parseExpressionStatement()
 	}
