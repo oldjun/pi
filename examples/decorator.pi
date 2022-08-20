@@ -24,6 +24,31 @@ func hello() {
 
 hello()
 
+func decor1(fn) {
+	return func(*args, **kwargs) {
+		print('decor1 before')
+		fn(*args, **kwargs)
+		print('decor1 after')
+	}
+}
+
+func decor2(fn) {
+	return func(*args, **kwargs) {
+		print('decor2 before')
+		fn(*args, **kwargs)
+		print('decor2 after')
+	}
+}
+
+@decor1
+@decor2
+func hello(*args, **kwargs) {
+	print(args)
+	print(kwargs)
+}
+
+hello(1, 2, 3, name='jack', age=18)
+
 
 func decor(fn) {
     func wrapper() {
