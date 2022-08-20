@@ -1,0 +1,21 @@
+
+import time
+import sync
+
+func foo(wg, x) {
+	time.sleep(1000)
+	print(x)
+	wg.done()
+}
+
+wg = sync.wait_group()
+
+start_time = time.time()
+for i = 0; i < 10; i++ {
+	wg.add(1)
+	async foo(wg, i)
+}
+wg.wait()
+end_time = time.time()
+
+print("cost time:", end_time - start_time)
