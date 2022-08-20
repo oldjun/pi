@@ -59,6 +59,41 @@ func decor(fn) {
     return wrapper
 }
 
+
+import time
+
+func retry(num, seconds) {
+	return func(fn) {
+		return func(*args, **kwargs) {
+			for i = 0; i < num; i++ {
+				fn(*args, **kwargs)
+				if seconds > 0 {
+					time.sleep(seconds * 1000)
+				}
+			}
+		}
+	}
+}
+
+func decor(fn) {
+	return func(*args, **kwargs) {
+		print('decor before')
+		fn(*args, **kwargs)
+		print('decor after')
+	}
+}
+
+@retry(num=3, seconds=1)
+@decor
+func hello(*args, **kwargs) {
+	print(args)
+	print(kwargs)
+}
+
+hello(1, 2, 3, name='jack', age=18)
+
+
+
 class Foo {
     func __init__(name) {
         this.name = name
