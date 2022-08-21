@@ -24,6 +24,10 @@ func (c *TcpConnection) Method(method string, args []Object) Object {
 		return c.send(args)
 	case "close":
 		return c.close(args)
+	case "set_send_buffer":
+		return c.setSendBuffer(args)
+	case "set_read_buffer":
+		return c.setReadBuffer(args)
 	case "set_keep_alive":
 		return c.setKeepAlive(args)
 	case "set_keep_alive_time":
@@ -82,6 +86,36 @@ func (c *TcpConnection) close(args []Object) Object {
 		return NewError("tcp_conn.close() error: %s", err.Error())
 	}
 	return &Null{}
+}
+
+func (c *TcpConnection) setSendBuffer(args []Object) Object {
+	if len(args) != 1 {
+		return NewError("wrong number of arguments. tcp_conn.set_send_buffer() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		err := c.Handler.SetWriteBuffer(int(arg.Value))
+		if err != nil {
+			return NewError("tcp_conn.set_send_buffer() error: %s", err.Error())
+		}
+		return &Null{}
+	}
+	return NewError("wrong type of arguments. tcp_conn.set_send_buffer(): %s", args[0].Type())
+}
+
+func (c *TcpConnection) setReadBuffer(args []Object) Object {
+	if len(args) != 1 {
+		return NewError("wrong number of arguments. tcp_conn.set_read_buffer() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		err := c.Handler.SetReadBuffer(int(arg.Value))
+		if err != nil {
+			return NewError("tcp_conn.set_read_buffer() error: %s", err.Error())
+		}
+		return &Null{}
+	}
+	return NewError("wrong type of arguments. tcp_conn.set_read_buffer(): %s", args[0].Type())
 }
 
 func (c *TcpConnection) setKeepAlive(args []Object) Object {
