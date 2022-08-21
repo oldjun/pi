@@ -30,6 +30,7 @@ func init() {
 	Builtins["type"] = &Builtin{Name: "type", Fn: typeFunction}
 	Builtins["open"] = &Builtin{Name: "open", Fn: openFunction}
 	Builtins["exit"] = &Builtin{Name: "exit", Fn: exitFunction}
+	Builtins["bytes"] = &Builtin{Name: "bytes", Fn: bytesFunction}
 	Builtins["print"] = &Builtin{Name: "print", Fn: printFunction}
 	Builtins["printf"] = &Builtin{Name: "printf", Fn: printfFunction}
 	Builtins["sprintf"] = &Builtin{Name: "sprintf", Fn: sprintfFunction}
@@ -210,4 +211,21 @@ func exitFunction(args []Object) Object {
 		os.Exit(int(arg.Value))
 	}
 	return NewError("wrong type of arguments. exit() got=%s", args[0].Type())
+}
+
+func bytesFunction(args []Object) Object {
+	size := 0
+	if len(args) == 1 {
+		switch arg := args[0].(type) {
+		case *Integer:
+			size = int(arg.Value)
+		default:
+			return NewError("wrong type of arguments. byte(): %s", arg.Type())
+		}
+	}
+	if len(args) > 1 {
+		return NewError("wrong number of arguments. byte() got=%d", len(args))
+	}
+	val := make([]byte, size)
+	return &Bytes{Value: val}
 }
