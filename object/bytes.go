@@ -3,8 +3,7 @@ package object
 import "bytes"
 
 type Bytes struct {
-	Value  []byte
-	offset int
+	Value []byte
 }
 
 func (b *Bytes) Type() Type { return BYTES }
