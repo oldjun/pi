@@ -1,0 +1,14 @@
+
+hello = bytes("hello")
+print(type(hello), len(hello), str(hello))
+
+hello.append("hello")
+print(type(hello), len(hello), str(hello))
+
+buf = bytes()
+print(type(buf), len(buf), str(buf))
+
+buf.append(hello)
+buf.append(" world")
+buf.append(65)
+print(type(buf), len(buf), str(buf))

@@ -214,18 +214,17 @@ func exitFunction(args []Object) Object {
 }
 
 func bytesFunction(args []Object) Object {
-	size := 0
-	if len(args) == 1 {
-		switch arg := args[0].(type) {
-		case *Integer:
-			size = int(arg.Value)
-		default:
-			return NewError("wrong type of arguments. byte(): %s", arg.Type())
-		}
+	if len(args) == 0 {
+		return &Bytes{}
 	}
-	if len(args) > 1 {
-		return NewError("wrong number of arguments. byte() got=%d", len(args))
+	if len(args) != 1 {
+		return NewError("wrong number of arguments. bytes() got=%d", len(args))
 	}
-	val := make([]byte, size)
-	return &Bytes{Value: val}
+	switch arg := args[0].(type) {
+	case *String:
+		bytes := &Bytes{}
+		bytes.Value = append(bytes.Value, []byte(arg.Value)...)
+		return bytes
+	}
+	return NewError("wrong type of arguments. bytes(): %s", args[0].Type())
 }
