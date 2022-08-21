@@ -1,6 +1,7 @@
 package object
 
 import (
+	"bytes"
 	"fmt"
 	"net"
 )
@@ -36,7 +37,8 @@ func (c *TcpConnection) read(args []Object) Object {
 		if err != nil {
 			return &Bytes{}
 		}
-		return &Bytes{Value: buf}
+		idx := bytes.IndexByte(buf, 0)
+		return &Bytes{Value: buf[0:idx]}
 	}
 	return NewError("wrong type of arguments. tcp_conn.read(): %s", args[0].Type())
 }
