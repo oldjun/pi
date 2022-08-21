@@ -10,3 +10,5 @@ print(str(data)
 client.send("world")
 data = client.read(64)
 print(str(data))
+
+client.close()
