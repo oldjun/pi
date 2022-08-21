@@ -34,7 +34,7 @@ func (c *TcpConnection) read(args []Object) Object {
 		buf := make([]byte, size)
 		_, err := c.Handler.Read(buf)
 		if err != nil {
-			return &Bytes{Value: make([]byte, 0)}
+			return &Bytes{}
 		}
 		return &Bytes{Value: buf}
 	}
