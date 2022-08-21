@@ -32,6 +32,10 @@ func (c *TcpConnection) Method(method string, args []Object) Object {
 		return c.setKeepAlive(args)
 	case "set_keep_alive_time":
 		return c.setKeepAliveTime(args)
+	case "set_linger":
+		return c.setLinger(args)
+	case "set_no_delay":
+		return c.setNoDelay(args)
 	}
 	return NewError("tcp_conn undefined method: %s", method)
 }
@@ -146,4 +150,34 @@ func (c *TcpConnection) setKeepAliveTime(args []Object) Object {
 		return &Null{}
 	}
 	return NewError("wrong type of arguments. tcp_conn.set_keep_alive_time(): %s", args[0].Type())
+}
+
+func (c *TcpConnection) setLinger(args []Object) Object {
+	if len(args) != 1 {
+		return NewError("wrong number of arguments. tcp_conn.set_linger() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Integer:
+		err := c.Handler.SetLinger(int(arg.Value))
+		if err != nil {
+			return NewError("tcp_conn.set_linger() error: %s", err.Error())
+		}
+		return &Null{}
+	}
+	return NewError("wrong type of arguments. tcp_conn.set_linger(): %s", args[0].Type())
+}
+
+func (c *TcpConnection) setNoDelay(args []Object) Object {
+	if len(args) != 1 {
+		return NewError("wrong number of arguments. tcp_conn.set_no_delay() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *Boolean:
+		err := c.Handler.SetNoDelay(arg.Value)
+		if err != nil {
+			return NewError("tcp_conn.set_no_delay() error: %s", err.Error())
+		}
+		return &Null{}
+	}
+	return NewError("wrong type of arguments. tcp_conn.set_no_delay(): %s", args[0].Type())
 }
