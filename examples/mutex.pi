@@ -1,19 +1,35 @@
 
+import time
 import sync
 
-aw = sync.await()
-mt = sync.mutex()
+class Foo {
+    func __init__() {
+        this.total = 0
+    }
 
-sum = 0
+    func add(x) {
+        this.total += x
+    }
+
+    func total() {
+        return this.total
+    }
+}
+
+foo = Foo()
+
+mt = sync.mutex()
+aw = sync.await()
+
 for i = 0; i < 10; i++ {
     aw.add(1)
-	async func(x, aw, mt) {
+    async func(x, foo, mt, aw) {
         mt.lock()
-		sum += x
+        foo.add(x)
         mt.unlock()
         aw.done()
-	}(i, aw, mt)
+    }(i, foo, mt, aw)
 }
 
 aw.wait()
-print("sum =", sum)
+print(foo.total())
