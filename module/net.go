@@ -22,19 +22,29 @@ func listen(args []object.Object) object.Object {
 	}
 	network := args[0].(*object.String).Value
 	address := args[1].(*object.String).Value
-	addr, err := net.ResolveTCPAddr(network, address)
-	if err != nil {
-		return object.NewError("net.resolve tcp addr error: %s", err.Error())
-	}
 	switch network {
-	case "tcp", "tcp4", "tcp6":
+	case "tcp":
+		addr, err := net.ResolveTCPAddr(network, address)
+		if err != nil {
+			return object.NewError("net.resolve tcp addr error: %s", err.Error())
+		}
 		listener, err := net.ListenTCP(network, addr)
 		if err != nil {
 			return object.NewError("net.listen error: %s", err.Error())
 		}
 		return &object.TcpListener{Handler: listener}
+	case "unix":
+		addr, err := net.ResolveUnixAddr(network, address)
+		if err != nil {
+			return object.NewError("net.resolve unix addr error: %s", err.Error())
+		}
+		listener, err := net.ListenUnix(network, addr)
+		if err != nil {
+			return object.NewError("net.listen error: %s", err.Error())
+		}
+		return &object.UnixListener{Handler: listener}
 	}
-	return object.NewError("net.listen network error: %s", network)
+	return object.NewError("net.listen network type error: %s", network)
 }
 
 func connect(args []object.Object) object.Object {
@@ -43,17 +53,27 @@ func connect(args []object.Object) object.Object {
 	}
 	network := args[0].(*object.String).Value
 	address := args[1].(*object.String).Value
-	addr, err := net.ResolveTCPAddr(network, address)
-	if err != nil {
-		return object.NewError("net.resolve tcp addr error: %s", err.Error())
-	}
 	switch network {
-	case "tcp", "tcp4", "tcp6":
+	case "tcp":
+		addr, err := net.ResolveTCPAddr(network, address)
+		if err != nil {
+			return object.NewError("net.resolve tcp addr error: %s", err.Error())
+		}
 		conn, err := net.DialTCP(network, nil, addr)
 		if err != nil {
 			return object.NewError("net.connect error: %s", err.Error())
 		}
 		return &object.TcpConnection{Handler: conn}
+	case "unix":
+		addr, err := net.ResolveUnixAddr(network, address)
+		if err != nil {
+			return object.NewError("net.resolve unix addr error: %s", err.Error())
+		}
+		conn, err := net.DialUnix(network, nil, addr)
+		if err != nil {
+			return object.NewError("net.connect error: %s", err.Error())
+		}
+		return &object.UnixConnection{Handler: conn}
 	}
 	return object.NewError("net.connect network error: %s", network)
 }

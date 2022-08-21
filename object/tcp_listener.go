@@ -18,6 +18,8 @@ func (l *TcpListener) Method(method string, args []Object) Object {
 	switch method {
 	case "accept":
 		return l.accept(args)
+	case "close":
+		return l.close(args)
 	}
 	return NewError("tcp listener undefined method: %s", method)
 }
@@ -31,4 +33,15 @@ func (l *TcpListener) accept(args []Object) Object {
 		return NewError("tcp_listener.accept() error got=%v", err.Error())
 	}
 	return &TcpConnection{Handler: conn}
+}
+
+func (l *TcpListener) close(args []Object) Object {
+	if len(args) != 0 {
+		return NewError("wrong number of arguments. tcp_listener.close() got=%d", len(args))
+	}
+	err := l.Handler.Close()
+	if err != nil {
+		return NewError("tcp_listener.close() error: %s", err.Error())
+	}
+	return &Null{}
 }

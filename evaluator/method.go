@@ -51,6 +51,12 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 	case *object.TcpConnection:
 		conn := obj.(*object.TcpConnection)
 		return conn.Method(method.(*ast.Identifier).Value, args)
+	case *object.UnixListener:
+		listener := obj.(*object.UnixListener)
+		return listener.Method(method.(*ast.Identifier).Value, args)
+	case *object.UnixConnection:
+		conn := obj.(*object.UnixConnection)
+		return conn.Method(method.(*ast.Identifier).Value, args)
 	case *object.Instance:
 		obj := obj.(*object.Instance)
 		if fn, ok := obj.Class.Scope.Get(method.(*ast.Identifier).Value); ok {
