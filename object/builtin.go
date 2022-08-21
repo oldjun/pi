@@ -26,7 +26,7 @@ func init() {
 	Builtins["len"] = &Builtin{Name: "len", Fn: lenFunction}
 	Builtins["int"] = &Builtin{Name: "int", Fn: intFunction}
 	Builtins["float"] = &Builtin{Name: "float", Fn: floatFunction}
-	Builtins["string"] = &Builtin{Name: "string", Fn: stringFunction}
+	Builtins["str"] = &Builtin{Name: "str", Fn: strFunction}
 	Builtins["type"] = &Builtin{Name: "type", Fn: typeFunction}
 	Builtins["open"] = &Builtin{Name: "open", Fn: openFunction}
 	Builtins["exit"] = &Builtin{Name: "exit", Fn: exitFunction}
@@ -41,6 +41,8 @@ func lenFunction(args []Object) Object {
 	}
 	switch arg := args[0].(type) {
 	case *String:
+		return &Integer{Value: int64(len(arg.Value))}
+	case *Bytes:
 		return &Integer{Value: int64(len(arg.Value))}
 	case *List:
 		return &Integer{Value: int64(len(arg.Elements))}
@@ -86,9 +88,9 @@ func floatFunction(args []Object) Object {
 	return NewError("argument to `float` not supported, got %s", args[0].Type())
 }
 
-func stringFunction(args []Object) Object {
+func strFunction(args []Object) Object {
 	if len(args) != 1 {
-		return NewError("wrong number of arguments. string() got=%d", len(args))
+		return NewError("wrong number of arguments. str() got=%d", len(args))
 	}
 	switch arg := args[0].(type) {
 	case *Integer:
@@ -97,8 +99,10 @@ func stringFunction(args []Object) Object {
 		return &String{Value: arg.String()}
 	case *String:
 		return &String{Value: arg.Value}
+	case *Bytes:
+		return &String{Value: arg.String()}
 	}
-	return NewError("argument to `string` not supported, got %s", args[0].Type())
+	return NewError("argument to `str()` not supported, got %s", args[0].Type())
 }
 
 func typeFunction(args []Object) Object {

@@ -31,12 +31,12 @@ func (c *TcpConnection) read(args []Object) Object {
 	switch arg := args[0].(type) {
 	case *Integer:
 		size := arg.Value
-		buffer := make([]byte, size)
-		_, err := c.Handler.Read(buffer)
+		buf := make([]byte, size)
+		_, err := c.Handler.Read(buf)
 		if err != nil {
-			return NewError("tcp_conn.read() error: %s", err.Error())
+			return &Bytes{Value: make([]byte, 0)}
 		}
-		return &String{Value: string(buffer)}
+		return &Bytes{Value: buf}
 	}
 	return NewError("wrong type of arguments. tcp_conn.read(): %s", args[0].Type())
 }
@@ -45,10 +45,21 @@ func (c *TcpConnection) send(args []Object) Object {
 	if len(args) != 1 {
 		return NewError("wrong number of arguments. tcp_conn.send() got=%d", len(args))
 	}
-	data := []byte(args[0].(*String).Value)
-	size, err := c.Handler.Write(data)
-	if err != nil {
-		return NewError("tcp_conn.send() error: %s", err.Error())
+	switch arg := args[0].(type) {
+	case *Bytes:
+		data := arg.Value
+		size, err := c.Handler.Write(data)
+		if err != nil {
+			return NewError("tcp_conn.send() error: %s", err.Error())
+		}
+		return &Integer{Value: int64(size)}
+	case *String:
+		data := []byte(arg.Value)
+		size, err := c.Handler.Write(data)
+		if err != nil {
+			return NewError("tcp_conn.send() error: %s", err.Error())
+		}
+		return &Integer{Value: int64(size)}
 	}
-	return &Integer{Value: int64(size)}
+	return NewError("wrong type of arguments. tcp_conn.send(): %s", args[0].Type())
 }

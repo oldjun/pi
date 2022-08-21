@@ -9,6 +9,7 @@ const (
 	BOOLEAN  = "BOOLEAN"
 	INTEGER  = "INTEGER"
 	FLOAT    = "FLOAT"
+	BYTES    = "BYTES"
 	STRING   = "STRING"
 	RETURN   = "RETURN"
 	ERROR    = "ERROR"

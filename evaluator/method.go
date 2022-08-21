@@ -28,6 +28,9 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 	case *object.String:
 		str := obj.(*object.String)
 		return str.Method(method.(*ast.Identifier).Value, args)
+	case *object.Bytes:
+		bytes := obj.(*object.Bytes)
+		return bytes.Method(method.(*ast.Identifier).Value, args)
 	case *object.File:
 		file := obj.(*object.File)
 		return file.Method(method.(*ast.Identifier).Value, args)
