@@ -18,47 +18,23 @@ func evalMethod(node *ast.Method, env *object.Environment) object.Object {
 }
 
 func applyMethod(obj object.Object, method ast.Expression, args []object.Object) object.Object {
-	switch obj.(type) {
+	switch obj := obj.(type) {
 	case *object.Hash:
-		hash := obj.(*object.Hash)
-		return hash.Method(method.(*ast.Identifier).Value, args)
+		return obj.Method(method.(*ast.Identifier).Value, args)
 	case *object.List:
-		list := obj.(*object.List)
-		return list.Method(method.(*ast.Identifier).Value, args)
+		return obj.Method(method.(*ast.Identifier).Value, args)
 	case *object.String:
-		str := obj.(*object.String)
-		return str.Method(method.(*ast.Identifier).Value, args)
+		return obj.Method(method.(*ast.Identifier).Value, args)
 	case *object.Bytes:
-		bytes := obj.(*object.Bytes)
-		return bytes.Method(method.(*ast.Identifier).Value, args)
+		return obj.Method(method.(*ast.Identifier).Value, args)
 	case *object.File:
-		file := obj.(*object.File)
-		return file.Method(method.(*ast.Identifier).Value, args)
+		return obj.Method(method.(*ast.Identifier).Value, args)
 	case *object.Module:
-		mod := obj.(*object.Module)
-		if fn, ok := mod.Functions[method.(*ast.Identifier).Value]; ok {
+		if fn, ok := obj.Functions[method.(*ast.Identifier).Value]; ok {
 			return fn(args)
 		}
-	case *object.SyncAwait:
-		await := obj.(*object.SyncAwait)
-		return await.Method(method.(*ast.Identifier).Value, args)
-	case *object.SyncMutex:
-		mutex := obj.(*object.SyncMutex)
-		return mutex.Method(method.(*ast.Identifier).Value, args)
-	case *object.TcpListener:
-		listener := obj.(*object.TcpListener)
-		return listener.Method(method.(*ast.Identifier).Value, args)
-	case *object.TcpConnection:
-		conn := obj.(*object.TcpConnection)
-		return conn.Method(method.(*ast.Identifier).Value, args)
-	case *object.UnixListener:
-		listener := obj.(*object.UnixListener)
-		return listener.Method(method.(*ast.Identifier).Value, args)
-	case *object.UnixConnection:
-		conn := obj.(*object.UnixConnection)
-		return conn.Method(method.(*ast.Identifier).Value, args)
+		return obj.Handler.Method(method.(*ast.Identifier).Value, args)
 	case *object.Instance:
-		obj := obj.(*object.Instance)
 		if fn, ok := obj.Class.Scope.Get(method.(*ast.Identifier).Value); ok {
 			fn.(*object.Function).Env.Set("this", obj)
 			ret := applyFunction(fn, args)

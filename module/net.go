@@ -1,6 +1,7 @@
 package module
 
 import (
+	module "github.com/oldjun/pi/module/net"
 	"github.com/oldjun/pi/object"
 	"net"
 )
@@ -32,7 +33,7 @@ func listen(args []object.Object) object.Object {
 		if err != nil {
 			return object.NewError("net.listen error: %s", err.Error())
 		}
-		return &object.TcpListener{Handler: listener}
+		return &object.Module{Name: "listener", Handler: &module.TcpListener{Handler: listener}}
 	case "unix":
 		addr, err := net.ResolveUnixAddr(network, address)
 		if err != nil {
@@ -42,7 +43,7 @@ func listen(args []object.Object) object.Object {
 		if err != nil {
 			return object.NewError("net.listen error: %s", err.Error())
 		}
-		return &object.UnixListener{Handler: listener}
+		return &object.Module{Name: "listener", Handler: &module.UnixListener{Handler: listener}}
 	}
 	return object.NewError("net.listen network type error: %s", network)
 }
@@ -63,7 +64,7 @@ func connect(args []object.Object) object.Object {
 		if err != nil {
 			return object.NewError("net.connect error: %s", err.Error())
 		}
-		return &object.TcpConnection{Handler: conn}
+		return &object.Module{Name: "connection", Handler: &module.TcpConnection{Handler: conn}}
 	case "unix":
 		addr, err := net.ResolveUnixAddr(network, address)
 		if err != nil {
@@ -73,7 +74,7 @@ func connect(args []object.Object) object.Object {
 		if err != nil {
 			return object.NewError("net.connect error: %s", err.Error())
 		}
-		return &object.UnixConnection{Handler: conn}
+		return &object.Module{Name: "connection", Handler: &module.UnixConnection{Handler: conn}}
 	}
 	return object.NewError("net.connect network error: %s", network)
 }
