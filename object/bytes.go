@@ -22,6 +22,8 @@ func (b *Bytes) Method(method string, args []Object) Object {
 		return b.str(args)
 	case "append":
 		return b.append(args)
+	case "clear":
+		return b.clear(args)
 	}
 	return nil
 }
@@ -54,4 +56,12 @@ func (b *Bytes) append(args []Object) Object {
 		return &Null{}
 	}
 	return NewError("wrong type of arguments. bytes.append(): ", args[0].Type())
+}
+
+func (b *Bytes) clear(args []Object) Object {
+	if len(args) != 0 {
+		return NewError("wrong number of arguments. bytes.clear() got=%d", len(args))
+	}
+	b.Value = []byte{}
+	return &Null{}
 }
