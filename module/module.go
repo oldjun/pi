@@ -13,4 +13,5 @@ func init() {
 	Map["math"] = &object.Module{Name: "math", Functions: MathFunctions, Properties: MathProperties}
 	Map["json"] = &object.Module{Name: "json", Functions: JsonFunctions, Properties: JsonProperties}
 	Map["sync"] = &object.Module{Name: "sync", Functions: SyncFunctions, Properties: SyncProperties}
+	Map["regexp"] = &object.Module{Name: "regexp", Functions: RegexpFunctions, Properties: RegexpProperties}
 }

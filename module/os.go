@@ -57,7 +57,7 @@ func getwd(args []object.Object) object.Object {
 	}
 	path, ok := os.Getwd()
 	if ok != nil {
-		return object.NewError("error os.getwd() got=%s", ok.Error())
+		return object.NewError("os.getwd() error got=%s", ok.Error())
 	}
 	return &object.String{Value: path}
 }

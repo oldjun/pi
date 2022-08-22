@@ -1,0 +1,46 @@
+import regexp
+
+pattern = "g([a-z]+)ng"
+target = "money gong, shit"
+b = regexp.match(pattern, target)
+if b {
+	print("matched")
+} else {
+	print("not matched")
+}
+
+s = regexp.find(pattern, target)
+if s != "" {
+	printf("matched: %s", s)
+} else {
+	print("not matched")
+}
+
+pos = regexp.index(pattern, target)
+if pos != null {
+	print(pos)
+} else {
+	print("not matched")
+}
+
+re = regexp.compile(pattern)
+b = re.match(target)
+if b {
+	print("matched")
+} else {
+	print("not matched")
+}
+
+s = re.find(target)
+if s != "" {
+	printf("matched: %s", s)
+} else {
+	print("not matched")
+}
+
+s = re.index(target)
+if s != null {
+	print(target[s[0]:s[1]])
+} else {
+	print("not matched")
+}
