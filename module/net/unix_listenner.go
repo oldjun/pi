@@ -27,7 +27,7 @@ func (l *UnixListener) accept(args []object.Object) object.Object {
 	if err != nil {
 		return object.NewError("unix_listener.accept() error: %s", err.Error())
 	}
-	return &object.Module{Name: "connection", Handler: &UnixConnection{Handler: conn}}
+	return &object.Symbol{Name: "connection", Handler: &UnixConnection{Handler: conn}}
 }
 
 func (l *UnixListener) close(args []object.Object) object.Object {

@@ -33,6 +33,7 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object)
 		if fn, ok := obj.Functions[method.(*ast.Identifier).Value]; ok {
 			return fn(args)
 		}
+	case *object.Symbol:
 		return obj.Handler.Method(method.(*ast.Identifier).Value, args)
 	case *object.Instance:
 		if fn, ok := obj.Class.Scope.Get(method.(*ast.Identifier).Value); ok {

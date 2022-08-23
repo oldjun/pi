@@ -27,7 +27,7 @@ func (l *TcpListener) accept(args []object.Object) object.Object {
 	if err != nil {
 		return object.NewError("tcp_listener.accept() error got=%v", err.Error())
 	}
-	return &object.Module{Name: "connection", Handler: &TcpConnection{Handler: conn}}
+	return &object.Symbol{Name: "connection", Handler: &TcpConnection{Handler: conn}}
 }
 
 func (l *TcpListener) close(args []object.Object) object.Object {

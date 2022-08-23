@@ -5,7 +5,7 @@ client = net.connect("tcp", "127.0.0.1:8000")
 
 client.send("hello")
 data = client.read(64)
-print(str(data)
+print(str(data))
 
 client.send("world")
 data = client.read(64)
