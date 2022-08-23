@@ -15,6 +15,8 @@ func (p *Parser) parseStatement() ast.Statement {
 		return p.parseContinue()
 	case token.ASYNC:
 		return p.parseAsync()
+	case token.DEFER:
+		return p.parseDefer()
 	default:
 		return p.parseExpressionStatement()
 	}

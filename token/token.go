@@ -76,6 +76,7 @@ const (
 	IMPORT            = "IMPORT"
 	AS                = "as"
 	ASYNC             = "async"
+	DEFER             = "defer"
 )
 
 var keywords = map[string]Type{
@@ -101,6 +102,7 @@ var keywords = map[string]Type{
 	"import":   IMPORT,
 	"as":       AS,
 	"async":    ASYNC,
+	"defer":    DEFER,
 }
 
 type Token struct {

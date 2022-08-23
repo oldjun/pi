@@ -1,0 +1,24 @@
+
+class Foo {
+	func __init__(name) {
+		this.name = name
+	}
+
+	func show() {
+		print(this.name)
+	}
+}
+
+func foo() {
+	f = Foo("jack")
+	defer func() {
+		print("foo")
+		return
+		print("yes")
+	}()
+	defer f.show()
+	defer print("hello")
+	print("123")
+}
+
+foo()
