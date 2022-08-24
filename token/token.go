@@ -5,9 +5,9 @@ type Type string
 const (
 	ILLEGAL           = "ILLEGAL"
 	EOF               = "EOF"
-	IDENTIFIER        = "IDENTIFIER" // add, foobar, x, y, ...
-	INT               = "INT"        // 123
-	FLOAT             = "FLOAT"      // 1.23
+	IDENTIFIER        = "IDENTIFIER"
+	INT               = "INT"
+	FLOAT             = "FLOAT"
 	STRING            = "STRING"
 	ASSIGN            = "="
 	PLUS              = "+"
