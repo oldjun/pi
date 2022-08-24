@@ -6,6 +6,6 @@ import (
 
 type Hash struct {
 	Expression
-	token.Token // the '{' token
-	Pairs       map[Expression]Expression
+	Token token.Token // the '{' token
+	Pairs map[Expression]Expression
 }

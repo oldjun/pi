@@ -6,6 +6,6 @@ import (
 
 type List struct {
 	Expression
-	token.Token // the '[' token
-	Elements    []Expression
+	Token    token.Token // the '[' token
+	Elements []Expression
 }
