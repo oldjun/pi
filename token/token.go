@@ -74,9 +74,9 @@ const (
 	SUPER             = "SUPER"
 	FROM              = "FROM"
 	IMPORT            = "IMPORT"
-	AS                = "as"
-	ASYNC             = "async"
-	DEFER             = "defer"
+	AS                = "AS"
+	ASYNC             = "ASYNC"
+	DEFER             = "DEFER"
 )
 
 var keywords = map[string]Type{
