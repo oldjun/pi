@@ -5,8 +5,8 @@ import (
 )
 
 type Scenario struct {
-	Condition   Expression
-	Consequence *Block
+	Condition Expression
+	Block     *Block
 }
 
 type If struct {

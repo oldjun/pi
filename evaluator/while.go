@@ -11,7 +11,7 @@ func evalWhile(we *ast.While, env *object.Environment) object.Object {
 		return condition
 	}
 	if isTruthy(condition) {
-		evaluated := Eval(we.Consequence, env)
+		evaluated := Eval(we.Block, env)
 		if isError(evaluated) {
 			return evaluated
 		}

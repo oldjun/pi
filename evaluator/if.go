@@ -12,7 +12,7 @@ func evalIf(ie *ast.If, env *object.Environment) object.Object {
 			return condition
 		}
 		if isTruthy(condition) {
-			return Eval(scenario.Consequence, env)
+			return Eval(scenario.Block, env)
 		}
 	}
 	return NULL

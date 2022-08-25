@@ -15,7 +15,7 @@ func (p *Parser) parseIf() ast.Expression {
 	if !p.expectPeek(token.LBRACE) {
 		return nil
 	}
-	scenario.Consequence = p.parseBlock()
+	scenario.Block = p.parseBlock()
 	scenarios = append(scenarios, scenario)
 	// If we encounter ELSEs then let's add more
 	// scenarios to our expression.
@@ -34,7 +34,7 @@ func (p *Parser) parseIf() ast.Expression {
 			tok := &token.Token{Type: token.LookupIdent("true"), Literal: "true"}
 			scenario.Condition = &ast.Boolean{Token: *tok, Value: true}
 		}
-		scenario.Consequence = p.parseBlock()
+		scenario.Block = p.parseBlock()
 		scenarios = append(scenarios, scenario)
 	}
 	expression.Scenarios = scenarios

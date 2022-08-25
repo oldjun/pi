@@ -12,6 +12,6 @@ func (p *Parser) parseWhile() ast.Expression {
 	if !p.expectPeek(token.LBRACE) {
 		return nil
 	}
-	expression.Consequence = p.parseBlock()
+	expression.Block = p.parseBlock()
 	return expression
 }
