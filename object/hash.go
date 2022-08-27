@@ -73,6 +73,8 @@ func (h *Hash) Reset() {
 
 func (h *Hash) Method(method string, args []Object) Object {
 	switch method {
+	case "len":
+		return h.len(args)
 	case "keys":
 		return h.keys(args)
 	case "values":
@@ -95,6 +97,13 @@ func (h *Hash) Method(method string, args []Object) Object {
 		return h.json(args)
 	}
 	return nil
+}
+
+func (h *Hash) len(args []Object) Object {
+	if len(args) != 0 {
+		return NewError("wrong number of arguments. hash.len() got=%d", len(args))
+	}
+	return &Integer{Value: int64(len(h.Pairs))}
 }
 
 func (h *Hash) keys(args []Object) Object {

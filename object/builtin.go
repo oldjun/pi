@@ -47,6 +47,8 @@ func lenFunction(args []Object) Object {
 		return &Integer{Value: int64(len(arg.Value))}
 	case *List:
 		return &Integer{Value: int64(len(arg.Elements))}
+	case *Hash:
+		return &Integer{Value: int64(len(arg.Pairs))}
 	}
 	return NewError("argument to `len` not supported, got %s", args[0].Type())
 }
