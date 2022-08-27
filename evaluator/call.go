@@ -68,6 +68,12 @@ func evalArgumentExpressions(node *ast.Call, fn *object.Function, env *object.En
 				for hashKey, pair := range hash.(*object.Hash).Pairs {
 					argsHash.Pairs[hashKey] = object.HashPair{Key: pair.Key, Value: pair.Value}
 				}
+			} else {
+				evaluated := Eval(e, env)
+				if isError(evaluated) {
+					return []object.Object{evaluated}
+				}
+				argsList.Elements = append(argsList.Elements, evaluated)
 			}
 		default:
 			evaluated := Eval(e, env)
