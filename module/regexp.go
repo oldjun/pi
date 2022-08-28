@@ -13,25 +13,10 @@ var RegexpProperties = map[string]object.ModuleProperty{}
 var RegexpFunctions = map[string]object.ModuleFunction{}
 
 func init() {
-	RegexpFunctions["compile"] = compile
 	RegexpFunctions["match"] = match
 	RegexpFunctions["find"] = find
 	RegexpFunctions["index"] = index
-}
-
-func compile(args []object.Object) object.Object {
-	if len(args) != 1 {
-		return object.NewError("wrong number of arguments. regexp.compile() got=%d", len(args))
-	}
-	switch arg := args[0].(type) {
-	case *object.String:
-		re, err := regexp.Compile(arg.Value)
-		if err != nil {
-			return object.NewError("regexp.compile() error: %s", err.Error())
-		}
-		return &object.Symbol{Name: "regexp", Handler: &module.Regexp{Handler: re}}
-	}
-	return object.NewError("wrong type of arguments. regexp.compile(): %s", args[0].Type())
+	RegexpFunctions["compile"] = compile
 }
 
 func match(args []object.Object) object.Object {
@@ -115,4 +100,19 @@ func index(args []object.Object) object.Object {
 	list.Elements = append(list.Elements, &object.Integer{Value: int64(pos[0])})
 	list.Elements = append(list.Elements, &object.Integer{Value: int64(pos[1])})
 	return list
+}
+
+func compile(args []object.Object) object.Object {
+	if len(args) != 1 {
+		return object.NewError("wrong number of arguments. regexp.compile() got=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *object.String:
+		re, err := regexp.Compile(arg.Value)
+		if err != nil {
+			return object.NewError("regexp.compile() error: %s", err.Error())
+		}
+		return &object.Symbol{Name: "regexp", Handler: &module.Regexp{Handler: re}}
+	}
+	return object.NewError("wrong type of arguments. regexp.compile(): %s", args[0].Type())
 }
