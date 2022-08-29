@@ -24,7 +24,7 @@ const (
 	INSTANCE = "INSTANCE"
 	THIS     = "THIS"
 	MODULE   = "MODULE"
-	SYMBOL   = "SYMBOL"
+	ORIGIN   = "ORIGIN"
 )
 
 type Object interface {

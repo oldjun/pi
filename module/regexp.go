@@ -112,7 +112,7 @@ func compile(args []object.Object) object.Object {
 		if err != nil {
 			return object.NewError("regexp.compile() error: %s", err.Error())
 		}
-		return &object.Symbol{Name: "regexp", Handler: &module.Regexp{Handler: re}}
+		return &object.Origin{Name: "regexp", Handler: &module.Regexp{Handler: re}}
 	}
 	return object.NewError("wrong type of arguments. regexp.compile(): %s", args[0].Type())
 }
