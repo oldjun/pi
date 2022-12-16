@@ -223,8 +223,12 @@ func evalStringInfixExpression(operator string, left, right object.Object) objec
 		return &object.Boolean{Value: leftVal != rightVal}
 	case ">":
 		return &object.Boolean{Value: leftVal > rightVal}
+	case ">=":
+		return &object.Boolean{Value: leftVal >= rightVal}
 	case "<":
 		return &object.Boolean{Value: leftVal < rightVal}
+	case "<=":
+		return &object.Boolean{Value: leftVal <= rightVal}
 	case "in":
 		return evalInStringExpression(left, right)
 	default:
